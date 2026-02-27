@@ -1,0 +1,2753 @@
+<!DOCTYPE html>
+<!-- M365-Security-Report template v2.0 | github.com/watchdogcode -->
+<html lang="es" data-report-version="2.0">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M365 Security Assessment</title>
+<style>
+:root{--bg:#0d1017;--bg2:#151921;--bg3:#1e2433;--bg4:#283044;--accent:#5b9bf5;--accent2:#8b6cc1;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--blue:#60a5fa;--text:#e2e8f0;--muted:#6b7a90;--border:#2a3346;--shadow:.3;--fill-green:var(--green);--fill-yellow:var(--yellow);--fill-red:var(--red);--fill-blue:var(--blue);--fill-accent:var(--accent);--hover-bg:rgba(30,36,51,.7);--hover-sticky:rgba(30,36,51,.97);--nav-bg:rgba(13,16,23,.92);--hero-bg1:rgba(21,25,33,.9);--hero-bg2:rgba(30,36,51,.95);--hdr-bg2:rgba(30,36,51,.95);--tenant-bg:rgba(40,48,68,.8);--stat-bg:rgba(30,36,51,.5);--stat-border:rgba(42,51,70,.6);--dp-row-border:rgba(42,51,70,.5);--nodata-bg:rgba(13,16,23,.97);--narrative-bg1:rgba(21,25,33,.8);--narrative-bg2:rgba(30,36,51,.8)}
+[data-theme="light"]{--bg:#f5f5f5;--bg2:#ffffff;--bg3:#faf9f8;--bg4:#d2d0ce;--accent:#005a9e;--accent2:#7c4dab;--green:#0b6a0b;--yellow:#8a6914;--red:#c50f1f;--blue:#005a9e;--text:#323130;--muted:#605e5c;--border:#e1dfdd;--shadow:0;--fill-green:#107c10;--fill-yellow:#ffb900;--fill-red:#d13438;--fill-blue:#0078d4;--fill-accent:#0078d4;--hover-bg:rgba(0,0,0,.02);--hover-sticky:rgba(255,255,255,1);--nav-bg:rgba(255,255,255,.98);--hero-bg1:rgba(255,255,255,1);--hero-bg2:rgba(255,255,255,1);--hdr-bg2:rgba(255,255,255,1);--tenant-bg:rgba(0,90,158,.06);--stat-bg:rgba(250,249,248,.6);--stat-border:rgba(225,223,221,.8);--dp-row-border:rgba(225,223,221,.6);--nodata-bg:rgba(255,255,255,.99);--narrative-bg1:rgba(255,255,255,1);--narrative-bg2:rgba(255,255,255,1)}
+/* ── Light theme: Microsoft Defender Portal style (WCAG AA compliant) ── */
+[data-theme="light"] .b-green{background:rgba(16,124,16,.07);color:#107c10;border-color:rgba(16,124,16,.2)}
+[data-theme="light"] .b-yellow{background:rgba(255,185,0,.08);color:#c19c00;border-color:rgba(255,185,0,.22)}
+[data-theme="light"] .b-red{background:rgba(209,52,56,.06);color:#d13438;border-color:rgba(209,52,56,.2)}
+[data-theme="light"] .b-blue{background:rgba(0,120,212,.06);color:#0078d4;border-color:rgba(0,120,212,.2)}
+[data-theme="light"] .hc-green{background:rgba(16,124,16,.07);border-color:rgba(16,124,16,.18);color:#107c10}
+[data-theme="light"] .hc-yellow{background:rgba(255,185,0,.08);border-color:rgba(255,185,0,.22);color:#c19c00}
+[data-theme="light"] .hc-red{background:rgba(209,52,56,.06);border-color:rgba(209,52,56,.18);color:#d13438}
+[data-theme="light"] .hc-muted{background:#faf9f8;border-color:#e1dfdd;color:#605e5c}
+[data-theme="light"] .row-alert td{background:rgba(197,15,31,.03)}
+[data-theme="light"] .row-warn td{background:rgba(138,105,20,.04)}
+[data-theme="light"] .dot-on{box-shadow:0 0 3px rgba(11,106,11,.4)}
+[data-theme="light"] .dot-off{box-shadow:0 0 3px rgba(197,15,31,.4)}
+[data-theme="light"] .dot-na{background:#edebe9;border-color:#d2d0ce}
+/* Portal-style cards: 2px radius, subtle border */
+[data-theme="light"] .card{border-radius:2px;box-shadow:none;border-color:#d2d0ce}
+[data-theme="light"] .card:hover{transform:translateY(-1px);box-shadow:0 2px 4px rgba(0,0,0,.08)}
+[data-theme="light"] .card .v{color:#323130}
+[data-theme="light"] .card.g .v{color:#107c10}
+[data-theme="light"] .card.y .v{color:#c19c00}
+[data-theme="light"] .card.r .v{color:#d13438}
+/* Portal-style panels: subtle top accent, flat white */
+[data-theme="light"] .dash-panel{border-radius:2px;border:1px solid #d2d0ce;border-top:2px solid #d2d0ce;box-shadow:none}
+[data-theme="light"] .dash-panel:hover{transform:none;box-shadow:0 2px 4px rgba(0,0,0,.06)}
+[data-theme="light"] .dash-panel.dp-blue{border-top-color:#0078d4}
+[data-theme="light"] .dash-panel.dp-teal{border-top-color:#107c10}
+[data-theme="light"] .dash-panel.dp-amber{border-top-color:#ffb900}
+[data-theme="light"] .dash-panel.dp-red{border-top-color:#d13438}
+[data-theme="light"] .tw{border-radius:2px;box-shadow:none;border-color:#d2d0ce}
+[data-theme="light"] td{border-bottom-color:#f5f5f5}
+[data-theme="light"] thead{background:#faf9f8;border-radius:0}
+[data-theme="light"] th{color:#605e5c}
+[data-theme="light"] .tab{border-radius:2px}
+[data-theme="light"] .tab:hover{background:#faf9f8;border-color:#d2d0ce}
+[data-theme="light"] .tab.active{background:rgba(0,90,158,.06);color:#005a9e;border-color:rgba(0,90,158,.25);border-radius:2px}
+[data-theme="light"] .main-tab{color:#605e5c;border-radius:0;border:none;border-bottom:2px solid transparent;padding:8px 16px}
+[data-theme="light"] .main-tab:hover{background:transparent;border-color:transparent;color:#323130;border-bottom-color:#d2d0ce}
+[data-theme="light"] .main-tab.active{background:transparent;color:#323130;border-color:transparent;border-bottom:2px solid #0078d4;font-weight:600}
+[data-theme="light"] .main-tab.active .t-badge{background:rgba(0,90,158,.08);color:#005a9e}
+[data-theme="light"] .main-tab .t-badge{background:#f3f2f1;color:#605e5c;border-radius:4px}
+[data-theme="light"] .narrative-box{background:#fff;border-color:#e1dfdd;border-left-color:#0078d4;box-shadow:none;border-radius:4px}
+[data-theme="light"] .sc{border-radius:2px;box-shadow:none;border-color:#d2d0ce}
+[data-theme="light"] .sc-title{color:#323130;border-bottom-color:#edebe9}
+[data-theme="light"] .sc-stat{background:#faf9f8;border-color:#edebe9;border-radius:2px}
+[data-theme="light"] .priority-item{border-color:#d2d0ce;background:#fff;border-radius:2px}
+[data-theme="light"] .priority-item:hover{border-color:#0078d4;box-shadow:none}
+[data-theme="light"] .priority-num{box-shadow:0 1px 2px rgba(0,0,0,.15)}
+[data-theme="light"] .pn-yellow{background:#ffb900;color:#323130}
+/* Portal hero: flat white, no decorative gradients */
+[data-theme="light"] .dash-hero{background:#fff;border-radius:2px;box-shadow:none;border-color:#d2d0ce}
+[data-theme="light"] .dash-hero::before{background:none}
+[data-theme="light"] .dash-hero::after{background:none}
+[data-theme="light"] .bar-track{background:#edebe9}
+[data-theme="light"] .pg{background:#edebe9}
+[data-theme="light"] .dp-bar{background:#edebe9}
+[data-theme="light"] .dash-ring svg{filter:none}
+[data-theme="light"] .dp-big{color:#323130}
+/* Portal savings cards: flat */
+[data-theme="light"] .savings-card{border-radius:2px;box-shadow:none;border:1px solid #d2d0ce;border-top:2px solid #d2d0ce}
+[data-theme="light"] .savings-card.sk-red{border-top-color:#d13438}
+[data-theme="light"] .savings-card.sk-yellow{border-top-color:#ffb900}
+[data-theme="light"] .savings-card.sk-blue{border-top-color:#0078d4}
+[data-theme="light"] .savings-card.sk-green{border-top-color:#107c10}
+/* Health overview: portal flat */
+[data-theme="light"] .health-overview{border-radius:2px;box-shadow:none;border-color:#d2d0ce}
+[data-theme="light"] .health-chip{border-radius:2px}
+[data-theme="light"] .search{background:#fff;border-color:#8a8886;border-radius:2px}
+[data-theme="light"] .search:focus{border-color:#0078d4;box-shadow:none}
+[data-theme="light"] .footer{background:#fff;border-top:1px solid #d2d0ce}
+[data-theme="light"] .footer-label{color:#8a8886}
+[data-theme="light"] .dcr-l{color:#605e5c}
+[data-theme="light"] .bar-label{color:#323130}
+[data-theme="light"] .bar-value{color:#605e5c}
+[data-theme="light"] .dash-cats-title,[data-theme="light"] .dash-controls-title{color:#605e5c;font-weight:600}
+[data-theme="light"] .dash-divider{background:#edebe9}
+[data-theme="light"] .cat-cell{background:#faf9f8!important;color:#005a9e}
+[data-theme="light"] .action{border-color:#d2d0ce;background:#fff;border-radius:2px}
+[data-theme="light"] .csv-btn{border-color:#8a8886;color:#605e5c;border-radius:2px}
+[data-theme="light"] .csv-btn:hover{color:#005a9e;border-color:#005a9e;background:rgba(0,90,158,.04)}
+[data-theme="light"] .hdr{background:#fff;box-shadow:none;border-bottom:1px solid #d2d0ce}
+[data-theme="light"] .dp-sep{border-top-color:#edebe9}
+[data-theme="light"] .portal-link:hover{color:#005a9e;background:rgba(0,90,158,.06)}
+[data-theme="light"] .kql-btn{background:#faf9f8;border-color:#d2d0ce;color:#605e5c;border-radius:2px}
+[data-theme="light"] .kql-btn:hover{background:#005a9e;border-color:#005a9e;color:#fff}
+[data-theme="light"] .pg-btn{background:#fff;border-color:#8a8886;color:#605e5c;border-radius:2px}
+[data-theme="light"] .pg-btn:hover{color:#005a9e;border-color:#005a9e}
+[data-theme="light"] .pg-active{background:#005a9e!important;border-color:#005a9e!important;color:#fff!important}
+[data-theme="light"] .empty-state .es-title{color:#605e5c}
+[data-theme="light"] .sec{border-bottom-color:#edebe9;color:#323130}
+[data-theme="light"] tr:hover{background:rgba(0,0,0,.02)}
+[data-theme="light"] tr:hover td{border-bottom-color:rgba(0,0,0,.04)}
+[data-theme="light"] tr:hover .sticky-name{background:#fff}
+[data-theme="light"] .tenant{border-radius:2px}
+[data-theme="light"] .badge{border-radius:2px}
+[data-theme="light"] .version-badge{border-radius:2px}
+[data-theme="light"] .readonly-badge{border-radius:2px}
+[data-theme="light"] .pdf-btn{border-radius:4px;box-shadow:none}
+[data-theme="light"] .theme-toggle{border-radius:4px}
+[data-theme="light"] .narrative-box{border-radius:2px}
+[data-theme="light"] .dp-val{color:#323130}
+[data-theme="light"] .dp-val.v-green{color:#107c10}
+[data-theme="light"] .dp-val.v-red{color:#d13438}
+[data-theme="light"] .dp-val.v-yellow{color:#c19c00}
+[data-theme="light"] .dp-val.v-blue{color:#323130}
+[data-theme="light"] .dp-val.v-accent{color:#323130}
+[data-theme="light"] .dp-title{color:#323130}
+[data-theme="light"] nav{border-bottom:1px solid #d2d0ce;background:#fff;backdrop-filter:none}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;line-height:1.5}
+.hdr{background:linear-gradient(160deg,var(--bg2) 0%,var(--hdr-bg2) 100%);border-bottom:1px solid var(--border);padding:24px 36px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;box-shadow:0 2px 20px rgba(0,0,0,var(--shadow))}
+.hdr-info{flex:1;min-width:280px}
+.hdr h1{font-size:23px;font-weight:800;color:var(--accent);letter-spacing:-.2px}
+.hdr .meta{color:var(--muted);font-size:12px;margin-top:5px}
+.hdr .tenant{display:inline-block;background:var(--tenant-bg);border:1px solid var(--border);border-radius:16px;padding:3px 14px;font-size:11px;margin-top:8px;color:var(--muted);font-family:monospace}
+.wrap{max-width:1560px;margin:0 auto;padding:24px 36px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px;margin-bottom:24px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,var(--shadow));transition:transform .15s}
+.card:hover{transform:translateY(-2px)}
+.card .v{font-size:28px;font-weight:700;color:var(--accent)}
+.card .l{color:var(--muted);font-size:10px;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.card.g .v{color:var(--fill-green)}.card.y .v{color:var(--fill-yellow)}.card.r .v{color:var(--fill-red)}.card.p .v{color:var(--accent2)}.card.bl .v{color:var(--fill-blue)}
+/* ── Tables ── */
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,var(--shadow))}
+table{width:100%;border-collapse:collapse}
+thead{background:linear-gradient(to right,var(--bg3),var(--bg4))}
+th{padding:11px 14px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;font-weight:600}
+td{padding:9px 14px;border-bottom:1px solid var(--stat-border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover{background:var(--hover-bg)}
+tr:hover td{border-bottom-color:rgba(91,155,245,.08)}
+/* Rotated column headers (user matrix) */
+.th-rot{width:36px;padding:6px 4px!important;vertical-align:bottom;text-align:center!important}
+.th-rot span{writing-mode:vertical-lr;transform:rotate(180deg);display:inline-block;font-size:10px;white-space:nowrap;max-height:90px;overflow:hidden;line-height:1.2;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500}
+.th-prod{white-space:nowrap}
+/* ── Utilities ── */
+.tc{text-align:center}.muted{color:var(--muted)}.small{font-size:11px}
+.sku-cell{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.row-alert td{background:rgba(248,113,113,.05)}.row-warn td{background:rgba(251,191,36,.04)}
+.row-disabled td{opacity:.35}.row-inactive td{opacity:.5}
+/* ── Badges ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;white-space:nowrap;letter-spacing:.1px}
+.b-green{background:rgba(52,211,153,.13);color:var(--fill-green);border:1px solid rgba(52,211,153,.2)}
+.b-yellow{background:rgba(251,191,36,.13);color:var(--fill-yellow);border:1px solid rgba(251,191,36,.2)}
+.b-red{background:rgba(248,113,113,.13);color:var(--fill-red);border:1px solid rgba(248,113,113,.2)}
+.b-blue{background:rgba(96,165,250,.13);color:var(--fill-blue);border:1px solid rgba(96,165,250,.2)}
+.b-default{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+/* ── Progress bars ── */
+.pg{background:var(--bg4);border-radius:3px;height:7px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:4px}
+.pg-fill{height:100%;border-radius:3px;transition:width .4s ease}
+.pg-green{background:var(--fill-green)}.pg-yellow{background:var(--fill-yellow)}.pg-red{background:var(--fill-red)}
+/* ── Dots ── */
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%}
+.dot-on{background:var(--fill-green);box-shadow:0 0 4px rgba(52,211,153,.4)}
+.dot-off{background:var(--fill-red);box-shadow:0 0 4px rgba(248,113,113,.3)}
+.dot-na{background:var(--bg4);border:1px solid var(--border)}
+.td-sep{border-left:2px solid var(--border)}
+.cat-cell{background:var(--bg3)!important;font-weight:600;font-size:11px;color:var(--accent);white-space:nowrap;vertical-align:middle;border-right:2px solid var(--border);padding:10px 14px}
+.sticky-name{position:sticky;left:0;background:var(--bg2);z-index:1;min-width:160px}
+tr:hover .sticky-name{background:var(--hover-sticky)}
+/* ── Search & Inputs ── */
+.search{width:100%;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s}
+.search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,155,245,.1)}
+/* ── Filter tabs ── */
+.tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.dept-select{padding:6px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--card);color:var(--text);min-width:260px;max-width:400px;cursor:pointer}
+.tab{padding:5px 13px;border-radius:20px;font-size:11px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .15s;font-weight:500}
+.tab:hover{background:var(--bg3);color:var(--text);border-color:rgba(91,155,245,.4)}
+.tab.active{background:rgba(91,155,245,.12);color:var(--accent);border-color:var(--accent);font-weight:600}
+/* ── Action items ── */
+.action{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:10px}
+.action .a-title{font-weight:600;font-size:13px;margin-bottom:4px}
+.action .a-desc{color:var(--muted);font-size:12px}
+.action.a-red{border-left:3px solid var(--red)}.action.a-yellow{border-left:3px solid var(--yellow)}.action.a-blue{border-left:3px solid var(--blue)}
+/* ── Legend ── */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 16px;font-size:11px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:5px}
+/* ── Footer ── */
+.footer{text-align:center;padding:28px 36px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:36px;background:var(--bg2)}
+.footer-grid{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:8px}
+.footer-item{display:flex;flex-direction:column;align-items:center;gap:3px}
+.footer-label{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:rgba(107,122,144,.6)}
+.footer-val{font-size:11px;color:var(--muted)}
+/* ── Navigation ── */
+nav{position:sticky;top:0;z-index:10;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 36px;display:flex;gap:6px;flex-wrap:wrap}
+.main-tab{position:relative;padding:8px 18px;font-size:12px;font-weight:500;cursor:pointer;border-radius:8px;background:transparent;border:1px solid transparent;color:var(--muted);transition:all .18s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.main-tab:hover{background:var(--bg2);color:var(--text);border-color:var(--border)}
+.main-tab.active{background:rgba(91,155,245,.1);color:var(--accent);border-color:rgba(91,155,245,.3);font-weight:600}
+.main-tab .t-badge{font-size:9px;padding:1px 6px;border-radius:10px;background:var(--bg4);color:var(--muted);font-weight:600}
+.main-tab.active .t-badge{background:rgba(91,155,245,.2);color:var(--accent)}
+.main-tab .t-alert{width:7px;height:7px;border-radius:50%;position:absolute;top:4px;right:4px}
+/* ── Tab panels ── */
+.tab-panel{display:none;animation:tabFadeIn .25s ease}.tab-panel.active{display:block}
+@keyframes tabFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+/* ── CSV button ── */
+.csv-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 12px;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;float:right;transition:all .15s}
+.csv-btn:hover{background:var(--bg2);color:var(--accent);border-color:var(--accent)}
+/* ── Dashboard hero ── */
+.dash-hero{display:flex;gap:32px;align-items:center;background:linear-gradient(135deg,var(--hero-bg1),var(--hero-bg2));border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,var(--shadow))}
+.dash-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(91,155,245,.06),transparent 70%);pointer-events:none}
+.dash-hero::after{content:'';position:absolute;bottom:-60px;left:40%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(139,108,193,.04),transparent 70%);pointer-events:none}
+.dash-ring{flex-shrink:0;text-align:center}
+.dash-ring svg{filter:drop-shadow(0 0 20px rgba(91,155,245,.18))}
+.dash-cats{flex:1;min-width:220px}
+.dash-cats-title{font-size:10px;font-weight:700;color:var(--accent);margin-bottom:14px;text-transform:uppercase;letter-spacing:.8px}
+.dash-divider{width:1px;background:linear-gradient(to bottom,transparent,var(--border),transparent);align-self:stretch;margin:0 8px}
+.dash-controls{min-width:190px}
+.dash-controls-title{font-size:10px;font-weight:700;color:var(--accent);margin-bottom:14px;text-transform:uppercase;letter-spacing:.8px}
+.dash-ctrl-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+.dash-ctrl-row .dcr-v{font-size:22px;font-weight:700}
+.dash-ctrl-row .dcr-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+/* ── KPI grid ── */
+.dash-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+.dash-panel2{margin-bottom:24px}
+@media(max-width:1100px){.dash-cols{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.dash-cols{grid-template-columns:1fr}.dash-hero{flex-direction:column;align-items:stretch;text-align:center}}
+.dash-panel{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:20px 24px;border-top:3px solid var(--border);transition:transform .18s,box-shadow .18s;box-shadow:0 2px 8px rgba(0,0,0,var(--shadow))}
+.dash-panel:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,var(--shadow))}
+.dash-panel.dp-blue{border-top-color:var(--accent)}
+.dash-panel.dp-teal{border-top-color:var(--fill-green)}
+.dash-panel.dp-amber{border-top-color:var(--fill-yellow)}
+.dash-panel.dp-red{border-top-color:var(--fill-red)}
+.dp-title{font-size:13px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:var(--text)}
+.dp-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--dp-row-border)}
+.dp-row:last-child{border-bottom:none}
+.dp-label{font-size:12px;color:var(--muted)}
+.dp-val{font-size:18px;font-weight:700}
+.dp-val.v-green{color:var(--fill-green)}.dp-val.v-red{color:var(--fill-red)}.dp-val.v-yellow{color:var(--fill-yellow)}.dp-val.v-blue{color:var(--fill-blue)}.dp-val.v-accent{color:var(--accent)}.dp-val.v-muted{color:var(--muted);font-size:15px}
+.dp-bar{height:8px;background:var(--bg4);border-radius:4px;margin-top:12px;overflow:hidden;display:flex}
+.dp-bar span{height:100%;transition:width .6s ease}
+.dp-bar-legend{display:flex;gap:14px;margin-top:8px;font-size:10px;color:var(--muted)}
+.dp-bar-legend i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+.dp-sep{border-top:1px solid var(--border);margin:12px 0;opacity:.4}
+.dp-big{font-size:40px;font-weight:800;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.dp-biglabel{font-size:10px;color:var(--muted);text-transform:uppercase;margin-top:4px;letter-spacing:.4px}
+/* ── Priority list ── */
+.priority-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.priority-item{display:flex;align-items:flex-start;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;transition:border-color .2s,transform .15s,box-shadow .2s}
+.priority-item:hover{border-color:rgba(91,155,245,.4);transform:translateX(4px);box-shadow:0 4px 16px rgba(0,0,0,var(--shadow))}
+.priority-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.pn-red{background:var(--fill-red)}.pn-yellow{background:var(--fill-yellow);color:var(--bg)}.pn-blue{background:var(--fill-blue)}
+.priority-body{flex:1}.priority-body .pb-title{font-weight:600;font-size:13px;margin-bottom:4px}.priority-body .pb-desc{color:var(--muted);font-size:11px;line-height:1.6}
+/* ── Narrative box ── */
+.narrative-box{background:linear-gradient(135deg,var(--narrative-bg1),var(--narrative-bg2));border:1px solid rgba(91,155,245,.2);border-radius:12px;padding:20px 24px;font-size:13px;line-height:1.9;color:var(--text);border-left:3px solid var(--accent);margin-bottom:24px;box-shadow:inset 0 0 60px rgba(91,155,245,.03)}
+/* ── Pagination ── */
+.pg-btn{background:var(--bg2);border:1px solid var(--border);color:var(--muted);border-radius:5px;padding:4px 10px;font-size:11px;cursor:pointer;min-width:28px;text-align:center;transition:all .15s}
+.pg-btn:hover{background:var(--bg3);color:var(--accent);border-color:var(--accent)}
+.pg-active{background:var(--accent)!important;color:var(--bg)!important;border-color:var(--accent)!important;font-weight:700}
+.pg-dis{opacity:.3;pointer-events:none}
+.pg-controls{min-height:30px}
+/* ── Section cards (Postura) ── */
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,var(--shadow))}
+.sc-title{font-size:14px;font-weight:600;margin-bottom:14px;color:var(--accent);display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--dp-row-border)}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.sc-stat{text-align:center;padding:10px 8px;background:var(--stat-bg);border-radius:8px;border:1px solid var(--stat-border)}
+.sc-stat .v{font-size:22px;font-weight:700;line-height:1.2}
+.sc-stat .l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+/* ── Health chips (Postura overview) ── */
+.health-overview{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,var(--shadow))}
+.health-chip{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all .18s;border:1px solid transparent;text-decoration:none;color:inherit}
+.health-chip:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,var(--shadow))}
+.hc-green{background:rgba(52,211,153,.1);border-color:rgba(52,211,153,.25);color:var(--fill-green)}
+.hc-yellow{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.25);color:var(--fill-yellow)}
+.hc-red{background:rgba(248,113,113,.1);border-color:rgba(248,113,113,.25);color:var(--fill-red)}
+.hc-muted{background:var(--bg3);border-color:var(--border);color:var(--muted)}
+.health-overview-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;align-self:center;margin-right:4px;white-space:nowrap}
+/* ── Bar charts ── */
+.bar-row{display:flex;align-items:center;gap:8px;margin:5px 0}
+.bar-label{width:80px;font-size:11px;flex-shrink:0;text-align:right;color:var(--muted)}
+.bar-track{flex:1;background:var(--bg4);border-radius:4px;height:16px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.bar-value{width:100px;font-size:10px;color:var(--muted);flex-shrink:0}
+/* ── Section title ── */
+.sec{font-size:16px;font-weight:700;margin:28px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px;color:var(--text);letter-spacing:-.1px}
+/* ── Two-col grid ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}.hdr{flex-direction:column;align-items:flex-start}}
+/* ── Empty state ── */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;color:var(--muted);text-align:center;gap:12px}
+.empty-state .es-icon{font-size:36px;opacity:.4}
+.empty-state .es-title{font-size:14px;font-weight:600;color:rgba(226,232,240,.5)}
+.empty-state .es-sub{font-size:12px;line-height:1.6;max-width:400px}
+/* ── Savings KPI ── */
+.savings-kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.savings-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;text-align:center;border-top:2px solid var(--border);transition:transform .15s,box-shadow .15s}
+.savings-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,var(--shadow))}
+.savings-card.sk-red{border-top-color:var(--fill-red)}
+.savings-card.sk-yellow{border-top-color:var(--fill-yellow)}
+.savings-card.sk-blue{border-top-color:var(--fill-blue)}
+.savings-card.sk-green{border-top-color:var(--fill-green)}
+.sk-num{font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.sk-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:5px}
+.sk-sub{font-size:10px;color:var(--muted);margin-top:3px}
+/* ── Print ── */
+@media print{
+  .search,nav,.pg-controls,.tabs,.no-print,.csv-btn,.health-overview{display:none!important}
+  .tab-panel{display:block!important;animation:none!important}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
+  body{font-size:10px;background:var(--bg)!important;color:var(--text)!important}.wrap{max-width:100%;padding:10px}
+  .card,.sc,.dash-panel{break-inside:avoid;box-shadow:none!important}
+  .action{break-inside:avoid}
+  .sec{break-before:auto;break-after:avoid}
+  table{font-size:9px}td{padding:4px 6px}.tw{overflow:visible;box-shadow:none}
+  .sticky-name{position:static!important}
+  .hdr{background:var(--bg2)!important;border-bottom:1px solid var(--border)!important}
+  @page{size:landscape;margin:10mm}
+}
+
+/* ===== Portal links & KQL buttons ===== */
+.portal-link{color:var(--muted);text-decoration:none;font-size:12px;opacity:.6;transition:opacity .2s;margin-left:auto;line-height:1;padding:2px 4px;border-radius:3px}
+.portal-link:hover{opacity:1;color:var(--accent);background:rgba(91,155,245,.12)}
+.kql-btns{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 10px}
+.kql-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:10px;padding:3px 10px;border-radius:4px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.kql-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.kql-btn::before{content:"\1F50D\FE0F  "}
+/* No-data banner */
+#noDataBanner{display:none;position:fixed;inset:0;background:var(--nodata-bg);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+/* ── Theme toggle ── */
+.theme-toggle{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
+.theme-toggle:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pdf-btn{padding:10px 22px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;box-shadow:0 2px 8px rgba(0,0,0,var(--shadow));transition:transform .15s,box-shadow .15s}
+.pdf-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,calc(var(--shadow) + .05))}
+.readonly-badge{font-size:10px;color:var(--green);background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.18);border-radius:10px;padding:2px 10px;font-weight:600;text-align:center}
+[data-theme="light"] .readonly-badge{background:rgba(11,106,11,.06);border-color:rgba(11,106,11,.15)}
+.gap-warning{display:flex;align-items:center;gap:8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);border-radius:6px;padding:6px 10px;margin:6px 0}
+[data-theme="light"] .gap-warning{background:rgba(197,15,31,.05);border-color:rgba(197,15,31,.2)}
+.version-badge{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;background:rgba(91,155,245,.12);color:var(--accent);border:1px solid rgba(91,155,245,.25)}
+[data-theme="light"] .version-badge{background:rgba(0,90,158,.08);border-color:rgba(0,90,158,.18)}
+/* ═══ Guía Operacional (SecOps v2) ═══ */
+:root{--entra:#7b4f9e;--xdr:#0078d4;--mdo:#107c10;--mde:#d83b01;--mda:#00b4d8;--mdi:#744da9}
+.go-intro{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:32px;font-size:13px;color:var(--muted);line-height:1.8}
+.go-intro strong{color:var(--text)}
+.go-sh{font-size:16px;font-weight:700;margin:36px 0 16px;display:flex;align-items:center;gap:8px}
+.go-acc{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.go-acc-h{width:100%;text-align:left;background:var(--bg2);border:none;padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text);display:flex;justify-content:space-between;align-items:center;font-family:inherit;transition:background .15s}
+.go-acc-h:hover{background:var(--hover-bg)}
+.go-acc-b{background:var(--bg);display:none}
+.go-open .go-acc-b{display:block}
+.go-chev{font-size:10px;color:var(--muted);transition:transform .2s}
+.go-open .go-chev{transform:rotate(180deg)}
+.go-portals-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:18px 20px}
+@media(max-width:900px){.go-portals-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.go-portals-grid{grid-template-columns:repeat(2,1fr)}}
+.go-portal-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg2)}
+.go-portal-card-hdr{padding:10px 14px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
+.go-portal-link{display:block;padding:7px 14px;font-size:12px;color:var(--muted);text-decoration:none;border-top:1px solid var(--border);transition:all .12s}
+.go-portal-link:hover{color:var(--accent);background:rgba(91,155,245,.06)}
+.go-cad{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:12px}
+@media(max-width:860px){.go-cad{grid-template-columns:1fr}}
+.go-cad-col{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.go-cad-hdr{padding:13px 16px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.go-cad-hdr.go-d{color:var(--red);border-top:3px solid var(--red)}
+.go-cad-hdr.go-w{color:var(--yellow);border-top:3px solid var(--yellow)}
+.go-cad-hdr.go-m{color:var(--green);border-top:3px solid var(--green)}
+.go-cad-count{font-size:10px;opacity:.6}
+.go-ci{border-bottom:1px solid var(--border);font-size:13px;line-height:1.4;padding:10px 16px;display:flex;gap:9px;align-items:flex-start}
+.go-ci:last-child{border-bottom:none}
+.go-ci-wl{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.go-ci-text{flex:1}
+.go-ci-wltag{font-size:9px;font-weight:700;letter-spacing:.3px;opacity:.7;margin-right:4px}
+.go-ci-why{display:block;font-size:11px;color:var(--muted);margin-top:2px;font-style:italic}
+.go-ci-proc{color:var(--accent);font-size:9px;vertical-align:super;margin-left:3px;cursor:help;text-decoration:none}
+.go-proc-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.go-l1-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2)}
+.go-l1-tab{background:none;border:none;padding:13px 22px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:7px;border-bottom:2px solid transparent}
+.go-l1-tab:hover{color:var(--text);background:var(--hover-bg)}
+.go-l1-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.go-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.go-dot-d{background:var(--red)}
+.go-dot-w{background:var(--yellow)}
+.go-dot-m{background:var(--green)}
+.go-dot-ir{background:var(--accent)}
+.go-cnt{font-size:10px;color:var(--muted)}
+.go-l1-panel{display:none}
+.go-l1-panel.active{display:block}
+.go-l2-tabs{display:flex;gap:0;padding:12px 20px 0;flex-wrap:wrap}
+.go-l2-tab{background:var(--bg3);border:1px solid var(--border);border-bottom:none;border-radius:8px 8px 0 0;padding:8px 16px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);font-family:inherit;transition:all .12s;display:flex;align-items:center;gap:6px}
+.go-l2-tab:hover{color:var(--text);background:var(--hover-bg)}
+.go-l2-tab.active{color:var(--text);background:var(--bg);border-bottom-color:var(--bg)}
+.go-wl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.go-l2-panel{display:none;background:var(--bg);border-top:1px solid var(--border);padding:16px 20px}
+.go-l2-panel.active{display:block}
+.go-proc-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.go-proc-card:last-child{margin-bottom:0}
+.go-proc-card-hdr{padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .12s}
+.go-proc-card-hdr:hover{background:var(--hover-bg)}
+.go-pc-icon{font-size:14px}
+.go-pc-title{flex:1;font-size:13px;font-weight:600}
+.go-pc-chev{font-size:10px;color:var(--muted);transition:transform .2s}
+.go-proc-card.open .go-pc-chev{transform:rotate(180deg)}
+.go-proc-card-body{display:none;padding:0 16px 14px;border-top:1px solid var(--border)}
+.go-proc-card.open .go-proc-card-body{display:block}
+.go-step{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;line-height:1.55}
+.go-step:last-child{border-bottom:none}
+.go-sn{font-weight:700;color:var(--accent);min-width:18px;font-size:12px}
+.go-ir-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden}
+.go-ir-card:last-child{margin-bottom:0}
+.go-ir-card-hdr{padding:12px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .12s}
+.go-ir-card-hdr:hover{background:var(--hover-bg)}
+.go-ir-card-title{flex:1;font-size:13px;font-weight:600}
+.go-ir-card-sub{font-size:11px;color:var(--muted);padding:0 16px 8px;font-style:italic;line-height:1.4}
+.go-ir-card-body{display:none;padding:0 16px 14px;border-top:1px solid var(--border)}
+.go-ir-card.open .go-ir-card-body{display:block}
+.go-ir-card.open .go-pc-chev{transform:rotate(180deg)}
+.go-ir-step{display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5}
+.go-ir-step:last-child{border-bottom:none}
+.go-ir-note{margin-top:12px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;font-size:11px;color:var(--muted);line-height:1.6}
+.go-ir-note a{color:var(--accent)}
+.go-cta{background:linear-gradient(135deg,rgba(91,155,245,.06),rgba(91,155,245,.02));border:1px solid var(--accent);border-radius:12px;padding:32px 36px;margin-top:40px}
+.go-cta h2{font-size:18px;margin-bottom:6px;color:var(--accent)}
+.go-cta-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.go-cta-g{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.go-cta-c{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px 18px;position:relative;transition:border-color .2s}
+.go-cta-c:hover{border-color:var(--accent)}
+.go-cta-c-icon{font-size:22px;margin-bottom:8px;display:block}
+.go-cta-c h3{font-size:13px;font-weight:700;margin-bottom:4px;font-family:Consolas,monospace;color:var(--text)}
+.go-cta-c-freq{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.go-cta-c p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
+.go-cta-road{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:28px 0 20px;position:relative}
+.go-cta-road::before{content:'';position:absolute;top:18px;left:40px;right:40px;height:2px;background:var(--border)}
+.go-cta-rs{text-align:center;position:relative}
+.go-cta-rn{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--accent);margin-bottom:8px;position:relative;z-index:1}
+.go-cta-rs.done .go-cta-rn{background:var(--accent);color:#fff;border-color:var(--accent)}
+.go-cta-rt{font-size:11px;color:var(--muted);line-height:1.4;max-width:160px;margin:0 auto}
+.go-cta-rt strong{color:var(--text);display:block;margin-bottom:2px;font-size:12px}
+.go-cta-req{font-size:11px;color:var(--muted);line-height:1.6;padding:14px 16px;background:var(--bg2);border-radius:8px;border:1px solid var(--border)}
+.go-cta-req code{background:var(--bg3);padding:1px 6px;border-radius:4px;font-size:11px}
+/* --- Framework 3-Fases --- */
+.go-fw-road{display:flex;align-items:center;justify-content:center;gap:0;margin:0 0 28px;flex-wrap:wrap}
+.go-fw-step{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:120px}
+.go-fw-step.done .go-fw-num{box-shadow:0 0 0 4px rgba(76,175,80,.2)}
+.go-fw-num{width:52px;height:52px;border-radius:50%;border:3px solid;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all .2s}
+.go-fw-label{text-align:center;font-size:12px;line-height:1.4}
+.go-fw-arrow{font-size:24px;color:var(--muted);margin:0 12px;padding-bottom:28px}
+@media(max-width:640px){.go-fw-road{flex-direction:column}.go-fw-arrow{transform:rotate(90deg);padding:0;margin:4px 0}}
+.go-fw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px}
+@media(max-width:860px){.go-fw-cards{grid-template-columns:1fr}}
+.go-fw-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px 20px;transition:border-color .2s}
+.go-fw-card:hover{border-color:var(--accent)}
+.go-fw-card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.go-fw-card-icon{width:36px;height:36px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.go-fw-badge-done{background:rgba(76,175,80,.15);color:#4caf50;font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;margin-left:auto}
+.go-fw-card-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.go-fw-section{margin-bottom:14px}
+.go-fw-section:last-child{margin-bottom:0}
+.go-fw-section-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.go-fw-list{margin:0;padding-left:18px;font-size:12px;color:var(--muted);line-height:1.7}
+.go-fw-list li{margin-bottom:3px}
+.go-fw-list-q{list-style:none;padding-left:0}
+.go-fw-list-q li::before{content:'\2022 ';color:var(--accent);font-weight:700}
+/* --- Repo CTA --- */
+.go-repo-cta{display:flex;gap:20px;align-items:flex-start;background:linear-gradient(135deg,rgba(91,155,245,.08),rgba(91,155,245,.02));border:1px solid var(--accent);border-radius:12px;padding:24px 28px;margin:0 0 10px}
+.go-repo-cta-icon{font-size:36px;flex-shrink:0}
+.go-repo-cta-body{flex:1}
+.go-repo-btn{display:inline-block;margin-top:4px;padding:10px 22px;background:var(--accent);color:#fff;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .15s}
+.go-repo-btn:hover{opacity:.85}
+[data-theme="light"] .go-portal-link:hover{color:#005a9e;background:rgba(0,90,158,.06)}
+</style>
+<script>
+// Theme init — runs before body paint to prevent flash
+(function(){
+  var t = localStorage.getItem('m365_theme');
+  if(t === 'light') document.documentElement.setAttribute('data-theme','light');
+})();
+</script>
+</head>
+<body>
+<!-- ========= NO-DATA BANNER ========= -->
+<div id="noDataBanner">
+  <div style="font-size:52px">&#128202;</div>
+  <div style="font-size:22px;font-weight:700;color:#5b9bf5">M365 Security Assessment</div>
+  <div style="color:#6b7a90;font-size:13px;text-align:center;max-width:440px;line-height:1.7">
+    Este archivo es una <strong style="color:#fff">plantilla HTML</strong>.<br>
+    Para generar el reporte con datos reales ejecuta:<br>
+    <code style="background:#1e2433;padding:3px 10px;border-radius:4px;color:#34d399;font-size:12px">New-M365Report.ps1</code>
+    <br><br>
+    <span style="font-size:11px;opacity:.6">M365-Security-Report v2.0 &mdash; github.com/watchdogcode</span>
+  </div>
+</div>
+<script>
+(function(){
+  // Detectar si template fue abierto directamente (sin procesar por el inyector)
+  // Se evalúa después de que los scripts de datos cargan — si D no existe o no tiene lic, mostrar banner
+  function checkNoData(){
+    if(typeof D==='undefined'||!D||!D.lic){
+      var b=document.getElementById('noDataBanner');
+      if(b){b.style.display='flex';document.body.style.overflow='hidden';}
+    }
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',checkNoData);
+  } else {
+    checkNoData();
+  }
+})();
+</script>
+
+
+<!-- ====== HEADER ====== -->
+<div class="hdr">
+  <div class="hdr-info">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <h1>Microsoft 365 Security Assessment</h1>
+      <span id="hdrVersion" class="version-badge">v2.0</span>
+    </div>
+    <div class="meta" id="hdrMeta">Generado: __GENERATED_AT__</div>
+    <div class="tenant" id="hdrTenant">__TENANT__</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0" class="no-print">
+    <button onclick="window.print()" class="pdf-btn">&#128196; Exportar PDF</button>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">&#127769; Dark</button>
+    <span class="readonly-badge">&#128274; 100% Read-Only</span>
+  </div>
+</div>
+
+<nav id="navBar"></nav>
+
+<div class="wrap">
+
+<div class="tab-panel active" id="tab-resumen">
+<!-- ====== DASHBOARD EJECUTIVO ====== -->
+<div class="sec" id="dashboard">Dashboard Ejecutivo</div>
+
+<!-- Hero: Secure Score + Categories + Controls -->
+<div id="scoreHero"></div>
+
+
+<div id="dashPanels" class="dash-cols"></div>
+
+<!-- Defender Suite Panel -->
+
+<div id="defPanel"></div>
+
+<!-- ====== ACCIONES PRIORITARIAS ====== -->
+<div id="actionsSection"></div>
+
+<!-- ====== RESUMEN NARRATIVO ====== -->
+<div id="narrativeBox"></div>
+</div><!-- /tab-resumen -->
+
+<div class="tab-panel" id="tab-postura">
+<!-- ====== POSTURA DE SEGURIDAD ====== -->
+<div class="sec" id="posture">Postura de Seguridad</div>
+<div id="postureContent"></div>
+</div><!-- /tab-postura -->
+
+<div class="tab-panel" id="tab-recomendaciones">
+<!-- ====== RECOMENDACIONES DE SEGURIDAD ====== -->
+<div class="sec" id="recs">&#128161; Recomendaciones de Seguridad</div>
+<p class="muted small" style="margin-bottom:12px">Todas las recomendaciones del Secure Score. Filtra por categoria, estado, o busca por texto.</p>
+<div style="margin-bottom:18px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div style="font-size:12px;font-weight:600;color:var(--fg)">Mapa de Priorizacion <span style="font-size:10px;font-weight:400;color:var(--muted)">— solo items pendientes y parciales</span></div>
+    <div style="display:flex;gap:12px;align-items:center" id="prioMapLegend"></div>
+  </div>
+  <div id="prioMap" style="position:relative;width:100%;height:360px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden"></div>
+</div>
+<button class="csv-btn no-print" onclick="exportRecsCSV()">&#128190; CSV</button>
+<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
+  <input type="text" class="search" id="recSearch" placeholder="Buscar recomendacion..." onkeyup="window._recFilter()" style="max-width:400px;margin:0;flex:1">
+  <div class="tabs no-print" id="recSvcTabs"></div>
+  <div class="tabs no-print" id="recSubTabs" style="display:none"></div>
+  <div class="tabs no-print" id="recTabs"></div>
+  <div class="tabs no-print" id="recStatusTabs"></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+  <div id="recCount" class="small muted"></div>
+  <div class="pg-controls" id="recPgTop"></div>
+</div>
+<div class="tw">
+<table id="recTable">
+  <thead><tr><th class="tc">#</th><th class="tc">Impacto</th><th>Recomendacion</th><th>Categoria</th><th>Servicio</th><th class="tc">Estado</th><th class="tc no-print" style="width:28px"></th></tr></thead>
+  <tbody id="recTbody"></tbody>
+</table>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+  <div id="recCountBot" class="small muted"></div>
+  <div class="pg-controls" id="recPgBot"></div>
+</div>
+</div><!-- /tab-recomendaciones -->
+
+<div class="tab-panel" id="tab-licenciamiento">
+<!-- ====== VISTA GENERAL (GRAFICOS) ====== -->
+<div class="sec" id="charts">Vista General</div>
+<div id="kpiTopRow"></div>
+<div id="licCharts"></div>
+
+
+<!-- ====== SKUs ====== -->
+<div class="sec" id="skus">Inventario de Licencias (SKUs)</div>
+<button class="csv-btn no-print" onclick="exportTableToCSV('skuExport','SKUs.csv')">&#128190; CSV</button>
+<div class="tw">
+<table id="skuExport">
+  <thead><tr><th>Producto</th><th class="tc">Total</th><th class="tc">Asignadas</th><th class="tc">Libres</th><th>Uso</th><th>Categorias Incluidas</th></tr></thead>
+  <tbody id="skuTbody"></tbody>
+</table>
+</div>
+
+<!-- ====== MATRIZ SKU vs PRODUCTOS ====== -->
+<div class="sec" id="skumatrix">Que incluye cada Licencia</div>
+<p class="muted small" style="margin-bottom:12px">Matriz que muestra que productos de seguridad y compliance estan incluidos en cada SKU del tenant.</p>
+<div id="matrixSection"></div>
+
+<!-- ====== CAPACIDAD vs ASIGNACION ====== -->
+<div class="sec" id="capacity">Capacidad vs Asignacion</div>
+<button class="csv-btn no-print" onclick="exportTableToCSV('capExport','Capacidad.csv')">&#128190; CSV</button>
+<p class="muted small" style="margin-bottom:12px">
+  Compara los seats disponibles por producto contra los usuarios asignados. <strong>Activos</strong> = plan habilitado. <strong>Deshab.</strong> = plan deshabilitado por admin.
+  <strong style="color:var(--red)">RIESGO</strong> = mas usuarios que seats.
+  <strong style="color:#4dd0e1">Overlap</strong> = multiples SKUs proveen la misma funcionalidad a los mismos usuarios.
+  <strong style="color:var(--yellow)">Bajo uso</strong> = menos del 70% de asignacion.
+  <strong style="color:#e0f2f1;background:#00695c;padding:1px 5px;border-radius:4px;font-size:10px">&#128737; Cubierto por Pol&iacute;tica</strong> = bajo uso pero con pol&iacute;ticas activas que cubren al tenant (hover para ver detalle).
+</p>
+<div id="capSection"></div>
+
+<!-- ====== DEPARTAMENTOS ====== -->
+<div class="sec" id="depts">Resumen por Departamento</div>
+<button class="csv-btn no-print" onclick="exportTableToCSV('deptExport','Departamentos.csv')">&#128190; CSV</button>
+<div class="tw">
+<table id="deptExport">
+  <thead><tr><th>Departamento</th><th class="tc">Usuarios</th><th>SKUs</th><th>Productos Activos</th></tr></thead>
+  <tbody id="deptTbody"></tbody>
+</table>
+</div>
+</div><!-- /tab-licenciamiento -->
+
+<div class="tab-panel" id="tab-optimizacion">
+<!-- ====== KPI AHORRO ====== -->
+<div class="sec" id="waste">&#9888;&#65039; Optimizacion de Licencias</div>
+<div id="wasteKpi" class="savings-kpi"></div>
+<!-- ====== LICENCIAS A REVISAR ====== -->
+<button class="csv-btn no-print" onclick="exportWasteCSV()">&#128190; CSV</button>
+<p class="muted small" style="margin-bottom:12px">
+  Usuarios con licencias que podrian optimizarse: cuentas deshabilitadas, inactivos <span id="wasteInactiveDays">90</span>+ dias, feature overlap (mismos productos en 2+ SKUs) o planes de seguridad deshabilitados.
+</p>
+<div id="wasteSection"></div>
+
+<!-- ====== DUPLICADOS ====== -->
+<div class="sec" id="duplicates">Feature Overlap — Productos en Multiples SKUs (<span id="dupSectionCount">0</span> entradas)</div>
+<button class="csv-btn no-print" onclick="exportDupsCSV()">&#128190; CSV</button>
+<p class="muted small" style="margin-bottom:12px">Usuarios con multiples SKUs donde el mismo producto viene incluido en mas de uno. Revisar con el cliente antes de cualquier accion: en algunos casos es intencional o existe una razon contractual.</p>
+<div id="dupSection"></div>
+</div><!-- /tab-optimizacion -->
+
+<div class="tab-panel" id="tab-usuarios">
+<!-- ====== USUARIOS ====== -->
+<div class="sec" id="users">Detalle por Usuario (<span id="userCountTitle">0</span>)</div>
+<button class="csv-btn no-print" onclick="exportUsersCSV()">&#128190; CSV</button>
+<input type="text" class="search" id="userSearch" placeholder="Buscar por nombre, UPN, departamento, SKU..." onkeyup="applyFilters()">
+<div style="margin-bottom:10px" class="no-print"><div style="margin-bottom:6px;font-size:11px;color:var(--muted)">Estado:</div>
+<div class="tabs" id="statusFilters"><button class="tab active" onclick="setStatusFilter('all',this)">Todos</button><button class="tab" onclick="setStatusFilter('active',this)">Activos</button><button class="tab" onclick="setStatusFilter('disabled',this)">Deshabilitados</button><button class="tab" onclick="setStatusFilter('inactive',this)">Inactivos</button><button class="tab" onclick="setStatusFilter('waste',this)">A Revisar</button></div></div>
+<div style="margin-bottom:10px" class="no-print"><div style="margin-bottom:6px;font-size:11px;color:var(--muted)">Filtros adicionales <span style="font-size:10px">(combinables con estado)</span>:</div>
+<div class="tabs" id="andFilters"><button class="tab" id="btnDisPlans" onclick="toggleAndFilter('disPlans',this)">&#9888; Planes Deshab.</button></div></div>
+<div style="margin-bottom:10px" class="no-print"><div style="margin-bottom:6px;font-size:11px;color:var(--muted)">Departamento:</div>
+<select id="deptSelect" class="dept-select" onchange="filterByDept(this.value)"><option value="all">Todos</option></select></div>
+<div style="margin-bottom:10px" class="no-print"><div style="margin-bottom:6px;font-size:11px;color:var(--muted)">SKU:</div>
+<div id="skuChips" class="tabs"><button class="tab active" onclick="clearSkuFilter()">Todos</button></div>
+<div style="margin-top:6px"><label style="font-size:11px;color:var(--muted);cursor:pointer"><input type="checkbox" id="skuMatchAll" onchange="applySkuFilter()"> Mostrar solo usuarios con TODOS los SKUs seleccionados</label></div></div>
+
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+  <div id="userCount" class="small muted"></div>
+  <div class="pg-controls" id="pgTop"></div>
+</div>
+<div class="legend">
+  <span><span class="dot dot-on"></span> Activo</span><span><span class="dot dot-off"></span> Deshabilitado</span><span><span class="dot dot-na"></span> No incluido</span>
+  <span><span class="badge b-green" style="font-size:9px">CA</span> Conditional Access</span>
+  <span><span class="badge b-blue" style="font-size:9px">G</span> Grupo</span>
+  <span><span class="badge b-default" style="font-size:9px">D</span> Directa</span>
+  <span><span class="badge b-yellow" style="font-size:9px">G+D</span> Mixta</span>
+</div>
+<div class="tw">
+<table id="userTable">
+  <thead><tr id="userThead"><th>Nombre</th><th>UPN</th><th>Depto</th><th>SKUs</th><th class="tc">Sign-In</th><th class="tc">Dias</th></tr></thead>
+  <tbody id="userTbody"></tbody>
+</table>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px">
+  <div id="userCountBottom" class="small muted"></div>
+  <div class="pg-controls" id="pgBottom"></div>
+</div>
+</div><!-- /tab-usuarios -->
+
+<div class="tab-panel" id="tab-secops">
+  <div id="secopsContent"></div>
+</div><!-- /tab-secops -->
+
+</div><!-- /wrap -->
+
+<div class="footer">
+  <div class="footer-grid" id="footerGrid"></div>
+  <div style="margin-top:10px;opacity:.5">M365 Security Assessment v2.0 &mdash; 100% Read-Only &mdash; No modifica, crea ni elimina nada en el tenant</div>
+</div>
+
+<!-- ====== EMBEDDED DATA ====== -->
+<script>
+const D=__REPORT_DATA__;
+const _WD=D.__waste||[];
+const _DD=D.__dup||[];
+const _ID=D.lic&&D.lic.InactiveDays?D.lic.InactiveDays:90;
+const _UD=D.__users||[];
+const _CM=D.__catMeta||[];
+const _CS=D.__catSep||[];
+const _DEPTS=D.__depts||[];
+const _SKUS=D.__skus||[];
+</script>
+
+<script>
+/* KQL Queries — texto plano */
+const KQL={
+  ENT_CA_FAIL:  'SigninLogs | where TimeGenerated > ago(7d) | where ConditionalAccessStatus == "failure" | summarize Count=count() by UserPrincipalName, AppDisplayName | order by Count desc | take 50',
+  ENT_PASS_SPRAY:'SigninLogs | where TimeGenerated > ago(1d) | where ResultType != "0" | summarize FailCount=count(), Users=dcount(UserPrincipalName) by IPAddress | where Users > 10 | order by Users desc',
+  ENT_ROLE_CHG: 'AuditLogs | where TimeGenerated > ago(7d) | where OperationName in ("Add member to role", "Remove member from role") | project TimeGenerated, OperationName, InitiatedBy, TargetResources',
+  XDR_INCIDENTS:'AlertInfo | where Timestamp > ago(30d) | summarize Alerts=count(), Severities=make_set(Severity) by Title, Category, ServiceSource | order by Alerts desc | take 30',
+  XDR_AUTO_IR:  'AlertInfo | where Timestamp > ago(30d) | join kind=inner AlertEvidence on AlertId | where isnotempty(RemediationType) | summarize Actions=count() by RemediationType | order by Actions desc',
+  XDR_DETECTIONS:'AlertInfo | where Timestamp > ago(7d) | where DetectionSource == "CustomDetection" | summarize Hits=count() by Title | order by Hits desc',
+  MDO_CAMPAIGNS:'EmailEvents | where DeliveryLocation in ("Inbox","JunkFolder") | where ThreatTypes has "Phish" or ThreatTypes has "Malware" | summarize Msgs=count(), Victims=dcount(RecipientEmailAddress), Senders=dcount(SenderFromAddress) by SenderFromDomain, Subject | order by Msgs desc | take 20',
+  MDO_TARGETS:  'EmailEvents | where DeliveryLocation in ("Inbox","JunkFolder") | where ThreatTypes has "Phish" or ThreatTypes has "Malware" | summarize ThreatEmails=count() by RecipientEmailAddress | order by ThreatEmails desc | take 20',
+  MDO_BEC:      'EmailEvents | where TimeGenerated > ago(7d) | where EmailDirection == "Inbound" | where ReplyToEmailAddress != "" and SenderFromAddress != ReplyToEmailAddress | project TimeGenerated, SenderFromAddress, ReplyToEmailAddress, RecipientEmailAddress, Subject | take 100',
+  MDE_ALERTS:   'AlertInfo | where ServiceSource == "MicrosoftDefenderForEndpoint" | where Severity in ("High","Critical") | summarize Count=count() by Severity | order by Count desc',
+  MDE_HOSTS:    'AlertInfo | join kind=inner AlertEvidence on AlertId | summarize AlertCount=dcount(AlertId) by DeviceName | where AlertCount >= 3 | order by AlertCount desc',
+  MDE_VULN:     'DeviceTvmSoftwareVulnerabilities | where CvssScore >= 9 | summarize Devices=dcount(DeviceId) by CveId, SoftwareName, SoftwareVersion, CvssScore | order by CvssScore desc, Devices desc | take 50',
+  MDA_OAUTH:    'CloudAppEvents | where ActionType in ("Consent to application","Grant consent") | summarize Consents=count(), Users=dcount(AccountId) by Application, ApplicationId | order by Consents desc | take 20',
+  MDA_APPS:     'CloudAppEvents | where Timestamp > ago(30d) | summarize Events=count(), Users=dcount(AccountId) by Application | order by Events desc | take 20',
+  MDA_REPORTERS:'CloudAppEvents | where ActionType == "UserSubmission" | summarize Reports=count() by UserId | order by Reports desc | take 20',
+  MDA_DOWNLOADS:'CloudAppEvents | where ActionType has "Download" | summarize Downloads=count(), DistinctFiles=dcount(ObjectName) by AccountUpn | where Downloads > 500 | order by Downloads desc',
+  MDI_INBOX:    'EmailEvents | where ActionType == "InboxRuleCreated" | summarize Rules=count() by AccountUpn | order by Rules desc | take 20',
+  MDI_ATYPICAL: 'IdentityLogonEvents | where LogonType != "Machine" | summarize Countries=dcount(Location), LogonCount=count() by AccountUpn | where Countries > 3 | order by Countries desc | take 20'
+};
+/* Expande/colapsa la query KQL inline debajo del boton */
+function openKql(queryOrKey){
+  var q=KQL[queryOrKey]||queryOrKey||'';
+  if(!q) return;
+  var btn=this;
+  if(!btn||!btn.parentElement) return;
+  var existing=btn.nextElementSibling;
+  if(existing&&existing.classList.contains('kql-expand')){
+    if(existing.style.maxHeight&&existing.style.maxHeight!=='0px'){existing.style.maxHeight='0';setTimeout(function(){existing.remove();},300);}
+    else{existing.style.maxHeight=existing.scrollHeight+'px';}
+    return;
+  }
+  /* Cerrar otros abiertos en el mismo grupo */
+  var parent=btn.closest('.card')||btn.closest('.kql-btns')||btn.parentElement;
+  if(parent){parent.querySelectorAll('.kql-expand').forEach(function(el){el.remove();});}
+  var box=document.createElement('div');
+  box.className='kql-expand';
+  box.style.cssText='margin:6px 0 8px;background:var(--bg2,#1e293b);border:1px solid var(--border,#334155);border-radius:8px;padding:12px 14px;font-family:Consolas,Monaco,monospace;font-size:11px;line-height:1.5;color:var(--text,#e2e8f0);white-space:pre-wrap;word-break:break-word;overflow:hidden;max-height:0;transition:max-height .3s ease';
+  var pre=document.createElement('div');
+  pre.textContent=q;
+  box.appendChild(pre);
+  /* Boton copiar */
+  var cpBtn=document.createElement('button');
+  cpBtn.textContent='\uD83D\uDCCB Copiar query';
+  cpBtn.style.cssText='display:inline-block;margin-top:8px;background:var(--accent,#38bdf8);color:#000;border:none;padding:4px 12px;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer';
+  cpBtn.onclick=function(e){e.stopPropagation();navigator.clipboard.writeText(q).then(function(){cpBtn.textContent='\u2714 Copiada!';setTimeout(function(){cpBtn.textContent='\uD83D\uDCCB Copiar query';},1500);}).catch(function(){});};
+  box.appendChild(cpBtn);
+  btn.after(box);
+  requestAnimationFrame(function(){box.style.maxHeight=box.scrollHeight+'px';});
+}
+function openKqlRaw(rawQuery){openKql.call(this,rawQuery);}
+</script>
+
+
+<script>
+// ============================================================================
+// JS RENDER ENGINE
+// ============================================================================
+const REPORT_VERSION='2.0';  // <-- unico lugar para cambiar la version del template
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+const esc=s=>{if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const fmt=n=>typeof n==='number'?n.toLocaleString('es'):n||'0';
+const clr=p=>p>=70?'var(--fill-green)':p>=40?'var(--fill-yellow)':'var(--fill-red)';
+const badge=(t,c)=>'<span class="badge b-'+c+'">'+esc(t)+'</span>';
+const pgBar=(p,w)=>{const c=p>=75?'pg-green':p>=40?'pg-yellow':'pg-red';return'<div class="pg" style="width:'+(w||'80px')+'"><div class="pg-fill '+c+'" style="width:'+Math.min(p,100)+'%"></div></div>'};
+
+// Pagination helper
+function pgHtml(page,tp,ns){
+  if(tp<=1)return'';
+  let h='<div style="display:flex;gap:4px;align-items:center">';
+  h+='<button class="pg-btn'+(page===1?' pg-dis':'')+'" onclick="window._pg.'+ns+'(1)">&laquo;</button>';
+  h+='<button class="pg-btn'+(page===1?' pg-dis':'')+'" onclick="window._pg.'+ns+'('+(page-1)+')">&lsaquo;</button>';
+  const s=Math.max(1,page-2),e=Math.min(tp,page+2);
+  for(let p=s;p<=e;p++)h+='<button class="pg-btn'+(p===page?' pg-active':'')+'" onclick="window._pg.'+ns+'('+p+')">'+p+'</button>';
+  h+='<button class="pg-btn'+(page===tp?' pg-dis':'')+'" onclick="window._pg.'+ns+'('+(page+1)+')">&rsaquo;</button>';
+  h+='<button class="pg-btn'+(page===tp?' pg-dis':'')+'" onclick="window._pg.'+ns+'('+tp+')">&raquo;</button>';
+  h+='<span style="color:var(--muted);font-size:11px;margin-left:8px">Pag '+page+'/'+tp+'</span></div>';
+  return h;
+}
+window._pg={};
+
+
+// ============================================================================
+// STATIC CONSTANTS
+// ============================================================================
+const CAT_SHORT={
+  "Entra_ID_P1":"Entra P1","Entra_ID_P2":"Entra P2","Entra_ID_Governance":"Entra Gov",
+  "MDE_P1":"MDE P1","MDE_P2":"MDE P2","MDO_P1":"MDO P1","MDO_P2":"MDO P2",
+  "MDA":"MDA","MDI":"MDI","Intune_P1":"Intune P1","Intune_P2":"Intune P2",
+  "Purview_AIP_P1":"AIP P1","Purview_AIP_P2":"AIP P2","Purview_MIP_P1":"MIP P1","Purview_MIP_P2":"MIP P2",
+  "Purview_DLP":"DLP","Purview_Audit":"Audit","Purview_eDiscovery":"eDiscovery",
+  "Purview_InsiderRisk":"Insider Risk","Purview_CommCompliance":"Comm. Comp.",
+  "Purview_DataLifecycle":"Data Lifecycle","Purview_Encryption":"Encryption",
+  "Purview_Lockbox":"Lockbox","Purview_PAM":"PAM","Purview_InfoBarriers":"Info Barriers",
+  "Purview_ContentExplorer":"Cont. Explorer","Purview_MLClassification":"ML Classif.",
+  "Purview_RMS_Basic":"RMS Basic","Exchange_Online":"Exchange","SharePoint":"SharePoint",
+  "Teams":"Teams","M365_Apps":"M365 Apps","Copilot_M365":"Copilot",
+  "PowerBI_Pro":"Power BI Pro","PowerApps":"PowerApps","PowerAutomate":"Power Automate"
+};
+const CAT_FULL={
+  "Entra_ID_P1":"Entra ID P1","Entra_ID_P2":"Entra ID P2","Entra_ID_Governance":"Entra ID Governance",
+  "MDE_P1":"Defender for Endpoint P1","MDE_P2":"Defender for Endpoint P2",
+  "MDO_P1":"Defender for Office P1","MDO_P2":"Defender for Office P2",
+  "MDA":"Defender for Cloud Apps","MDI":"Defender for Identity",
+  "Intune_P1":"Intune Plan 1","Intune_P2":"Intune Plan 2",
+  "Purview_AIP_P1":"AIP P1","Purview_AIP_P2":"AIP P2","Purview_MIP_P1":"MIP P1","Purview_MIP_P2":"MIP P2",
+  "Purview_DLP":"Purview DLP","Purview_Audit":"Purview Audit","Purview_eDiscovery":"Purview eDiscovery",
+  "Purview_InsiderRisk":"Insider Risk","Purview_CommCompliance":"Comm Compliance",
+  "Purview_DataLifecycle":"Data Lifecycle","Copilot_M365":"M365 Copilot"
+};
+const CHART_COLORS=["#5b9bf5","#34d399","#f87171","#fbbf24","#a78bfa","#fb923c","#38bdf8","#f472b6","#c084fc","#2dd4bf"];
+const CAP_GROUPS={
+  "Identidad":["Entra_ID_P1","Entra_ID_P2","Entra_ID_Governance"],
+  "Endpoint (MDE)":["MDE_P1","MDE_P2"],
+  "Correo (MDO)":["MDO_P1","MDO_P2"],
+  "Cloud Apps / MDI":["MDA","MDI"],
+  "Intune":["Intune_P1","Intune_P2"],
+  "Info Protection":["Purview_AIP_P1","Purview_AIP_P2","Purview_MIP_P1","Purview_MIP_P2"],
+  "Purview Compliance":["Purview_DLP","Purview_Audit","Purview_eDiscovery","Purview_InsiderRisk","Purview_CommCompliance","Purview_DataLifecycle","Purview_Encryption","Purview_Lockbox","Purview_PAM","Purview_InfoBarriers","Purview_ContentExplorer","Purview_MLClassification"],
+  "Productividad":["Exchange_Online","SharePoint","Teams","M365_Apps"],
+  "AI / Analytics":["Copilot_M365","PowerBI_Pro","PowerApps","PowerAutomate"]
+};
+
+// ============================================================================
+// SECOPS — Guía Operacional
+// ============================================================================
+const SECOPS_PORTALS=[
+  {name:'Entra ID',icon:'\uD83D\uDD11',color:'#7b4f9e',links:[
+    {label:'Risky Users',url:'https://entra.microsoft.com/#view/Microsoft_AAD_IAM/RiskyUsersV2Blade'},
+    {label:'Sign-in Logs',url:'https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ActiveUsersSigninLogs'},
+    {label:'Conditional Access',url:'https://entra.microsoft.com/#view/Microsoft_AAD_IAM/ConditionalAccessBlade'}
+  ]},
+  {name:'Defender XDR',icon:'\uD83D\uDEE1',color:'#0078d4',links:[
+    {label:'Incidents',url:'https://security.microsoft.com/incidents'},
+    {label:'Advanced Hunting',url:'https://security.microsoft.com/v2/advanced-hunting'},
+    {label:'Threat Analytics',url:'https://security.microsoft.com/threatanalytics3'}
+  ]},
+  {name:'MDO',icon:'\uD83D\uDCE7',color:'#107c10',links:[
+    {label:'Threat Explorer',url:'https://security.microsoft.com/threatexplorer'},
+    {label:'Quarantine',url:'https://security.microsoft.com/quarantine'},
+    {label:'Anti-phishing',url:'https://security.microsoft.com/antiphishing'}
+  ]},
+  {name:'MDE',icon:'\uD83D\uDCBB',color:'#d83b01',links:[
+    {label:'Device Inventory',url:'https://security.microsoft.com/machines'},
+    {label:'Vulnerability Mgmt',url:'https://security.microsoft.com/tvm-dashboard'},
+    {label:'Alerts Queue',url:'https://security.microsoft.com/alerts'}
+  ]},
+  {name:'MDA',icon:'\u2601\uFE0F',color:'#00b4d8',links:[
+    {label:'Activity Log',url:'https://portal.cloudappsecurity.com/#/activitiesV2'},
+    {label:'Alerts',url:'https://portal.cloudappsecurity.com/#/alerts/all'},
+    {label:'OAuth Apps',url:'https://portal.cloudappsecurity.com/#/cloud-app-security/reports/oauth-apps'}
+  ]},
+  {name:'MDI',icon:'\uD83C\uDFE2',color:'#744da9',links:[
+    {label:'Health Issues',url:'https://security.microsoft.com/identities?tabid=healthIssues'},
+    {label:'Identity Posture',url:'https://security.microsoft.com/securescore?viewid=identity'},
+    {label:'Settings',url:'https://security.microsoft.com/settings/identities'}
+  ]},
+
+];
+const SECOPS_WL_META={
+  xdr:{color:'#0078d4',label:'Defender XDR'},
+  mdo:{color:'#107c10',label:'MDO'},
+  mdi:{color:'#744da9',label:'MDI'},
+  mde:{color:'#d83b01',label:'MDE'},
+  mda:{color:'#00b4d8',label:'MDA'},
+  entra:{color:'#7b4f9e',label:'Entra ID'}
+};
+// Framework de 3 fases — resúmenes ejecutivos (detalle en repo GOL)
+const SECOPS_FRAMEWORK=[
+  {phase:1,icon:'\uD83D\uDD0D',title:'Assessment',subtitle:'Visibilidad y Diagn\u00F3stico',color:'#5b9bf5',
+   summary:'Evaluar la postura actual de seguridad del tenant: cobertura de licencias, adopci\u00F3n de controles, brechas de configuraci\u00F3n y superficie de ataque expuesta.',
+   deliverables:['Assessment de licenciamiento y capacidad','Secure Score baseline y gap analysis','Inventario de dispositivos, identidades y datos','Mapa de cobertura por workload (MDE, MDO, MDI, MDA, Entra, Purview)'],
+   keyQuestions:['\u00BFQu\u00E9 activos tenemos y cu\u00E1les est\u00E1n protegidos?','\u00BFCu\u00E1l es nuestro Secure Score actual vs. peers?','\u00BFD\u00F3nde est\u00E1n los gaps cr\u00EDticos de configuraci\u00F3n?','\u00BFQu\u00E9 licencias pagamos y cu\u00E1les no usamos?']
+  },
+  {phase:2,icon:'\uD83D\uDEE1\uFE0F',title:'Postura y Protecci\u00F3n',subtitle:'Remediaci\u00F3n y Fortalecimiento',color:'#4caf50',
+   summary:'Cerrar brechas identificadas en el assessment: implementar controles prioritarios, optimizar pol\u00EDticas existentes y elevar la postura de seguridad a est\u00E1ndares recomendados.',
+   deliverables:['Implementaci\u00F3n de recomendaciones Secure Score por prioridad','Hardening de Conditional Access, MFA y roles privilegiados','Activaci\u00F3n de Defender XDR: onboarding MDE, pol\u00EDticas MDO/MDI/MDA','Configuraci\u00F3n de DLP, Sensitivity Labels y Purview'],
+   keyQuestions:['\u00BFQu\u00E9 controles faltan para alcanzar benchmark?','\u00BFQu\u00E9 pol\u00EDticas necesitan ajuste o creaci\u00F3n?','\u00BFC\u00F3mo priorizamos remediaciones por impacto?','\u00BFQu\u00E9 quick-wins podemos implementar esta semana?']
+  },
+  {phase:3,icon:'\u2699\uFE0F',title:'Operaci\u00F3n',subtitle:'Monitoreo Continuo y Respuesta',color:'#ff9800',
+   summary:'Establecer cadencia operacional sostenible: triage diario de incidentes, revisi\u00F3n semanal de postura, reportes mensuales al CISO y respuesta a incidentes con playbooks definidos.',
+   deliverables:['Cadencia operacional (diaria/semanal/mensual) por workload','Procedimientos de triage y respuesta a incidentes','Reportes automatizados de KPIs de seguridad','Hunting proactivo y mejora continua de detecciones'],
+   keyQuestions:['\u00BFQui\u00E9n revisa qu\u00E9 y con qu\u00E9 frecuencia?','\u00BFC\u00F3mo respondemos ante un incidente confirmado?','\u00BFQu\u00E9 m\u00E9tricas reportamos al CISO mensualmente?','\u00BFC\u00F3mo automatizamos la reporter\u00EDa operacional?']
+  }
+];
+
+// ============================================================================
+// RENDER SECOPS
+// ============================================================================
+function renderSecOps(){
+  var el=document.getElementById('secopsContent');
+  if(!el) return;
+  var h='';
+
+  // --- Intro ---
+  h+='<div class="go-intro"><strong>Framework de Operaciones de Seguridad</strong> \u2014 Este framework define las 3 fases para llevar la seguridad de Microsoft 365 de un diagn\u00F3stico puntual a una operaci\u00F3n continua. Cada fase incluye objetivos, entregables clave y preguntas gu\u00EDa. Los procedimientos detallados, playbooks y cadencias operacionales est\u00E1n disponibles en el <a href="https://github.com/watchdogcode/gol2026/tree/V2.1" target="_blank" style="color:var(--accent);font-weight:700">Gu\u00EDa de Operaciones</a>.</div>';
+
+  // --- Framework de 3 Fases ---
+  h+='<h2 class="go-sh">&#127919; Framework: Assessment \u2192 Postura y Protecci\u00F3n \u2192 Operaci\u00F3n</h2>';
+
+  // Phase roadmap visual
+  h+='<div class="go-fw-road">';
+  SECOPS_FRAMEWORK.forEach(function(p,i){
+    var done=p.phase===1;
+    h+='<div class="go-fw-step'+(done?' done':'')+'">';
+    h+='<div class="go-fw-num" style="border-color:'+p.color+';'+(done?'background:'+p.color+';color:#fff;':'color:'+p.color)+'">'+p.icon+'</div>';
+    h+='<div class="go-fw-label" style="color:'+p.color+'"><strong>Fase '+p.phase+'</strong><br>'+p.title+'</div>';
+    h+='</div>';
+    if(i<SECOPS_FRAMEWORK.length-1) h+='<div class="go-fw-arrow">\u2192</div>';
+  });
+  h+='</div>';
+
+  // Phase cards
+  h+='<div class="go-fw-cards">';
+  SECOPS_FRAMEWORK.forEach(function(p){
+    var done=p.phase===1;
+    h+='<div class="go-fw-card" style="border-top:4px solid '+p.color+'">';
+    h+='<div class="go-fw-card-hdr">';
+    h+='<span class="go-fw-card-icon" style="background:'+p.color+'">'+p.icon+'</span>';
+    h+='<div><strong style="font-size:14px;color:var(--text)">Fase '+p.phase+': '+p.title+'</strong>';
+    h+='<div style="font-size:11px;color:'+p.color+';font-weight:600;margin-top:2px">'+p.subtitle+'</div></div>';
+    if(done) h+='<span class="go-fw-badge-done">\u2713 Completado</span>';
+    h+='</div>';
+    h+='<p class="go-fw-card-desc">'+p.summary+'</p>';
+
+    // Entregables
+    h+='<div class="go-fw-section"><div class="go-fw-section-title">&#128195; Entregables</div><ul class="go-fw-list">';
+    p.deliverables.forEach(function(d){h+='<li>'+d+'</li>';});
+    h+='</ul></div>';
+
+    // Preguntas clave
+    h+='<div class="go-fw-section"><div class="go-fw-section-title">&#10067; Preguntas Clave</div><ul class="go-fw-list go-fw-list-q">';
+    p.keyQuestions.forEach(function(q){h+='<li>'+q+'</li>';});
+    h+='</ul></div>';
+
+    h+='</div>';
+  });
+  h+='</div>';
+
+  // --- Repo CTA ---
+  h+='<div class="go-repo-cta">';
+  h+='<div class="go-repo-cta-icon">&#128214;</div>';
+  h+='<div class="go-repo-cta-body">';
+  h+='<strong style="font-size:14px;color:var(--text)">Procedimientos Detallados, Playbooks y Cadencia Operacional</strong>';
+  h+='<p style="font-size:12px;color:var(--muted);margin:6px 0 12px;line-height:1.6">Los procedimientos paso a paso de triage diario, cadencia operacional por frecuencia, gu\u00EDas de respuesta a incidentes y playbooks de remediaci\u00F3n est\u00E1n en el repositorio de operaciones.</p>';
+  h+='<a href="https://github.com/watchdogcode/gol2026/tree/V2.1" target="_blank" class="go-repo-btn">&#128279; Abrir Gu\u00EDa de Operaciones \u2192</a>';
+  h+='</div></div>';
+
+  // --- CTA: Reportería automatizada ---
+  h+='<div class="go-cta">';
+  h+='<h2>\uD83D\uDE80 De Assessment a Operaci\u00F3n Continua</h2>';
+  h+='<p class="go-cta-sub">Este assessment es una <strong>fotograf\u00EDa puntual</strong>. Para convertirlo en <strong>monitoreo continuo</strong>, el siguiente paso es habilitar reporter\u00EDa automatizada que sintetice la telemetr\u00EDa de Defender XDR en reportes ejecutivos recurrentes \u2014 sin intervenci\u00F3n manual.</p>';
+
+  h+='<div class="go-cta-g">';
+  h+='<div class="go-cta-c"><span class="go-cta-c-icon">\uD83D\uDCCA</span><h3>New-DefenderXDR<wbr>DailyReport.ps1</h3><span class="go-cta-c-freq" style="background:rgba(16,124,16,.15);color:#4caf50">Diario</span><p>KPIs ejecutivos de MDO, MDE, MDI y MDA. HTML autom\u00E1tico con m\u00E9tricas de 24h.</p></div>';
+  h+='<div class="go-cta-c"><span class="go-cta-c-icon">\uD83D\uDCC8</span><h3>New-DefenderXDR<wbr>WeeklyReport.ps1</h3><span class="go-cta-c-freq" style="background:rgba(91,155,245,.15);color:var(--accent)">Semanal</span><p>Tendencias de alertas, incidentes de identidad y cobertura de dispositivos. M\u00E9tricas agregadas de 7 d\u00EDas.</p></div>';
+  h+='<div class="go-cta-c"><span class="go-cta-c-icon">\uD83D\uDCCB</span><h3>New-DefenderXDR<wbr>MonthlyReport.ps1</h3><span class="go-cta-c-freq" style="background:rgba(255,193,7,.15);color:#ffc107">Mensual</span><p>Reporte mensual con postura consolidada, tendencias de 30 d\u00EDas, an\u00E1lisis de riesgo acumulado y progreso de Secure Score.</p></div>';
+  h+='<div class="go-cta-c"><span class="go-cta-c-icon">\uD83D\uDEE1\uFE0F</span><h3>New-Defender<wbr>VulnerabilityReport.ps1</h3><span class="go-cta-c-freq" style="background:rgba(216,59,1,.15);color:#ff7043">Ad-Hoc</span><p>Reporte ejecutivo de TVM: CVEs cr\u00EDticos, dispositivos expuestos, software vulnerable y misconfigurations.</p></div>';
+  h+='<div class="go-cta-c"><span class="go-cta-c-icon">\u2699\uFE0F</span><h3>Setup-Defender<wbr>ReportServer.ps1</h3><span class="go-cta-c-freq" style="background:rgba(116,77,169,.15);color:#b39ddb">Setup</span><p>Asistente de configuraci\u00F3n: credenciales DPAPI, permisos de API, Task Scheduler y ejecuci\u00F3n programada.</p></div>';
+  h+='</div>';
+
+  h+='<div class="go-cta-road">';
+  h+='<div class="go-cta-rs done"><span class="go-cta-rn">\u2713</span><p class="go-cta-rt"><strong>Assessment</strong>Postura, licencias, Secure Score y adopci\u00F3n de seguridad</p></div>';
+  h+='<div class="go-cta-rs"><span class="go-cta-rn">2</span><p class="go-cta-rt"><strong>App Registration</strong>Crear app con permisos de API y Admin Consent</p></div>';
+  h+='<div class="go-cta-rs"><span class="go-cta-rn">3</span><p class="go-cta-rt"><strong>Automatizar</strong>Configurar Task Scheduler o Azure Automation</p></div>';
+  h+='<div class="go-cta-rs"><span class="go-cta-rn">4</span><p class="go-cta-rt"><strong>Monitoreo Continuo</strong>Reportes diarios al CISO + KPIs en Sentinel</p></div>';
+  h+='</div>';
+
+  h+='<div class="go-cta-req">';
+  h+='<strong style="color:var(--text);font-size:12px">\u2699\uFE0F Requisitos:</strong> ';
+  h+='App Registration con <code>AdvancedHunting.Read.All</code> (Application) + Admin Consent &middot; ';
+  h+='PowerShell 5.1+ &middot; M365 E5 o Defender XDR &middot; ';
+  h+='Para TVM: tablas <code>DeviceTvmSoftwareVulnerabilities</code> activas';
+  h+='</div>';
+
+  h+='</div>';
+
+  // --- Portales accordion ---
+  h+='<h2 class="go-sh">&#128279; Portales de Operaci\u00F3n</h2>';
+  h+='<div class="go-acc" id="goPortalAcc">';
+  h+='<button class="go-acc-h" onclick="this.parentElement.classList.toggle(\'go-open\')"><span>Consolas de administraci\u00F3n por workload</span><span class="go-chev">&#9660;</span></button>';
+  h+='<div class="go-acc-b"><div class="go-portals-grid">';
+  SECOPS_PORTALS.forEach(function(p){
+    h+='<div class="go-portal-card" style="border-top:3px solid '+p.color+'">';
+    h+='<div class="go-portal-card-hdr" style="color:'+p.color+'">'+p.icon+' '+p.name+'</div>';
+    p.links.forEach(function(l){
+      h+='<a class="go-portal-link" href="'+l.url+'" target="_blank">&#128279; '+l.label+'</a>';
+    });
+    h+='</div>';
+  });
+  h+='</div></div></div>';
+
+  el.innerHTML=h;
+}
+
+// ============================================================================
+// MAIN RENDER ORCHESTRATOR — called after D loads
+// ============================================================================
+function renderAll(){
+  if(!D||!D.lic){console.warn('No data');return;}
+  renderHeader();
+  renderNav();
+  renderScoreHero();
+  renderDashPanels();
+  renderDefPanel();
+  renderActions();
+  renderNarrative();
+  renderKpiTopRow();
+  renderLicCharts();
+  renderSkuTable();
+  renderMatrix();
+  renderCapSection();
+  renderDepts();
+  renderWasteKpi();
+  renderWasteSection();
+  renderDupSection();
+  renderUserFilters();
+  renderUserTableHead();
+  renderFooter();
+  renderSecOps();
+}
+
+// ============================================================================
+// HEADER
+// ============================================================================
+function renderHeader(){
+  const L=D.lic;
+  const genAt=L.GeneratedAt||(new Date().toISOString().slice(0,16).replace('T',' '));
+  const el=document.getElementById('hdrMeta');
+  if(el) el.textContent='Generado: '+genAt;
+  const ten=document.getElementById('hdrTenant');
+  if(ten) ten.innerHTML=esc(L.TenantName||'')+'&nbsp;|&nbsp;'+esc(L.TenantDomain||'')+'&nbsp;|&nbsp;<span style="font-family:monospace">'+esc(L.TenantId||'')+'</span>';
+  document.title='M365 Security Assessment - '+(L.TenantName||'');
+  const ver=document.getElementById('hdrVersion');
+  if(ver) ver.textContent='v'+REPORT_VERSION;
+}
+
+// ============================================================================
+// NAV
+// ============================================================================
+function renderNav(){
+  const L=D.lic,A=D.adopt,S=D.score;
+  const tu=_UD?_UD.length:0;
+  const skuCount=L.SKUs?(L.SKUs.filter(s=>s.Total>0).length):0;
+  const wasteTotal=L.Waste?parseInt(L.Waste.TotalWasteUsers||0):0;
+  const capRisk=L.Capacity?(L.Capacity.filter(c=>c.Status==='UNDERLICENSED').length):0;
+  const pendRecs=S&&S.AllRecommendations?(S.AllRecommendations.filter(r=>r.ImplementationStatus!=='Implemented').length):0;
+  let navEl=document.getElementById('navBar');
+  if(!navEl) return;
+  let h='';
+  h+='<button class="main-tab active" data-tab="resumen">&#128202; Resumen</button>';
+  if(A){
+    const mfaPct=A.Entra&&A.Entra.MFA?(Math.min(parseFloat(A.Entra.MFA.PctRegistered||0),100)):100;
+    const dot=mfaPct<50?"<span class='t-alert' style='background:var(--fill-red)'></span>":'';
+    h+='<button class="main-tab" data-tab="postura">&#128737; Postura '+dot+'</button>';
+  }
+  if(S&&S.AllRecommendations){
+    const al=pendRecs>0?"<span class='t-alert' style='background:var(--fill-yellow)'></span>":'';
+    h+='<button class="main-tab" data-tab="recomendaciones">&#128161; Recomendaciones <span class="t-badge">'+pendRecs+'</span>'+al+'</button>';
+  }
+  const capAl=capRisk>0?"<span class='t-alert' style='background:var(--fill-red)'></span>":'';
+  h+='<button class="main-tab" data-tab="licenciamiento">&#128179; Licenciamiento <span class="t-badge">'+skuCount+'</span>'+capAl+'</button>';
+  h+='<button class="main-tab" data-tab="usuarios">&#128100; Usuarios <span class="t-badge">'+tu+'</span></button>';
+  const wAl=wasteTotal>0?"<span class='t-alert' style='background:var(--fill-red)'></span>":'';
+  h+='<button class="main-tab" data-tab="optimizacion">&#9888; Optimizacion <span class="t-badge">'+wasteTotal+'</span>'+wAl+'</button>';
+  h+='<button class="main-tab" data-tab="secops">&#128203; Gu\u00EDa Operacional</button>';
+  navEl.innerHTML=h;
+  // Re-attach tab click listeners
+  navEl.querySelectorAll('.main-tab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(typeof switchTab==='function'){ switchTab(btn.dataset.tab, btn); return; }
+      document.querySelectorAll('.main-tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      const t=document.getElementById('tab-'+btn.dataset.tab);
+      if(t) t.classList.add('active');
+      if(btn.dataset.tab==='usuarios'&&window._initUsersTab) window._initUsersTab();
+    });
+  });
+}
+
+// ============================================================================
+// SCORE HERO
+// ============================================================================
+function renderScoreHero(){
+  const S=D.score;
+  const el=document.getElementById('scoreHero');
+  if(!el) return;
+  if(!S||!S.Categories){el.style.display='none';return;}
+  const pct=S.Score&&S.Score.Pct?Math.min(parseInt(S.Score.Pct),100):0;
+  const cur=S.Score?S.Score.Current:0;
+  const max=S.Score?S.Score.Max:0;
+  const col=clr(pct);
+  const R=52, C=parseFloat((2*Math.PI*R).toFixed(2));
+  const off=parseFloat((C*(1-pct/100)).toFixed(2));
+  const svgRing='<svg viewBox="0 0 130 130" width="150" height="150">'
+    +'<circle cx="65" cy="65" r="'+R+'" fill="none" stroke="var(--bg4)" stroke-width="9"/>'
+    +'<circle cx="65" cy="65" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="9"'
+    +' stroke-dasharray="'+C+'" stroke-dashoffset="'+off+'" stroke-linecap="round"'
+    +' transform="rotate(-90 65 65)" style="transition:stroke-dashoffset 1s ease"/>'
+    +'<text x="65" y="58" text-anchor="middle" fill="'+col+'" font-size="26" font-weight="700"'
+    +' font-family="Segoe UI,system-ui,sans-serif">'+pct+'%</text>'
+    +'<text x="65" y="76" text-anchor="middle" fill="var(--muted)" font-size="8"'
+    +' font-family="Segoe UI,system-ui,sans-serif" text-transform="uppercase" letter-spacing=".5">SECURE SCORE</text>'
+    +'<text x="65" y="92" text-anchor="middle" fill="var(--muted)" font-size="9" font-family="Segoe UI,system-ui,sans-serif">'+cur+' / '+max+'</text>'
+    +'</svg>';
+  let catBars='';
+  S.Categories.forEach(c=>{
+    const p=c.MaxScore>0?Math.min(Math.round(c.Score/c.MaxScore*100),100):(c.PctScore?Math.min(c.PctScore,100):0);
+    const lv=c.MaxScore?c.Score+'/'+c.MaxScore+' ('+p+'%)':( c.Score>0?c.Score+' pts':'N/A');
+    catBars+='<div class="bar-row"><span class="bar-label">'+esc(c.Category)+'</span>'
+      +'<div class="bar-track"><div class="bar-fill" style="width:'+p+'%;background:'+clr(p)+'"></div></div>'
+      +'<span class="bar-value">'+lv+'</span></div>';
+  });
+  const sum=S.Summary||{};
+  el.innerHTML='<div class="dash-hero">'
+    +'<div class="dash-ring"><div style="filter:drop-shadow(0 0 20px rgba(91,155,245,.18))">'+svgRing+'</div></div>'
+    +'<div class="dash-divider"></div>'
+    +'<div class="dash-cats"><div class="dash-cats-title">Score por Categoria</div>'+catBars+'</div>'
+    +'<div class="dash-divider"></div>'
+    +'<div class="dash-controls"><div class="dash-controls-title">Controles</div>'
+    +'<div class="dash-ctrl-row"><span class="dcr-v" style="color:var(--fill-green)">'+(sum.Implemented||0)+'</span><span class="dcr-l">Implementados</span></div>'
+    +'<div class="dash-ctrl-row"><span class="dcr-v" style="color:var(--fill-yellow)">'+(sum.Partial||0)+'</span><span class="dcr-l">Parciales</span></div>'
+    +'<div class="dash-ctrl-row"><span class="dcr-v" style="color:var(--fill-red)">'+(sum.NotImplemented||0)+'</span><span class="dcr-l">No Impl.</span></div>'
+    +'<div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px">'
+    +'<div class="dash-ctrl-row"><span class="dcr-v">'+(sum.TotalControls||0)+'</span><span class="dcr-l">Total</span></div>'
+    +'</div></div></div>';
+}
+
+// ============================================================================
+// DASH PANELS (3 columnas)
+// ============================================================================
+function renderDashPanels(){
+  const L=D.lic,A=D.adopt,S=D.score;
+  const el=document.getElementById('dashPanels');
+  if(!el) return;
+  const tot=parseInt(L.TotalLicensedUsers||0);
+  const skus=L.SKUs||[];
+  const e5=skus.filter(s=>/E5/i.test(s.FriendlyName||'')).reduce((a,s)=>a+parseInt(s.Assigned||0),0);
+  const e3=skus.filter(s=>/E3/i.test(s.FriendlyName||'')).reduce((a,s)=>a+parseInt(s.Assigned||0),0);
+  const am=L.AssignmentMethods||{};
+  const mg=parseInt(am.Group||0),md=parseInt(am.Direct||0),mm=parseInt(am.Mixed||0);
+  const at=Math.max(mg+md+mm,1);
+  const pg=parseFloat((mg/at*100).toFixed(1)),pd=parseFloat((md/at*100).toFixed(1)),pm=parseFloat((mm/at*100).toFixed(1));
+  const W=L.Waste||{};
+  const wTot=parseInt(W.TotalWasteUsers||0);
+  const wDis=parseInt(W.DisabledAccounts||0);
+  const wIna=parseInt(W.InactiveUsers||0);
+  const wDup=parseInt(W.DuplicateLicenses||0);
+  const wDP=parseInt(W.DisabledPlans||0);
+  const inDays=parseInt(L.InactiveDays||90);
+  // MFA
+  let mfaPct=null,riskyCt=0;
+  if(A&&A.Entra&&A.Entra.MFA) mfaPct=Math.min(parseFloat(A.Entra.MFA.PctRegistered||0),100);
+  if(A&&A.Entra&&A.Entra.RiskyUsers) riskyCt=parseInt(A.Entra.RiskyUsers.TotalAtRisk||0);
+  // Tenant totals
+  const tt=parseInt(L.TotalTenantUsers||0);
+  const tm=parseInt(L.TotalMembers||tt);
+  const tg=parseInt(L.TotalGuests||0);
+
+  // Panel 1: Licenciamiento
+  let p1='<div class="dash-panel dp-blue">'
+    +'<div class="dp-title">&#128179; Licenciamiento</div>';
+  if(tt>0) p1+='<div class="dp-row"><span class="dp-label">Usuarios en Tenant</span><span class="dp-val v-muted">'+fmt(tt)+'</span></div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-left:12px;margin-bottom:4px">'+fmt(tm)+' miembros &middot; '+fmt(tg)+' invitados</div>';
+  p1+='<div class="dp-row"><span class="dp-label">Usuarios Licenciados</span><span class="dp-val v-accent">'+fmt(tot)+'</span></div>'
+    +'<div class="dp-row"><span class="dp-label">SKUs Activos</span><span class="dp-val">'+skus.filter(s=>s.Total>0).length+'</span></div>'
+    +'<div class="dp-row"><span class="dp-label">Licencias E5</span><span class="dp-val v-green">'+fmt(e5)+'</span></div>'
+    +'<div class="dp-row"><span class="dp-label">Licencias E3</span><span class="dp-val v-muted">'+fmt(e3)+'</span></div>'
+    +'<div class="dp-sep"></div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-bottom:6px">Metodo de Asignacion</div>'
+    +'<div class="dp-bar">'
+    +'<span style="width:'+pg+'%;background:var(--fill-green)" title="Grupo: '+mg+'"></span>'
+    +'<span style="width:'+pd+'%;background:var(--fill-yellow)" title="Directa: '+md+'"></span>'
+    +'<span style="width:'+pm+'%;background:var(--fill-accent)" title="Mixta: '+mm+'"></span>'
+    +'</div>'
+    +'<div class="dp-bar-legend">'
+    +'<span><i style="background:var(--fill-green)"></i>Grupo ('+mg+')</span>'
+    +'<span><i style="background:var(--fill-yellow)"></i>Directa ('+md+')</span>'
+    +'<span><i style="background:var(--fill-accent)"></i>Mixta ('+mm+')</span>'
+    +'</div></div>';
+
+  // Panel 2: Acceso y Seguridad
+  const p2mfaClass=mfaPct!==null&&mfaPct<50?'dp-red':'dp-teal';
+  let p2='<div class="dash-panel '+p2mfaClass+'">'
+    +'<div class="dp-title">&#128737;&#65039; Acceso y Seguridad</div>';
+  if(mfaPct!==null){
+    const mvc=mfaPct>=70?'v-green':'v-red';
+    p2+='<div class="dp-row"><span class="dp-label">MFA Capable</span><span class="dp-val '+mvc+'">'+mfaPct+'%</span></div>';
+  }
+  p2+='<div class="dp-row"><span class="dp-label">Usuarios de Alto Riesgo</span><span class="dp-val '+(riskyCt>0?'v-red':'v-green')+'">'+riskyCt+'</span></div>';
+  if(A&&A.Entra&&A.Entra.ConditionalAccess)
+    p2+='<div class="dp-row"><span class="dp-label">Politicas CA Activas</span><span class="dp-val">'+A.Entra.ConditionalAccess.Enabled+'</span></div>';
+  if(A&&A.Entra&&A.Entra.PIM){
+    const pim=A.Entra.PIM;
+    p2+='<div class="dp-row"><span class="dp-label">Roles Privilegiados</span><span class="dp-val">'+pim.ActiveRoles+'</span></div>'
+      +'<div class="dp-row"><span class="dp-label">Asignaciones Permanentes</span><span class="dp-val '+(pim.PermanentUsers>5?'v-yellow':'v-green')+'">'+pim.PermanentUsers+'</span></div>';
+  }
+  p2+='</div>';
+
+  // Panel 3: Optimizacion
+  const p3cls=wTot>0?'dp-amber':'dp-teal';
+  const p3bigcol=wTot>0?'var(--fill-yellow)':'var(--fill-green)';
+  let p3='<div class="dash-panel '+p3cls+'">'
+    +'<div class="dp-title">&#9888;&#65039; Optimizacion de Licencias</div>'
+    +'<div style="text-align:center;padding:8px 0">'
+    +'<div class="dp-big" style="color:'+p3bigcol+'">'+fmt(wTot)+'</div>'
+    +'<div class="dp-biglabel">Licencias a Revisar</div>'
+    +'</div><div class="dp-sep"></div>'
+    +'<div class="dp-row"><span class="dp-label">Cuentas Deshabilitadas</span><span class="dp-val '+(wDis>0?'v-red':'v-green')+'">'+fmt(wDis)+'</span></div>'
+    +'<div class="dp-row"><span class="dp-label">Inactivos '+inDays+'d+</span><span class="dp-val '+(wIna>0?'v-yellow':'v-green')+'">'+fmt(wIna)+'</span></div>'
+    +'<div class="dp-row"><span class="dp-label">Feature Overlap</span><span class="dp-val '+(wDup>0?'v-blue':'v-green')+'">'+fmt(wDup)+'</span></div>'
+    +'<div class="dp-row"><span class="dp-label">Planes Deshabilitados</span><span class="dp-val '+(wDP>0?'v-yellow':'v-green')+'">'+fmt(wDP)+'</span></div>'
+    +'</div>';
+
+  el.innerHTML=p1+p2+p3;
+}
+
+// ============================================================================
+// DEFENDER PANEL
+// ============================================================================
+function renderDefPanel(){
+  const A=D.adopt,S=D.score;
+  const el=document.getElementById('defPanel');
+  if(!el||!A){el&&(el.style.display='none');return;}
+  const icons={MDO:'&#128231;',MDA:'&#9729;',MDI:'&#128257;',MDE:'&#128737;'};
+  const names={MDO:'Office 365',MDA:'Cloud Apps',MDI:'Identity',MDE:'Endpoint'};
+  let rows=[],totOk=0,totPend=0,totCtrls=0;
+  ['MDO','MDA','MDI','MDE'].forEach(dk=>{
+    const dp=A[dk];
+    if(!dp) return;
+    const sc=dp.SecureScoreControls;
+    if(sc&&sc.Total>0){
+      const ok=parseInt(sc.FullyEnabled||0),tot=parseInt(sc.Total||0);
+      const pct=tot>0?Math.round(ok/tot*100):0;
+      const col=clr(pct);
+      rows.push('<div style="display:flex;align-items:center;gap:8px;margin:4px 0">'
+        +'<span style="width:90px;font-size:11px;flex-shrink:0">'+icons[dk]+' '+names[dk]+'</span>'
+        +'<div style="flex:1;background:var(--bg4);border-radius:3px;height:10px;overflow:hidden">'
+        +'<div style="width:'+pct+'%;height:100%;background:'+col+';border-radius:3px"></div></div>'
+        +'<span style="width:55px;font-size:10px;color:var(--muted);text-align:right;flex-shrink:0">'+ok+'/'+tot+'</span></div>');
+      totOk+=ok; totPend+=(tot-ok); totCtrls+=tot;
+    } else {
+      rows.push('<div style="display:flex;align-items:center;gap:8px;margin:4px 0">'
+        +'<span style="width:90px;font-size:11px;flex-shrink:0">'+icons[dk]+' '+names[dk]+'</span>'
+        +'<span style="font-size:10px;color:var(--muted)">Licenciado</span></div>');
+    }
+  });
+
+  if(!rows.length){el.style.display='none';return;}
+  const allPct=totCtrls>0?Math.round(totOk/totCtrls*100):0;
+  const bc=totCtrls===0?'dp-teal':allPct>=70?'dp-teal':allPct>=40?'dp-amber':'dp-red';
+  let ctrl='';
+  if(totCtrls>0){
+    ctrl='<div style="text-align:center;padding:6px 0">'
+      +'<div class="dp-big" style="color:'+clr(allPct)+'">'+allPct+'%</div>'
+      +'<div class="dp-biglabel">Controles Defender ('+totOk+' de '+totCtrls+')</div></div>'
+      +'<div class="dp-sep"></div>'
+      +'<div class="dp-row"><span class="dp-label">Implementados</span><span class="dp-val v-green">'+totOk+'</span></div>'
+      +'<div class="dp-row"><span class="dp-label">Pendientes</span><span class="dp-val v-red">'+totPend+'</span></div>';
+  }
+  el.innerHTML='<div class="dash-panel2">'
+    +'<div class="dash-panel '+bc+'" style="margin:0">'
+    +'<div class="dp-title">&#128737;&#65039; Microsoft Defender</div>'
+    +ctrl+'<div class="dp-sep"></div>'+rows.join('')
+    +'</div></div>';
+}
+
+// ============================================================================
+// ACCIONES PRIORITARIAS
+// ============================================================================
+function renderActions(){
+  const L=D.lic,A=D.adopt,S=D.score;
+  const el=document.getElementById('actionsSection');
+  if(!el) return;
+  const W=L.Waste||{};
+  const wDis=parseInt(W.DisabledAccounts||0);
+  const wIna=parseInt(W.InactiveUsers||0);
+  const wDup=parseInt(W.DuplicateLicenses||0);
+  const wDP=parseInt(W.DisabledPlans||0);
+  const inDays=parseInt(L.InactiveDays||90);
+  const tot=parseInt(L.TotalLicensedUsers||0);
+  const am=L.AssignmentMethods||{};
+  const md=parseInt(am.Direct||0);
+  const acts=[];
+  if(A&&A.Entra&&A.Entra.MFA&&parseFloat(A.Entra.MFA.PctRegistered||0)<50)
+    acts.push({c:'red',t:'Implementar MFA para todos los usuarios',d:'Solo '+A.Entra.MFA.PctRegistered+'% de los usuarios tienen un metodo MFA registrado (capable). Validar que existan politicas de Conditional Access que exijan su uso.'});
+  if(A&&A.Entra&&A.Entra.RiskyUsers&&A.Entra.RiskyUsers.High>0)
+    acts.push({c:'red',t:'Investigar '+A.Entra.RiskyUsers.High+' usuarios de alto riesgo',d:'Identity Protection ha detectado usuarios de alto riesgo. Requieren investigacion inmediata y remediacion.'});
+  if(wDis>0)
+    acts.push({c:'red',t:'Remover licencias de '+fmt(wDis)+' cuentas deshabilitadas',d:'Cuentas deshabilitadas consumiendo licencias. Reasignar para optimizar costos.'});
+  if(wIna>0)
+    acts.push({c:'yellow',t:'Revisar '+fmt(wIna)+' usuarios sin sign-in en '+inDays+'+ dias',d:'Usuarios activos sin conexion reciente. Verificar si requieren licencia o se pueden reasignar.'});
+  if(md>(tot*0.5))
+    acts.push({c:'yellow',t:'Migrar asignacion directa a grupos',d:fmt(md)+' usuarios con licencias directas. Group-based licensing es mas escalable y reduce errores.'});
+  if(wDP>0)
+    acts.push({c:'yellow',t:'Revisar '+fmt(wDP)+' usuarios con planes de seguridad deshabilitados',d:'Usuarios con licencia de pago pero con la mayoria de planes de seguridad apagados. Verificar si fue intencional o un error de configuracion.'});
+  if(A&&A.Entra&&A.Entra.PIM&&A.Entra.PIM.PermanentUsers>5)
+    acts.push({c:'yellow',t:'Reducir '+A.Entra.PIM.PermanentUsers+' asignaciones permanentes de roles privilegiados',d:'Migrar a asignaciones elegibles (just-in-time) con PIM para reducir superficie de ataque.'});
+  let h='<div class="sec" id="actions">Acciones Prioritarias</div>';
+  if(acts.length===0){
+    h+='<div class="priority-list"><div class="priority-item"><div class="priority-num" style="background:var(--fill-green)">&#10003;</div><div class="priority-body"><div class="pb-title">Sin acciones criticas</div><div class="pb-desc">El tenant esta bien optimizado.</div></div></div></div>';
+  } else {
+    h+='<div class="priority-list">';
+    acts.forEach((a,i)=>{
+      h+='<div class="priority-item"><div class="priority-num pn-'+a.c+'">'+(i+1)+'</div>'
+        +'<div class="priority-body"><div class="pb-title">'+esc(a.t)+'</div><div class="pb-desc">'+esc(a.d)+'</div></div></div>';
+    });
+    h+='</div>';
+  }
+  el.innerHTML=h;
+}
+
+// ============================================================================
+// RESUMEN NARRATIVO
+// ============================================================================
+function renderNarrative(){
+  const L=D.lic,A=D.adopt,S=D.score;
+  const el=document.getElementById('narrativeBox');
+  if(!el) return;
+  const W=L.Waste||{};
+  const skus=L.SKUs||[];
+  const paidSkus=skus.filter(s=>s.Total>0&&!/(?:free|trial|exploratory)/i.test(s.FriendlyName||''));
+  const paidCount=paidSkus.length;
+  const paidSeats=paidSkus.reduce((a,s)=>a+parseInt(s.Total||0),0);
+  const paidAssigned=paidSkus.reduce((a,s)=>a+parseInt(s.Assigned||0),0);
+  const pctAssigned=paidSeats>0?Math.round(paidAssigned/paidSeats*100):0;
+  const am=L.AssignmentMethods||{};
+  const mg=parseInt(am.Group||0),md=parseInt(am.Direct||0),mm=parseInt(am.Mixed||0);
+  const dom=mg>=md&&mg>=mm?'grupo':md>=mm?'directa':'mixta';
+  const tt=parseInt(L.TotalTenantUsers||0);
+  const tm=parseInt(L.TotalMembers||0);
+  const tg=parseInt(L.TotalGuests||0);
+  const tot=parseInt(L.TotalLicensedUsers||0);
+  const wTot=parseInt(W.TotalWasteUsers||0);
+  const wDis=parseInt(W.DisabledAccounts||0);
+  const wIna=parseInt(W.InactiveUsers||0);
+  const wDup=parseInt(W.DuplicateLicenses||0);
+  const wDP=parseInt(W.DisabledPlans||0);
+  const inDays=parseInt(L.InactiveDays||90);
+  let t=tt>0
+    ?'El tenant <strong>'+esc(L.TenantName||'')+'</strong> tiene <strong>'+fmt(tt)+'</strong> usuarios totales ('+fmt(tm)+' miembros, '+fmt(tg)+' invitados), de los cuales <strong>'+fmt(tot)+'</strong> tienen licencias asignadas'
+    :'<strong>'+esc(L.TenantName||'')+'</strong> cuenta con <strong>'+fmt(tot)+'</strong> usuarios licenciados';
+  t+=' distribuidos en <strong>'+paidCount+'</strong> SKU'+(paidCount!==1?'s':'')+' de pago ('+fmt(paidSeats)+' seats pagos), con una asignacion del <strong>'+pctAssigned+'%</strong>. ';
+  t+='El metodo predominante es por <strong>'+dom+'</strong>.';
+  if(S&&S.Score) t+=' El Secure Score M365 es <strong>'+(S.Score.Current||0)+' / '+(S.Score.Max||0)+' ('+(S.Score.Pct||0)+'%)</strong>.';
+  if(wTot>0){
+    const wp=Math.round(wTot/Math.max(tot,1)*100);
+    t+='<br>Se identificaron <strong>'+fmt(wTot)+'</strong> licencias a revisar (<strong>'+wp+'%</strong> del total)';
+    const pts=[];
+    if(wDis>0) pts.push(fmt(wDis)+' deshabilitadas');
+    if(wIna>0) pts.push(fmt(wIna)+' inactivos ('+inDays+'d+)');
+    if(wDup>0) pts.push(fmt(wDup)+' con feature overlap');
+    if(wDP>0) pts.push(fmt(wDP)+' con planes deshabilitados');
+    if(pts.length) t+=': '+pts.join(', ');
+    t+='.';
+  }
+  el.innerHTML='<div class="narrative-box">'+t+'</div>';
+}
+
+// ============================================================================
+// KPI TOP ROW (tab licenciamiento)
+// ============================================================================
+function renderKpiTopRow(){
+  const L=D.lic,A=D.adopt,S=D.score;
+  const el=document.getElementById('kpiTopRow');
+  if(!el) return;
+  const tot=parseInt(L.TotalLicensedUsers||0);
+  const tt=parseInt(L.TotalTenantUsers||tot);
+  const skuCount=L.SKUs?(L.SKUs.filter(s=>s.Total>0).length):0;
+  const paidSkus=(L.SKUs||[]).filter(s=>s.Total>0&&!/(?:free|trial|exploratory)/i.test(s.FriendlyName||''));
+  const paidSeats=paidSkus.reduce((a,s)=>a+parseInt(s.Total||0),0);
+  const W=L.Waste||{};
+  const wDP=parseInt(W.DisabledPlans||0);
+  const wDup=_DD?_DD.length:0;
+  let mfaPct=null,mfaCol='var(--muted)';
+  if(A&&A.Entra&&A.Entra.MFA){
+    mfaPct=Math.min(parseFloat(A.Entra.MFA.PctRegistered||0),100);
+    mfaCol=mfaPct>=80?'var(--fill-green)':mfaPct>=50?'var(--fill-yellow)':'var(--fill-red)';
+  }
+  const wDPcol=wDP>tot*0.15?'var(--fill-red)':wDP>0?'var(--fill-yellow)':'var(--muted)';
+  const dupCol=wDup>0?'var(--fill-yellow)':'var(--muted)';
+  const st='background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px';
+  const sn='font-size:24px;font-weight:700;line-height:1';
+  const sl='font-size:11px;font-weight:600;color:var(--fg);margin-top:3px';
+  const sm='font-size:10px;color:var(--muted);margin-top:2px';
+  let h='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px">';
+  h+='<div style="'+st+'"><div style="'+sn+';color:var(--accent)">'+fmt(tot)+'</div><div style="'+sl+'">Usuarios Licenciados</div><div style="'+sm+'">de '+fmt(tt)+' en tenant (incl. free)</div></div>';
+  h+='<div style="'+st+'"><div style="'+sn+';color:var(--fg)">'+fmt(paidSeats)+'</div><div style="'+sl+'">Seats de Pago</div><div style="'+sm+'">'+skuCount+' SKUs (excl. free/trial)</div></div>';
+  h+='<div style="'+st+'"><div style="'+sn+';color:'+wDPcol+'">'+fmt(wDP)+'</div><div style="'+sl+'">Planes Deshabilitados</div><div style="'+sm+'">usuarios con plans desac.</div></div>';
+  h+='<div style="'+st+'"><div style="'+sn+';color:'+dupCol+'">'+fmt(wDup)+'</div><div style="'+sl+'">Multi-SKU</div><div style="'+sm+'">feature en 2+ SKUs</div></div>';
+  h+='<div style="'+st+'"><div style="'+sn+';color:'+mfaCol+'">'+(mfaPct!==null?mfaPct+'%':'N/A')+'</div><div style="'+sl+'">MFA Registrado</div><div style="'+sm+'">de usuarios licenciados</div></div>';
+  h+='</div>';
+  el.innerHTML=h;
+}
+
+// ============================================================================
+// LIC CHARTS — Donut + Capacity Bars
+// ============================================================================
+function renderLicCharts(){
+  const L=D.lic;
+  const el=document.getElementById('licCharts');
+  if(!el||!L.SKUs) return;
+  // Donut
+  const paid=L.SKUs.filter(s=>s.Total>0&&!/(?:free|trial|exploratory)/i.test(s.FriendlyName||''));
+  const excl=L.SKUs.filter(s=>s.Total>0&&!paid.includes(s));
+  const totS=paid.reduce((a,s)=>a+parseInt(s.Total||0),0)||1;
+  let stops='',legend='',cum=0;
+  paid.forEach((sku,i)=>{
+    const col=CHART_COLORS[i%CHART_COLORS.length];
+    const p=parseFloat((parseInt(sku.Total||0)/totS*100).toFixed(2));
+    const end=parseFloat((cum+p).toFixed(2));
+    stops+=col+' '+cum+'% '+end+'%';
+    if(i<paid.length-1) stops+=', ';
+    legend+='<div style="display:flex;align-items:center;gap:8px;margin:4px 0">'
+      +'<span style="width:10px;height:10px;border-radius:50%;background:'+col+';flex-shrink:0"></span>'
+      +'<span style="font-size:12px">'+esc(sku.FriendlyName||'')+'</span>'
+      +'<span style="color:var(--muted);font-size:11px;margin-left:auto;white-space:nowrap">'+fmt(parseInt(sku.Total||0))+' ('+p.toFixed(1)+'%)</span></div>';
+    cum=end;
+  });
+  if(excl.length) legend+='<div style="font-size:10px;color:var(--muted);margin-top:8px;border-top:1px solid var(--border);padding-top:6px">Excluidos: '+excl.map(s=>esc(s.FriendlyName||'')).join(', ')+'</div>';
+  // Capacity bars
+  let capH='';
+  if(L.Capacity){
+    const capMap={};
+    L.Capacity.forEach(c=>{if(parseInt(c.TotalSeats||0)>0) capMap[c.Product]=c;});
+    Object.entries(CAP_GROUPS).forEach(([gn,cats])=>{
+      const avail=cats.filter(c=>capMap[c]);
+      if(!avail.length) return;
+      capH+='<div style="grid-column:1/-1;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin:12px 0 5px 0;padding:3px 6px;background:var(--bg3);border-radius:3px">'+gn+'</div>';
+      avail.forEach(cat=>{
+        const c=capMap[cat];
+        const lbl=CAT_SHORT[cat]||cat.replace(/_/g,' ');
+        const bp=Math.min(parseInt(c.PctUsed||0),100);
+        const statCol={UNDERLICENSED:'var(--red)',OVERLAP:'#00bcd4',LOW_USAGE:'var(--yellow)'}[c.Status]||'var(--green)';
+        capH+='<div style="display:flex;align-items:center;gap:8px;margin:4px 0">'
+          +'<span style="width:100px;font-size:11px;flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="'+lbl+'">'+lbl+'</span>'
+          +'<div style="flex:1;background:var(--bg4);border-radius:4px;height:14px;overflow:hidden">'
+          +'<div style="width:'+bp+'%;height:100%;background:'+statCol+';border-radius:4px"></div></div>'
+          +'<span style="width:90px;font-size:10px;color:var(--muted);flex-shrink:0;text-align:right">'+parseInt(c.UsersActive||0)+'/'+parseInt(c.TotalSeats||0)+' ('+parseInt(c.PctUsed||0)+'%)</span></div>';
+      });
+    });
+  }
+  el.innerHTML='<div style="display:grid;grid-template-columns:35fr 65fr;gap:16px">'
+    +'<div class="card" style="padding:20px;text-align:left">'
+    +'<div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--accent)">Distribucion de Seats por SKU</div>'
+    +'<div style="display:flex;align-items:center;gap:24px">'
+    +'<div style="position:relative;width:140px;height:140px;flex-shrink:0">'
+    +'<div style="width:140px;height:140px;border-radius:50%;background:conic-gradient('+stops+')"></div>'
+    +'<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center">'
+    +'<div style="text-align:center"><div style="font-size:20px;font-weight:700;color:var(--accent)">'+fmt(totS)+'</div><div style="font-size:9px;color:var(--muted)">SEATS</div></div>'
+    +'</div></div>'
+    +'<div style="flex:1">'+legend+'</div></div></div>'
+    +'<div class="card" style="padding:20px;text-align:left">'
+    +'<div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--accent)">Asignacion por Producto</div>'
+    +'<div style="font-size:10px;color:var(--muted);margin-bottom:8px">Usuarios con el feature asignado / Seats de pago</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2px 24px;align-items:start">'+capH+'</div>'
+    +'</div></div>';
+}
+
+// ============================================================================
+// SKU TABLE
+// ============================================================================
+function renderSkuTable(){
+  const L=D.lic;
+  const tb=document.getElementById('skuTbody');
+  if(!tb||!L.SKUs) return;
+  let h='';
+  L.SKUs.forEach(s=>{
+    if(!parseInt(s.Total||0)) return;
+    const rc=parseInt(s.Unassigned||0)<0?'row-alert':parseInt(s.PctUsed||0)>95?'row-warn':'';
+    const cats=(s.IncludedCategories||'').split(/\s*\|\s*/).filter(Boolean).map(c=>'<span class="badge b-default" style="margin:1px 2px;font-size:9px">'+(CAT_SHORT[c.trim()]||c.trim().replace(/_/g,' '))+'</span>').join(' ');
+    const pu=parseInt(s.PctUsed||0);
+    const bc=pu>=75?'pg-green':pu>=40?'pg-yellow':'pg-red';
+    h+='<tr class="'+rc+'"><td><strong>'+esc(s.FriendlyName||'')+'</strong><br><small class="muted">'+esc(s.SKU_PartNumber||'')+'</small></td>'
+      +'<td class="tc">'+fmt(parseInt(s.Total||0))+'</td><td class="tc">'+fmt(parseInt(s.Assigned||0))+'</td><td class="tc">'+fmt(parseInt(s.Unassigned||0))+'</td>'
+      +'<td><div class="pg" style="width:100px"><div class="pg-fill '+bc+'" style="width:'+Math.min(pu,100)+'%"></div></div> <small>'+pu+'%</small></td>'
+      +'<td class="small muted" style="max-width:200px">'+cats+'</td></tr>';
+  });
+  tb.innerHTML=h;
+}
+
+// ============================================================================
+// MATRIX SECTION
+// ============================================================================
+function renderMatrix(){
+  const L=D.lic;
+  const el=document.getElementById('matrixSection');
+  if(!el) return;
+  if(!L.SkuMatrix||!L.SkuMatrix.length||!L.SecurityCategories){
+    el.innerHTML="<p class='muted'>No hay datos de matriz disponibles.</p>"; return;
+  }
+  const cats=L.SecurityCategories;
+  let thH=cats.map(c=>'<th class="th-prod tc" title="'+c+'">'+(CAT_SHORT[c]||c)+'</th>').join('');
+  let rowH='';
+  L.SkuMatrix.forEach(row=>{
+    const cells=cats.map(c=>{
+      const v=row[c];
+      return '<td class="tc"><span class="dot '+(v==='SI'?'dot-on':'dot-na')+'"></span></td>';
+    }).join('');
+    rowH+='<tr><td><strong>'+esc(row.SKU||'')+'</strong><br><small class="muted">'+esc(row.PartNumber||'')+'</small></td>'
+      +'<td class="tc">'+parseInt(row.Total||0)+'</td><td class="tc">'+parseInt(row.Assigned||0)+'</td>'+cells+'</tr>';
+  });
+  el.innerHTML='<div class="tw"><table><thead><tr><th>SKU</th><th class="tc">Total</th><th class="tc">Asignadas</th>'
+    +thH+'</tr></thead><tbody>'+rowH+'</tbody></table></div>';
+}
+
+// ============================================================================
+// CAPACITY SECTION (table + empty state)
+// ============================================================================
+function renderCapSection(){
+  const L=D.lic,A=D.adopt;
+  const el=document.getElementById('capSection');
+  if(!el) return;
+  if(!L.Capacity||!L.Capacity.length){el.innerHTML="<p class='muted'>No hay datos de capacidad disponibles.</p>";return;}
+  const catGroups=L.CategoryGroups?JSON.parse(JSON.stringify(L.CategoryGroups)):{};
+  const prod2grp={};
+  Object.keys(catGroups).forEach(g=>{(catGroups[g]||[]).forEach(c=>{prod2grp[c]=g;});});
+  // Cubierto por Política: mapa de protección basada en políticas activas
+  const tw=(A&&A.TenantWideProtection)||{};
+  let rows=''; let prevGrp='';
+  L.Capacity.forEach(c=>{
+    const lbl=CAT_SHORT[c.Product]||c.Product.replace(/_/g,' ');
+    const grp=prod2grp[c.Product]||'';
+    // Si es LOW_USAGE pero tiene políticas activas → "Cubierto por Política"
+    // Para Purview_* subcategorías, usar tw['Purview'] como fallback
+    const twInfo=tw[c.Product]||(c.Product.indexOf('Purview_')===0?tw['Purview']:null);
+    const hasPol=twInfo&&twInfo.Active&&twInfo.Policies&&twInfo.Policies.some(p=>p.Active);
+    const effectiveStatus=(c.Status==='LOW_USAGE'&&hasPol)?'COVERED':c.Status;
+    const polTip=hasPol?twInfo.Policies.filter(p=>p.Active).map(p=>p.Name).join('\n'):'';
+    const statusBadge={UNDERLICENSED:"<span class='badge b-red'>RIESGO</span>",OVERLAP:"<span class='badge' style='background:#00838f;color:#e0f7fa'>Overlap</span>",LOW_USAGE:"<span class='badge b-yellow'>Bajo uso</span>",COVERED:"<span class='badge' style='background:#00695c;color:#e0f2f1' title='"+polTip.replace(/'/g,'&#39;')+"'>&#128737; Cubierto por Pol\u00edtica</span>"}[effectiveStatus]||"<span class='badge b-green'>OK</span>";
+    const rc={UNDERLICENSED:'row-alert',LOW_USAGE:'row-warn'}[effectiveStatus]||'';
+    const ov=parseInt(c.OverlapUsers||0);
+    const ovCell=ov>0?"<td class='tc' style='color:#4dd0e1'>"+ov+"</td>":"<td class='tc muted'>-</td>";
+    const baseU=parseInt(L.TotalLicensedUsers||100);
+    const seats=parseInt(c.TotalSeats||0)>(baseU*10)?parseInt(c.UsersActive||0):parseInt(c.TotalSeats||0);
+    const sp=seats>0?Math.min(Math.round(parseInt(c.UsersActive||0)/seats*100),100):0;
+    const free=Math.max(seats-parseInt(c.UsersActive||0),0);
+    const seatDisp=parseInt(c.TotalSeats||0)!==seats?fmt(seats)+' <span title="API: '+fmt(parseInt(c.TotalSeats||0))+'" style="font-size:9px;color:var(--muted);cursor:help">&#9432;</span>':fmt(seats);
+    const bc2=sp>=75?'pg-green':sp>=40?'pg-yellow':'pg-red';
+    let gcell='';
+    if(grp!==prevGrp){
+      prevGrp=grp;
+      const cnt=L.Capacity.filter(x=>(prod2grp[x.Product]||'')=== grp).length;
+      gcell='<td class="cat-cell" rowspan="'+cnt+'">'+esc(grp)+'</td>';
+    }
+    rows+='<tr class="'+rc+'">'+gcell+'<td><strong>'+esc(lbl)+'</strong></td>'
+      +'<td class="tc">'+seatDisp+'</td><td class="tc"><strong>'+fmt(parseInt(c.UsersActive||0))+'</strong></td>'
+      +'<td class="tc">'+fmt(parseInt(c.UsersDisabled||0))+'</td>'+ovCell
+      +'<td class="tc">'+fmt(free)+'</td>'
+      +'<td><div class="pg" style="width:100px"><div class="pg-fill '+bc2+'" style="width:'+sp+'%"></div></div> <small>'+sp+'%</small></td>'
+      +'<td class="tc">'+statusBadge+'</td><td class="small muted" style="max-width:280px">'+esc(c.ProvidedBy||'')+'</td></tr>';
+  });
+  el.innerHTML='<div class="tw"><table id="capExport">'
+    +'<thead><tr><th>Categoria</th><th>Producto</th><th class="tc">Seats</th><th class="tc">Activos</th><th class="tc">Deshabilitados</th><th class="tc" title="Usuarios con la misma funcionalidad en 2+ SKUs">Overlap</th><th class="tc">Libres</th><th>Asignacion</th><th class="tc">Estado</th><th>Provisto por</th></tr></thead>'
+    +'<tbody>'+rows+'</tbody></table></div>';
+}
+
+// ============================================================================
+// DEPARTMENTS
+// ============================================================================
+function renderDepts(){
+  const L=D.lic;
+  const tb=document.getElementById('deptTbody');
+  if(!tb||!L.Departments||!L.Departments.length) return;
+  let h='';
+  L.Departments.forEach(dept=>{
+    const skuBadges=(dept.TopSKUs||'').split(/\s*\|\s*/).filter(Boolean).map(s=>"<span class='badge b-blue'>"+esc(s.trim())+"</span>").join(' ');
+    const prodBadges=(dept.ActiveProducts||'').split(/\s*\|\s*/).filter(Boolean).map(p=>"<span class='badge b-default'>"+esc(p.trim())+"</span>").join(' ');
+    h+='<tr><td><strong>'+esc(dept.Department||'')+'</strong></td><td class="tc">'+parseInt(dept.UserCount||0)+'</td>'
+      +'<td class="small" style="max-width:350px;white-space:normal;line-height:1.8">'+skuBadges+'</td>'
+      +'<td class="small" style="max-width:500px;white-space:normal;line-height:1.8">'+prodBadges+'</td></tr>';
+  });
+  tb.innerHTML=h;
+}
+
+// ============================================================================
+// WASTE KPI CARDS
+// ============================================================================
+function renderWasteKpi(){
+  const L=D.lic;
+  const el=document.getElementById('wasteKpi');
+  if(!el) return;
+  const W=L.Waste||{};
+  const wTot=parseInt(W.TotalWasteUsers||0);
+  const wDis=parseInt(W.DisabledAccounts||0);
+  const wIna=parseInt(W.InactiveUsers||0);
+  const wDup=parseInt(W.DuplicateLicenses||0);
+  const wDP=parseInt(W.DisabledPlans||0);
+  const inDays=parseInt(L.InactiveDays||90);
+  const tot=parseInt(L.TotalLicensedUsers||0);
+  // Also update the inactiveDays span in text below
+  const idEl=document.getElementById('wasteInactiveDays');
+  if(idEl) idEl.textContent=inDays;
+  const skW='font-size:34px;font-weight:800;line-height:1';
+  el.innerHTML=`
+    <div class="savings-card ${wTot>0?'sk-yellow':'sk-green'}"><div class="sk-num" style="${skW};color:${wTot>0?'var(--fill-yellow)':'var(--fill-green)'}">
+      ${fmt(wTot)}</div><div class="sk-label">Total a Revisar</div><div class="sk-sub">de ${fmt(tot)} usuarios licenciados</div></div>
+    <div class="savings-card sk-red"><div class="sk-num" style="${skW};color:${wDis>0?'var(--fill-red)':'var(--fill-green)'}">
+      ${fmt(wDis)}</div><div class="sk-label">Cuentas Deshabilitadas</div><div class="sk-sub">con licencia activa</div></div>
+    <div class="savings-card sk-yellow"><div class="sk-num" style="${skW};color:${wIna>0?'var(--fill-yellow)':'var(--fill-green)'}">
+      ${fmt(wIna)}</div><div class="sk-label">Inactivos ${inDays}d+</div><div class="sk-sub">sin sign-in reciente</div></div>
+    <div class="savings-card sk-blue"><div class="sk-num" style="${skW};color:${wDup>0?'var(--fill-blue)':'var(--fill-green)'}">
+      ${fmt(wDup)}</div><div class="sk-label">Feature Overlap</div><div class="sk-sub">productos cubiertos por 2+ SKUs</div></div>
+    <div class="savings-card sk-yellow"><div class="sk-num" style="${skW};color:${wDP>0?'var(--fill-yellow)':'var(--fill-green)'}">
+      ${fmt(wDP)}</div><div class="sk-label">Planes Deshabilitados</div><div class="sk-sub">seguridad desactivada</div></div>`;
+}
+
+// ============================================================================
+// WASTE TABLE SECTION
+// ============================================================================
+function renderWasteSection(){
+  const el=document.getElementById('wasteSection');
+  if(!el) return;
+  if(!_WD||!_WD.length){el.innerHTML="<p class='muted'>No se detectaron licencias a revisar.</p>";return;}
+  el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+    +'<input type="text" class="search" id="wasteSearch" placeholder="Buscar en licencias a revisar..." onkeyup="window._wasteFilter()" style="max-width:400px;margin:0">'
+    +'<div class="pg-controls" id="wastePgTop"></div></div>'
+    +'<div class="tw"><table id="wasteTable"><thead><tr><th>Nombre</th><th>UPN</th><th class="tc">Activa</th><th class="tc">Ultimo Sign-In</th><th>SKUs</th><th>Motivo</th></tr></thead>'
+    +'<tbody id="wasteTbody"></tbody></table></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">'
+    +'<div id="wasteCount" class="small muted"></div>'
+    +'<div class="pg-controls" id="wastePgBot"></div></div>';
+}
+
+// ============================================================================
+// DUPLICATES SECTION
+// ============================================================================
+function renderDupSection(){
+  const el=document.getElementById('dupSection');
+  if(!el) return;
+  const cntEl=document.getElementById('dupSectionCount');
+  if(cntEl) cntEl.textContent=_DD?_DD.length:0;
+  if(!_DD||!_DD.length){el.innerHTML="<p class='muted'>No se detectaron usuarios con feature overlap.</p>";return;}
+  el.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+    +'<input type="text" class="search" id="dupSearch" placeholder="Buscar en overlap..." onkeyup="window._dupFilter()" style="max-width:400px;margin:0">'
+    +'<div class="pg-controls" id="dupPgTop"></div></div>'
+    +'<div class="tw"><table id="dupTable"><thead><tr><th>Nombre</th><th>UPN</th><th>Producto Compartido</th><th>Provisto por SKUs</th></tr></thead>'
+    +'<tbody id="dupTbody"></tbody></table></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">'
+    +'<div id="dupCount" class="small muted"></div>'
+    +'<div class="pg-controls" id="dupPgBot"></div></div>';
+}
+
+// ============================================================================
+// USER TABLE FILTERS (Dept + SKU chips)
+// ============================================================================
+function renderUserFilters(){
+  const deptEl=document.getElementById('deptSelect');
+  const skuEl=document.getElementById('skuChips');
+  const cntEl=document.getElementById('userCountTitle');
+  if(cntEl) cntEl.textContent=_UD?_UD.length:0;
+  if(deptEl&&_DEPTS&&_DEPTS.length){
+    let h='<option value="all">Todos ('+_DEPTS.length+' departamentos)</option>';
+    _DEPTS.forEach(d=>{
+      const cnt=_UD?_UD.filter(u=>(u[2]||'(Sin departamento)')===d).length:0;
+      const opt=document.createElement('option');opt.value=d;opt.textContent=d+' ('+cnt+')';
+      h+=opt.outerHTML;
+    });
+    deptEl.innerHTML=h;
+  }
+  if(skuEl&&_SKUS&&_SKUS.length){
+    let h='<button class="tab active" onclick="clearSkuFilter()">Todos</button>';
+    _SKUS.forEach(s=>{
+      const es=s.replace(/'/g,"\\'");
+      h+=' <button class="tab" onclick="toggleSkuFilter(this,\''+es+'\')">'+esc(s)+'</button>';
+    });
+    skuEl.innerHTML=h;
+  }
+}
+
+// ============================================================================
+// USER TABLE HEADER (category columns)
+// ============================================================================
+function renderUserTableHead(){
+  const tr=document.getElementById('userThead');
+  if(!tr||!_CM||!_CM.length) return;
+  let h='<th>Nombre</th><th>UPN</th><th>Depto</th><th>SKUs</th><th class="tc">Sign-In</th><th class="tc">Dias</th>';
+  _CM.forEach((fullName,i)=>{
+    const sep=_CS&&_CS.includes(i)?' td-sep':'';
+    const shortName=(fullName||'').replace(/Purview /i,'').replace(/Defender for /i,'').substring(0,8);
+    h+='<th class="th-rot tc'+sep+'" title="'+esc(fullName)+'"><span>'+esc(shortName)+'</span></th>';
+  });
+  tr.innerHTML=h;
+}
+
+// ============================================================================
+// FOOTER
+// ============================================================================
+function renderFooter(){
+  const L=D.lic;
+  const el=document.getElementById('footerGrid');
+  if(!el) return;
+  const genAt=L.GeneratedAt||(new Date().toISOString().slice(0,16).replace('T',' '));
+  el.innerHTML='<div class="footer-item"><span class="footer-label">Tenant</span><span class="footer-val">'+esc(L.TenantName||'')+'</span></div>'
+    +'<div class="footer-item"><span class="footer-label">Dominio</span><span class="footer-val">'+esc(L.TenantDomain||'')+'</span></div>'
+    +'<div class="footer-item"><span class="footer-label">Tenant ID</span><span class="footer-val" style="font-family:monospace;font-size:10px">'+esc(L.TenantId||'')+'</span></div>'
+    +'<div class="footer-item"><span class="footer-label">Generado</span><span class="footer-val">'+esc(genAt)+'</span></div>'
+    +'<div class="footer-item"><span class="footer-label">Usuarios Licenciados</span><span class="footer-val">'+fmt(parseInt(L.TotalLicensedUsers||0))+'</span></div>';
+}
+
+// ============================================================================
+// BOOTSTRAP — renderAll primero; el resto son mejoras progresivas
+// ============================================================================
+renderAll();
+
+// ============================================================================
+// THEME TOGGLE
+// ============================================================================
+function toggleTheme(){
+  const html = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  if(isLight){
+    html.removeAttribute('data-theme');
+    localStorage.setItem('m365_theme','dark');
+  } else {
+    html.setAttribute('data-theme','light');
+    localStorage.setItem('m365_theme','light');
+  }
+  updateThemeButton();
+}
+function updateThemeButton(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  btn.innerHTML = isLight ? '&#9728;&#65039; Light' : '&#127769; Dark';
+}
+updateThemeButton();
+
+try {
+const L=D.lic,A=D.adopt,S=D.score;
+
+// ============================================================================
+// SCORE POR CATEGORIA (fix: cap percentages, handle missing MaxScore)
+// ============================================================================
+if(S&&S.Categories){
+  const el=document.getElementById('scoreBars');
+  if(el){
+    let h='';
+    S.Categories.forEach(c=>{
+      const p=c.MaxScore>0?Math.min(Math.round(c.Score/c.MaxScore*100),100):(c.PctScore?Math.min(c.PctScore,100):0);
+      const col=clr(p);
+      const label=c.MaxScore?c.Score+'/'+c.MaxScore+' ('+p+'%)':'N/A';
+      h+='<div class="bar-row"><span class="bar-label">'+esc(c.Category)+'</span>';
+      h+='<div class="bar-track"><div class="bar-fill" style="width:'+p+'%;background:'+col+'"></div></div>';
+      h+='<span class="bar-value">'+label+'</span></div>';
+    });
+    el.innerHTML=h;
+  }
+  const el2=document.getElementById('scoreControls');
+  if(el2&&S.Summary){
+    let h='<div class="sc-stat"><div class="v" style="color:var(--fill-green)">'+S.Summary.Implemented+'</div><div class="l">Implementados</div></div>';
+    h+='<div class="sc-stat"><div class="v" style="color:var(--fill-yellow)">'+S.Summary.Partial+'</div><div class="l">Parciales</div></div>';
+    h+='<div class="sc-stat"><div class="v" style="color:var(--fill-red)">'+S.Summary.NotImplemented+'</div><div class="l">No Implementados</div></div>';
+    h+='<div class="sc-stat"><div class="v">'+S.Summary.TotalControls+'</div><div class="l">Total</div></div>';
+    el2.innerHTML=h;
+  }
+}
+
+// ============================================================================
+// POSTURA DE SEGURIDAD — Scorecard redesign
+// ============================================================================
+if(A){
+  const pc=document.getElementById('postureContent');
+  if(pc){
+    // Helper: semaphore dot + verdict
+    function sem(pct){
+      if(pct>=80) return {c:'var(--green)',t:'Saludable',i:'&#9679;'};
+      if(pct>=50) return {c:'var(--yellow)',t:'Parcial',i:'&#9679;'};
+      return {c:'var(--red)',t:'Critico',i:'&#9679;'};
+    }
+    function semDot(pct){const s=sem(pct);return '<span style="color:'+s.c+';font-weight:600;font-size:13px">'+s.t+'</span>';}
+    // Progress mini-bar
+    function miniBar(pct,label,color,hidePct){
+      const c=color||clr(pct);
+      const pctLbl=hidePct?'':'<span style="color:'+c+';font-weight:700">'+pct+'%</span>';
+      return '<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span>'+label+'</span>'+pctLbl+'</div>'
+        +'<div style="height:6px;background:rgba(255,255,255,0.07);border-radius:3px"><div style="height:100%;width:'+Math.min(pct,100)+'%;background:'+c+';border-radius:3px;transition:width .5s"></div></div></div>';
+    }
+
+    let h='';
+    const licCount=A.TotalLicensedUsers||0;
+
+    // ═══ HEALTH OVERVIEW CHIPS (Security Status Bar) ═══
+    (()=>{
+      let chipH='<div class="health-overview"><span class="health-overview-title">Estado General</span>';
+      if(A.Entra&&A.Entra.MFA){const p=Math.min(A.Entra.MFA.PctRegistered||0,100);chipH+='<span class="health-chip hc-'+(p>=80?'green':p>=50?'yellow':'red')+'">&#128272; MFA&ensp;<b>'+p+'%</b></span>';}
+      if(A.Entra&&A.Entra.ConditionalAccess){const ca=A.Entra.ConditionalAccess;const p=ca.LicCoveragePct||0;chipH+='<span class="health-chip hc-'+(p>=80?'green':p>=50?'yellow':'red')+'">&#128737; CA&ensp;<b>'+ca.Enabled+' activas</b></span>';}
+      if(A.Entra&&A.Entra.PIM){const pim=A.Entra.PIM;const ok=(pim.PermanentUsers||0)<=5;chipH+='<span class="health-chip hc-'+(ok?'green':'yellow')+'">&#128081; PIM&ensp;<b>'+(ok?'OK':pim.PermanentUsers+' perm.')+'</b></span>';}
+      if(A.Entra&&A.Entra.RiskyUsers){const r=A.Entra.RiskyUsers;const ok=r.TotalAtRisk===0;chipH+='<span class="health-chip hc-'+(ok?'green':'red')+'">&#9888; Riesgo&ensp;<b>'+(ok?'Ninguno':r.High+' alto')+'</b></span>';}
+      if(A.MDE){const p=A.MDE.CoveragePct||0;chipH+='<span class="health-chip hc-'+(p>=70?'green':p>=40?'yellow':'red')+'">&#128737; MDE&ensp;<b>'+p+'%</b></span>';}
+      if(A.MDO){const sc=A.MDO.SecureScoreControls;const p=sc?Math.round((sc.FullyEnabled||0)/Math.max(sc.Total,1)*100):0;chipH+='<span class="health-chip hc-'+(p>=70?'green':p>=40?'yellow':'red')+'">&#128231; MDO&ensp;<b>'+p+'%</b></span>';}
+      if(A.MDA){const sc=A.MDA.SecureScoreControls;const p=sc?Math.round((sc.FullyEnabled||0)/Math.max(sc.Total,1)*100):0;chipH+='<span class="health-chip hc-'+(p>=70?'green':p>=40?'yellow':'red')+'">&#9729; MDA&ensp;<b>'+p+'%</b></span>';}
+      if(A.MDI){const sc=A.MDI.SecureScoreControls;const p=sc?Math.round((sc.FullyEnabled||0)/Math.max(sc.Total,1)*100):0;chipH+='<span class="health-chip hc-'+(p>=70?'green':p>=40?'yellow':'red')+'">&#128257; MDI&ensp;<b>'+p+'%</b></span>';}
+      if(A.Purview){const sc=A.Purview.SecureScoreControls;const p=sc?Math.round((sc.FullyEnabled||0)/Math.max(sc.Total,1)*100):0;chipH+='<span class="health-chip hc-'+(p>=70?'green':p>=40?'yellow':'red')+'">&#128274; Purview&ensp;<b>'+p+'%</b></span>';}
+      if(A.Intune){const p=A.Intune.CompliancePct||0;chipH+='<span class="health-chip hc-'+(p>=70?'green':p>=40?'yellow':'red')+'">&#128241; Intune&ensp;<b>'+p+'%</b></span>';}
+      if(A.Copilot){const p=A.Copilot.AdoptionPct||0;chipH+='<span class="health-chip hc-'+(p>=50?'green':p>=20?'yellow':'muted')+'">&#129302; Copilot&ensp;<b>'+p+'%</b></span>';}
+      chipH+='</div>';
+      h=chipH;
+    })();
+
+    // ═══════════════════════════════════════════════════════
+    // Entra ID - Identidad
+    // ═══════════════════════════════════════════════════════
+    if(A.Entra){
+      const E=A.Entra;
+      // --- MFA & SSPR Card ---
+      if(E.MFA){
+        const m=E.MFA;
+        const mainPct=Math.min(m.PctRegistered||0,100);
+        const mainReg=Math.min(m.Registered||0,m.TotalUsers||0);
+        const mainTot=m.TotalUsers||0;
+        h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128272; MFA & SSPR '+semDot(mainPct)+'<a class="portal-link" href="https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade" target="_blank" title="Abrir Entra MFA en Portal">&#8599;</a></div>';
+        h+='<div class="two-col" style="margin-bottom:0">';
+        // MFA panel
+        h+='<div class="sc" style="margin-bottom:0"><div class="sc-title" style="font-size:12px">Multi-Factor Authentication</div>';
+        const mfaLabel=(m.LicTotal&&m.LicTotal<=500)?'Usuarios Licenciados Capable':'Directorio Capable';
+        h+=miniBar(mainPct,mfaLabel+' ('+fmt(mainReg)+'/'+fmt(mainTot)+')');
+        h+='<div style="font-size:10px;color:var(--muted);margin-top:4px;font-style:italic">&#9432; Capable = tiene metodo MFA registrado. Verificar en Conditional Access que se exija su uso.</div>';
+        h+='</div>';
+        // SSPR panel
+        if(E.SSPR){
+          const s=E.SSPR;
+          const ssprLabel=(s.LicTotal&&s.LicTotal<=500)?'Usuarios Licenciados':'Directorio';
+          const ssprPct=Math.min(s.PctRegistered||0,100);
+          const ssprReg=Math.min(s.Registered||0,s.TotalUsers||0);
+          h+='<div class="sc" style="margin-bottom:0"><div class="sc-title" style="font-size:12px">Self-Service Password Reset</div>';
+          h+=miniBar(ssprPct,ssprLabel+' ('+fmt(ssprReg)+'/'+fmt(s.TotalUsers)+')');
+          h+='</div>';
+        }
+        h+='</div>';
+
+        // Auth Methods - Licensed vs Tenant
+        const amLic=E.AuthMethodsLicensed;
+        const amAll=E.AuthMethods;
+        const amSrc=amLic||amAll;
+        if(amSrc){
+          const amLabel=(m.LicTotal&&m.LicTotal<=500)?'Usuarios Licenciados':'Directorio';
+          h+='<div style="margin-top:12px"><div class="sc-title" style="font-size:12px">Metodos de Autenticacion ('+amLabel+')</div>';
+          const methods=[['Authenticator',amSrc.Authenticator],['Phone',amSrc.PhoneAuth],['FIDO2',amSrc.FIDO2],['WHfB',amSrc.WHfB],['Passwordless',amSrc.Passwordless],['Email',amSrc.Email]];
+          const base=(m.LicTotal&&m.LicTotal<=500)?m.TotalUsers:((E.MFA&&E.MFA.MfaCapable>0)?E.MFA.MfaCapable:methods.reduce((s,m)=>Math.max(s,m[1]||0),0)||1);
+          methods.forEach(m=>{
+            if(!m[1])return;
+            const p=Math.round(m[1]/base*100);
+            h+='<div class="bar-row"><span class="bar-label">'+m[0]+'</span>';
+            h+='<div class="bar-track"><div class="bar-fill" style="width:'+Math.min(p,100)+'%;background:var(--fill-accent)"></div></div>';
+            h+='<span class="bar-value">'+m[1]+' ('+p+'%)</span></div>';
+          });
+          h+='</div>';
+        }
+        h+='</div>';
+      }
+
+      // --- Conditional Access ---
+      if(E.ConditionalAccess){
+        const ca=E.ConditionalAccess;
+        const covPct=ca.LicCoveragePct||0;
+        h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128272; Conditional Access '+semDot(covPct)+'<a class="portal-link" href="https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade" target="_blank" title="Abrir Conditional Access en Portal">&#8599;</a></div>';
+        // Coverage bar
+        if(ca.LicTotal>0){
+          h+=miniBar(covPct,'Cobertura Usuarios Licenciados ('+ca.LicCovered+'/'+ca.LicTotal+')');
+          if(ca.HasAllUsersPolicy) h+='<div style="font-size:10px;color:var(--green);margin-bottom:4px">&#10003; Al menos una politica activa aplica a todos los usuarios</div>';
+          // CA vs MFA gap
+          const _mfaReg=(E.MFA&&Math.min(E.MFA.Registered||0,E.MFA.TotalUsers||0))||0;
+          const _caGap=Math.max((ca.LicCovered||0)-_mfaReg,0);
+          if(_caGap>0&&_mfaReg>0){
+            h+='<div class="gap-warning">';
+            h+='<span style="font-size:14px">&#9888;&#65039;</span>';
+            h+='<span style="color:var(--red);font-weight:700;font-size:12px">'+_caGap+' usuarios</span>';
+            h+='<span style="color:var(--muted);font-size:11px"> cubiertos por CA sin metodo MFA registrado &#8212; riesgo de bypass</span>';
+            h+='</div>';
+          }
+        }
+        h+='<div class="sc-grid" style="margin-bottom:10px">';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--fill-green)">'+ca.Enabled+'</div><div class="l">Activas</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--fill-blue)">'+ca.ReportOnly+'</div><div class="l">Report-Only</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--muted)">'+ca.Disabled+'</div><div class="l">Deshabilitadas</div></div>';
+        h+='<div class="sc-stat"><div class="v">'+ca.Total+'</div><div class="l">Total</div></div>';
+        h+='</div>';
+        h+='</div>';
+      }
+
+      // --- Identity Protection & PIM ---
+      if(E.RiskyUsers||E.PIM){
+        h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128272; Entra ID - Identity Protection &amp; PIM<a class="portal-link" href="https://entra.microsoft.com/#view/Microsoft_AAD_IAM/RiskyUsersMenuBlade" target="_blank" title="Abrir Identity Protection en Portal">&#8599;</a></div>';
+        h+='<div class="two-col" style="margin-bottom:0">';
+        if(E.RiskyUsers){
+          const r=E.RiskyUsers;
+          const riskOk=r.TotalAtRisk===0;
+          h+='<div class="sc" style="margin-bottom:0"><div class="sc-title" style="font-size:12px;display:flex;align-items:center;justify-content:space-between">Usuarios Riesgosos '+(riskOk?semDot(100):semDot(0))+'</div>';
+          // Risk summary bar
+          if(r.TotalAtRisk>0){
+            const totalR=r.High+r.Medium+r.Low||1;
+            const pH=Math.round(r.High/totalR*100);
+            const pM=Math.round(r.Medium/totalR*100);
+            const pL=100-pH-pM;
+            h+='<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;margin:8px 0">';
+            if(r.High>0) h+='<div style="width:'+pH+'%;background:var(--fill-red)" title="High: '+r.High+'"></div>';
+            if(r.Medium>0) h+='<div style="width:'+pM+'%;background:var(--fill-yellow)" title="Medium: '+r.Medium+'"></div>';
+            if(r.Low>0) h+='<div style="width:'+pL+'%;background:var(--fill-blue)" title="Low: '+r.Low+'"></div>';
+            h+='</div>';
+          }
+          h+='<div class="sc-grid">';
+          h+='<div class="sc-stat"><div class="v" style="color:var(--fill-red)">'+r.High+'</div><div class="l">High</div></div>';
+          h+='<div class="sc-stat"><div class="v" style="color:var(--fill-yellow)">'+r.Medium+'</div><div class="l">Medium</div></div>';
+          h+='<div class="sc-stat"><div class="v" style="color:var(--fill-blue)">'+r.Low+'</div><div class="l">Low</div></div>';
+          h+='<div class="sc-stat"><div class="v">'+r.TotalAtRisk+'</div><div class="l">Total</div></div>';
+          h+='</div>';
+          // Risk policies status
+          h+='<div style="margin-top:10px;font-size:11px">';
+          h+='<div style="font-weight:600;color:var(--muted);margin-bottom:4px">Politicas de Proteccion Basadas en Riesgo</div>';
+          const sirOk=r.HasSignInRiskPolicy;
+          const urOk=r.HasUserRiskPolicy;
+          h+='<div style="padding:2px 0"><span style="color:'+(sirOk?'var(--green)':'var(--red)')+'">&#'+(sirOk?'10003':'10007')+'; </span>Sign-in Risk Policy '+(sirOk?'<span style="color:var(--green)">activa</span>':'<span style="color:var(--red)">no configurada</span>')+'</div>';
+          h+='<div style="padding:2px 0"><span style="color:'+(urOk?'var(--green)':'var(--red)')+'">&#'+(urOk?'10003':'10007')+'; </span>User Risk Policy '+(urOk?'<span style="color:var(--green)">activa</span>':'<span style="color:var(--red)">no configurada</span>')+'</div>';
+          if(sirOk||urOk){
+            const twE=A.TenantWideProtection&&A.TenantWideProtection.Entra_ID_P2;
+            h+=policyNote(twE||{Policies:[{Name:'Sign-in Risk Policy',Active:sirOk},{Name:'User Risk Policy',Active:urOk}]},'Las politicas de riesgo aplican a todos los sign-ins del tenant, no solo a los usuarios con licencia P2 asignada.','Se recomienda completar la asignacion de licencias para cumplimiento de licenciamiento y visibilidad individual en Identity Protection.');
+          }
+          h+='</div>';
+          // Contextual insight
+          if(r.TotalAtRisk>0&&r.High>0){
+            h+='<div style="font-size:11px;color:var(--red);margin-top:8px;padding:6px 10px;background:rgba(244,67,54,0.08);border-radius:6px;border-left:3px solid var(--red)">&#9888; '+r.High+' usuario(s) en riesgo alto requieren investigacion inmediata. '+(sirOk&&urOk?'Las politicas de riesgo estan activas y deberian forzar remediacion automatica.':'Se recomienda configurar politicas de riesgo en Conditional Access para forzar cambio de contrasena o MFA.')+'</div>';
+          } else if(r.TotalAtRisk===0){
+            h+='<div style="font-size:11px;color:var(--green);margin-top:8px;padding:6px 10px;background:rgba(76,175,80,0.08);border-radius:6px;border-left:3px solid var(--green)">&#10003; No se detectaron usuarios en riesgo activo. Identity Protection esta monitoreando correctamente.</div>';
+          }
+          h+='</div>';
+        }
+        if(E.PIM){
+          const p=E.PIM;
+          const permU=p.PermanentUsers||0;
+          const activeU=p.ActiveUsers||0;
+          const activeSP=p.ActiveSPs||0;
+          const eligU=p.EligibleUsers||0;
+          const totalActive=p.ActiveTotal||0;
+          // Ratio: elegibles vs permanentes humanos — mas elegibles = mejor
+          const jitPct=activeU>0?Math.round(eligU/(eligU+permU)*100):100;
+          const pimOk=permU<=5;
+          h+='<div class="sc" style="margin-bottom:0"><div class="sc-title" style="font-size:12px;display:flex;align-items:center;justify-content:space-between">PIM (Privileged Identity) '+(pimOk?semDot(80):semDot(30))+'</div>';
+          // Main insight: JIT adoption bar
+          h+=miniBar(jitPct,'Adopcion JIT ('+eligU+' elegibles vs '+permU+' permanentes)');
+          // Stacked composition bar: eligibles | active humans | SPs
+          const barTotal=eligU+activeU+activeSP||1;
+          const bE=Math.round(eligU/barTotal*100);
+          const bU=Math.round(activeU/barTotal*100);
+          const bS=100-bE-bU;
+          h+='<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;margin:10px 0 4px">';
+          h+='<div style="width:'+bE+'%;background:var(--fill-green)" title="Elegibles: '+eligU+'"></div>';
+          h+='<div style="width:'+bU+'%;background:var(--fill-yellow)" title="Usuarios permanentes: '+activeU+'"></div>';
+          if(activeSP>0) h+='<div style="width:'+bS+'%;background:var(--bg4)" title="Service Principals: '+activeSP+'"></div>';
+          h+='</div>';
+          h+='<div style="display:flex;gap:14px;font-size:10px;color:var(--muted);margin-bottom:10px">';
+          h+='<span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--fill-green);margin-right:4px;vertical-align:middle"></i>Elegibles JIT: '+eligU+'</span>';
+          h+='<span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--fill-yellow);margin-right:4px;vertical-align:middle"></i>Usuarios permanentes: '+permU+'</span>';
+          if(activeSP>0) h+='<span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--bg4);border:1px solid var(--border);margin-right:4px;vertical-align:middle"></i>Service Principals: '+activeSP+'</span>';
+          h+='</div>';
+          // Top roles as compact bar chart
+          if(p.TopPermanentRoles&&p.TopPermanentRoles.length){
+            h+='<div style="margin-top:4px"><div style="font-size:10px;color:var(--muted);margin-bottom:6px">Roles con mas usuarios permanentes</div>';
+            const maxR=p.TopPermanentRoles[0].Count||1;
+            p.TopPermanentRoles.forEach(r=>{
+              const w=Math.round(r.Count/maxR*100);
+              h+='<div class="bar-row"><span class="bar-label" style="width:140px;font-size:10px">'+esc(r.Role)+'</span>';
+              h+='<div class="bar-track"><div class="bar-fill" style="width:'+w+'%;background:var(--fill-yellow)"></div></div>';
+              h+='<span class="bar-value" style="font-size:10px">'+r.Count+'</span></div>';
+            });
+            h+='</div>';
+          }
+          // Contextual note
+          if(permU>5)h+='<div style="font-size:11px;color:var(--yellow);margin-top:8px;padding:6px 10px;background:rgba(255,193,7,0.08);border-radius:6px;border-left:3px solid var(--yellow)">&#9888; '+permU+' usuarios con roles permanentes. Se recomienda migrar a asignaciones elegibles con activacion JIT.</div>';
+          else h+='<div style="font-size:11px;color:var(--green);margin-top:8px;padding:6px 10px;background:rgba(76,175,80,0.08);border-radius:6px;border-left:3px solid var(--green)">&#10003; Buen uso de PIM — pocos usuarios con roles permanentes.</div>';
+          if(activeSP>0)h+='<div style="font-size:10px;color:var(--muted);margin-top:6px;font-style:italic">&#8505; Los '+activeSP+' Service Principals con roles activos son aplicaciones del sistema y son esperados.</div>';
+          h+='</div>';
+        }
+        h+='</div></div>';
+      }
+    }
+
+    // ── Fallback: compute SecureScoreControls from S.AllRecommendations if adoption JSON missed them ──
+    // This happens when Get-MSSecureScore.ps1 ran AFTER Get-MSSecurityAdoption.ps1
+    if(S&&S.AllRecommendations&&A){
+      const _sm={MDO:'MDO',MDA:'MCAS',MDE:'MDATP',MDI:'Azure ATP'};
+      ['MDO','MDA','MDE','MDI'].forEach(prod=>{
+        if(A[prod]&&!A[prod].SecureScoreControls){
+          const svc=_sm[prod];
+          const cc=S.AllRecommendations.filter(r=>r.Service===svc);
+          if(cc.length){
+            const ok=cc.filter(r=>r.ImplementationStatus==='Implemented').length;
+            const pa=cc.filter(r=>r.CurrentScore>0&&r.CurrentScore<r.MaxScore).length;
+            A[prod].SecureScoreControls={Total:cc.length,FullyEnabled:ok,Partial:pa,NotImplemented:cc.length-ok-pa};
+          }
+        }
+      });
+    }
+
+    // ── ctrlBar: compact Secure Score bar for Defender cards ──
+    function ctrlBar(sc,svcFilter){
+      if(!sc)return '';
+      const ok=sc.FullyEnabled||0,pa=sc.Partial||0,ni=sc.NotImplemented||0;
+      const tot=ok+pa+ni||1;
+      const wOk=Math.round(ok/tot*100),wPa=Math.round(pa/tot*100),wNi=100-wOk-wPa;
+      let b='<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">';
+      b+='<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Secure Score &mdash; '+ok+'/'+sc.Total+' controles implementados</div>';
+      b+='<div style="display:flex;height:8px;border-radius:4px;overflow:hidden">';
+      b+='<div style="width:'+wOk+'%;background:var(--fill-green)"></div>';
+      b+='<div style="width:'+wPa+'%;background:var(--fill-yellow)"></div>';
+      b+='<div style="width:'+wNi+'%;background:var(--fill-red)"></div></div>';
+      b+='<div style="display:flex;gap:12px;font-size:10px;color:var(--muted);margin-top:4px">';
+      b+='<span>&#10003; '+ok+' OK</span><span>&#9899; '+pa+' Parcial</span><span>&#10007; '+ni+' Pendiente</span></div>';
+      b+='<div style="margin-top:6px;text-align:right"><a href="javascript:void(0)" onclick="_recSvc(\''+svcFilter+'\')" style="font-size:10px;color:var(--accent);text-decoration:none">Ver detalle en Recomendaciones &#8594;</a></div>';
+      b+='</div>';
+      return b;
+    }
+
+    // ── policyNote: shows policy-level coverage with individual policy status ──
+    function policyNote(twData, description, recommendation){
+      if(!twData||!twData.Policies||!twData.Policies.length) return '';
+      const activeCount=twData.Policies.filter(p=>p.Active).length;
+      if(activeCount===0) return '';
+      let n='<div style="margin-top:8px;padding:8px 12px;background:#004d40;color:#e0f2f1;border-radius:6px;font-size:11px;line-height:1.6">';
+      n+='<b>&#128737; Cubierto por Pol\u00edtica:</b> '+esc(description)+'<br>';
+      twData.Policies.forEach(function(p){
+        const icon=p.Active?'<span style="color:#a5d6a7">&#10003;</span>':'<span style="color:#ef9a9a">&#10007;</span>';
+        n+='<span style="margin-left:8px">'+icon+' '+esc(p.Name)+'</span><br>';
+      });
+      n+='<div style="margin-top:4px;font-size:10px;color:#80cbc4;font-style:italic">'+esc(recommendation)+'</div>';
+      n+='</div>';
+      return n;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MDE
+    // ═══════════════════════════════════════════════════════
+    if(A.MDE){
+      const M=A.MDE;
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128737; Defender for Endpoint '+semDot(M.CoveragePct)+'<a class="portal-link" href="https://security.microsoft.com/machines" target="_blank" title="Abrir MDE en Portal">&#8599;</a></div>';
+      h+='<div class="kql-btns">';
+        h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDE_ALERTS)">Alertas 30d</button>';
+        h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDE_HOSTS)">Hosts Riesgosos</button>';
+        h+='</div>';
+      h+=miniBar(M.CoveragePct,'Cobertura ('+M.UniqueUsersWithDevice+'/'+M.UsersWithLicense+' usuarios)');
+      h+='<div class="sc-grid">';
+      h+='<div class="sc-stat"><div class="v">'+M.DevicesOnboarded+'</div><div class="l">Dispositivos</div></div>';
+      h+='<div class="sc-stat"><div class="v" style="color:var(--yellow)">'+M.DevicesStale7d+'</div><div class="l">Inactivos 7d+</div></div>';
+      if(M.Alerts30d){
+        h+='<div class="sc-stat"><div class="v" style="color:'+(M.Alerts30d.High>0?'var(--red)':'var(--green)')+'">'+M.Alerts30d.Total+'</div><div class="l">Alertas 30d</div></div>';
+        if(M.Alerts30d.High>0)h+='<div class="sc-stat"><div class="v" style="color:var(--red)">'+M.Alerts30d.High+'</div><div class="l">Alta Severidad</div></div>';
+      }
+      h+='</div>';
+      h+=ctrlBar(M.SecureScoreControls,'MDATP');
+      h+='</div>';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MDO
+    // ═══════════════════════════════════════════════════════
+    if(A.MDO){
+      const O=A.MDO;
+      const mdoThreats=(O.PhishingDetected||0)+(O.MalwareDetected||0);
+      const mdoTotal=O.EmailsProcessed30d||1;
+      const mdoBlockPct=mdoTotal>0?Math.round((O.Blocked||0)/mdoTotal*100):0;
+      const hasKQL=O.EmailsProcessed30d>0;
+      const mdoClean=hasKQL?(mdoThreats===0?100:(mdoBlockPct>90?80:50)):(O.SecureScoreControls?70:50);
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128231; Defender for Office 365 '+semDot(mdoClean)+'<a class="portal-link" href="https://security.microsoft.com/threatexplorerv3" target="_blank" title="Abrir MDO en Portal">&#8599;</a></div>';
+      h+='<div class="kql-btns">';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDO_CAMPAIGNS)">Top Campanas</button>';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDO_TARGETS)">Top Targets</button>';
+            h+='</div>';
+      if(hasKQL){
+        h+='<div class="sc-grid">';
+        h+='<div class="sc-stat"><div class="v">'+fmt(O.EmailsProcessed30d)+'</div><div class="l">Emails 30d</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--red)">'+O.PhishingDetected+'</div><div class="l">Phishing</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--red)">'+O.MalwareDetected+'</div><div class="l">Malware</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--green)">'+O.Blocked+'</div><div class="l">Bloqueados</div></div>';
+        if(O.SafeLinks)h+='<div class="sc-stat"><div class="v">'+O.SafeLinks.Blocked+'</div><div class="l">Safe Links</div></div>';
+        h+='</div>';
+      } else {
+        h+='<div style="font-size:11px;color:var(--muted);margin:6px 0;font-style:italic">&#9432; Sin datos de flujo de correo en los ultimos 30 dias. Configuracion evaluada via Secure Score.</div>';
+      }
+      h+=ctrlBar(O.SecureScoreControls,'MDO');
+      if(O.Note)h+='<div style="font-size:11px;color:var(--muted);margin-top:6px;font-style:italic">'+esc(O.Note)+'</div>';
+      // Cubierto por política - MDO
+      {const tw=(A.TenantWideProtection&&A.TenantWideProtection.MDO_P1)||(A.TenantWideProtection&&A.TenantWideProtection.MDO_P2);h+=policyNote(tw,'Estas politicas protegen todo el flujo de correo del tenant, no solo los buzones con licencia MDO asignada.','Se recomienda completar la asignacion de licencias para cumplimiento y trazabilidad por usuario.');}
+      h+='</div>';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MDA
+    // ═══════════════════════════════════════════════════════
+    if(A.MDA){
+      const C=A.MDA;
+      const mdaHealth=C.SecureScoreControls?(C.SecureScoreControls.FullyEnabled/Math.max(C.SecureScoreControls.Total,1)*100):70;
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#9729; Defender for Cloud Apps '+semDot(mdaHealth)+'<a class="portal-link" href="https://security.microsoft.com/cloudapps/app-governance" target="_blank" title="Abrir MDA en Portal">&#8599;</a></div>';
+      h+='<div class="kql-btns">';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDA_OAUTH)">OAuth Consents</button>';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDA_APPS)">Shadow IT</button>';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDA_REPORTERS)">High Reporters</button>';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDA_DOWNLOADS)">Descargas Masivas</button>';
+            h+='</div>';
+      if(C.UniqueApps>0||C.Events30d>0){
+        h+='<div class="sc-grid">';
+        h+='<div class="sc-stat"><div class="v">'+C.UniqueApps+'</div><div class="l">Apps Descubiertas</div></div>';
+        h+='<div class="sc-stat"><div class="v">'+fmt(C.Events30d)+'</div><div class="l">Eventos 30d</div></div>';
+        h+='<div class="sc-stat"><div class="v">'+C.UniqueUsers+'</div><div class="l">Usuarios</div></div>';
+        if(C.Alerts30d)h+='<div class="sc-stat"><div class="v" style="color:'+(C.Alerts30d.Total>0?'var(--yellow)':'var(--green)')+'">'+C.Alerts30d.Total+'</div><div class="l">Alertas 30d</div></div>';
+        h+='</div>';
+      } else {
+        h+='<div style="font-size:11px;color:var(--muted);margin:6px 0;font-style:italic">&#9432; Sin datos de actividad de Cloud Apps. Configuracion evaluada via Secure Score.</div>';
+      }
+      h+=ctrlBar(C.SecureScoreControls,'MCAS');
+      // Cubierto por política - MDA
+      {const tw=A.TenantWideProtection&&A.TenantWideProtection.MDA;h+=policyNote(tw,'Estas politicas protegen todo el trafico de cloud apps del tenant.','Se recomienda completar la asignacion de licencias para cumplimiento y trazabilidad.');}
+      h+='</div>';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // MDI
+    // ═══════════════════════════════════════════════════════
+    if(A.MDI){
+      const I2=A.MDI;
+      const failRatio=I2.LogonEvents30d>0?Math.round(I2.FailedLogons/I2.LogonEvents30d*100):0;
+      const mdiHealth=failRatio<20?90:(failRatio<50?60:30);
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128737; Defender for Identity '+semDot(mdiHealth)+'<a class="portal-link" href="https://security.microsoft.com/alerts" target="_blank" title="Abrir MDI en Portal">&#8599;</a></div>';
+      h+='<div class="kql-btns">';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDI_INBOX)">Reglas Inbox</button>';
+            h+='<button class="kql-btn" onclick="openKql.call(this,KQL.MDI_ATYPICAL)">Logon Atipico</button>';
+            h+='</div>';
+      if(I2.LogonEvents30d>0){
+        h+='<div class="sc-grid">';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--green)">'+I2.DCsMonitored+'</div><div class="l">DCs Monitoreados</div></div>';
+        h+='<div class="sc-stat"><div class="v">'+fmt(I2.LogonEvents30d)+'</div><div class="l">Eventos Logon 30d</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--green)">'+fmt(I2.SuccessLogons)+'</div><div class="l">Exitosos</div></div>';
+        h+='<div class="sc-stat"><div class="v" style="color:var(--yellow)">'+fmt(I2.FailedLogons)+'</div><div class="l">Fallidos ('+failRatio+'%)</div></div>';
+        if(I2.Alerts30d)h+='<div class="sc-stat"><div class="v" style="color:'+(I2.Alerts30d.Total>0?'var(--red)':'var(--green)')+'">'+I2.Alerts30d.Total+'</div><div class="l">Alertas 30d</div></div>';
+        h+='</div>';
+      } else {
+        h+='<div style="font-size:11px;color:var(--muted);margin:6px 0;font-style:italic">&#9432; Sin datos de logon en los ultimos 30 dias. Configuracion evaluada via Secure Score.</div>';
+      }
+      h+=ctrlBar(I2.SecureScoreControls,'Azure ATP');
+      if(I2.Note)h+='<div style="font-size:11px;color:var(--muted);margin-top:8px;font-style:italic">&#9888; '+esc(I2.Note)+'</div>';
+      // Cubierto por política - MDI
+      {const tw=A.TenantWideProtection&&A.TenantWideProtection.MDI;h+=policyNote(tw,'MDI monitorea los Domain Controllers y protege toda la infraestructura Active Directory del tenant.','Se recomienda completar la asignacion de licencias para cumplimiento de licenciamiento.');}
+      h+='</div>';
+    }
+
+
+
+    // ═══════════════════════════════════════════════════════
+    // Purview (Information Protection)
+    // ═══════════════════════════════════════════════════════
+    if(A.Purview){
+      const P=A.Purview;
+      const pvHealth=P.SecureScoreControls?(P.SecureScoreControls.FullyEnabled/Math.max(P.SecureScoreControls.Total,1)*100):50;
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128274; Microsoft Purview '+semDot(pvHealth)+'<a class="portal-link" href="https://compliance.microsoft.com" target="_blank" title="Abrir Purview en Portal">&#8599;</a></div>';
+      h+='<div style="font-size:11px;color:var(--muted);margin:6px 0;font-style:italic">&#9432; DLP, Sensitivity Labels, Retention, Audit, eDiscovery, Insider Risk</div>';
+      h+=ctrlBar(P.SecureScoreControls,'MIP');
+      // Cubierto por política - Purview
+      {let twPv=A.TenantWideProtection&&A.TenantWideProtection.Purview;
+      // Fallback: si no hay clave "Purview", buscar cualquier Purview_* key
+      if(!twPv&&A.TenantWideProtection){const pk=Object.keys(A.TenantWideProtection).find(k=>k.indexOf('Purview_')===0);if(pk)twPv=A.TenantWideProtection[pk];}
+      h+=policyNote(twPv,'Las politicas de DLP y Sensitivity Labels aplican a ubicaciones completas (Exchange, SharePoint, OneDrive, Teams).','Se recomienda completar la asignacion de licencias para features como etiquetado manual y cifrado por usuario.');}
+      if(P.Note)h+='<div style="font-size:11px;color:var(--muted);margin-top:6px;font-style:italic">'+esc(P.Note)+'</div>';
+      h+='</div>';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // Intune
+    // ═══════════════════════════════════════════════════════
+    if(A.Intune){
+      const I=A.Intune;
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#128241; Microsoft Intune '+semDot(I.CompliancePct)+'<a class="portal-link" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesMenu/~/overview" target="_blank" title="Abrir Intune en Portal">&#8599;</a></div>';
+      h+='<div class="two-col" style="margin-bottom:0">';
+      h+='<div class="sc" style="margin-bottom:0"><div class="sc-title" style="font-size:12px">Dispositivos</div>';
+      h+=miniBar(I.CompliancePct,'Cumplimiento ('+I.DevicesEnrolled+' enrolled)');
+      h+='<div class="sc-grid" style="margin-top:8px">';
+      h+='<div class="sc-stat"><div class="v" style="color:var(--red)">'+I.NonCompliant+'</div><div class="l">No Compliant</div></div>';
+      h+='<div class="sc-stat"><div class="v" style="color:var(--yellow)">'+I.Stale30d+'</div><div class="l">Inactivos 30d+</div></div>';
+      h+='</div></div>';
+      if(I.Platforms){
+        h+='<div class="sc" style="margin-bottom:0"><div class="sc-title" style="font-size:12px">Plataformas</div>';
+        const plats=Object.entries(I.Platforms).sort((a,b)=>b[1]-a[1]);
+        const ptotal=plats.reduce((s,p)=>s+p[1],0)||1;
+        plats.forEach(p=>{
+          const pp=Math.round(p[1]/ptotal*100);
+          h+='<div class="bar-row"><span class="bar-label">'+p[0]+'</span>';
+          h+='<div class="bar-track"><div class="bar-fill" style="width:'+pp+'%;background:var(--fill-accent)"></div></div>';
+          h+='<span class="bar-value">'+p[1]+' ('+pp+'%)</span></div>';
+        });
+        h+='</div>';
+      }
+      h+='</div></div>';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // Copilot
+    // ═══════════════════════════════════════════════════════
+    if(A.Copilot){
+      const Co=A.Copilot;
+      h+='<div class="sc"><div class="sc-title" style="display:flex;align-items:center;justify-content:space-between">&#129302; Microsoft 365 Copilot '+semDot(Co.AdoptionPct)+'<a class="portal-link" href="https://admin.microsoft.com/Adminportal/Home#/copilotadoption" target="_blank" title="Abrir Copilot en Portal">&#8599;</a></div>';
+      h+=miniBar(Co.AdoptionPct,'Adopcion ('+Co.ActiveUsers30d+'/'+Co.LicensedUsers+' usuarios activos 30d)');
+      h+='</div>';
+    }
+
+    pc.innerHTML=h;
+  }
+}
+
+// ============================================================================
+// RECOMMENDATIONS (all, paginated, filterable by pillar + status)
+// ============================================================================
+if(S&&S.AllRecommendations&&S.AllRecommendations.length){
+  const recs=S.AllRecommendations;
+  const PS=10;
+  let rPage=1,rCat='all',rSt='all',rSvc='all',rSvcSub='all',rQ='';
+  const categories=[...new Set(recs.map(r=>r.Category))].sort();
+  const statuses=[...new Set(recs.map(r=>r.ImplementationStatus))].sort();
+  // Product groups — cleaner than 13+ individual service tabs
+  const svcGroups=[
+    {key:'defender',label:'\u{1F6E1} Defender',svcs:['MDATP','MDO','Azure ATP','MCAS']},
+    {key:'identity',label:'\u{1F510} Entra ID',svcs:['AzureAD']},
+    {key:'m365',label:'\u{1F4E7} Microsoft 365',svcs:['EXO','MS Teams','SPO','FORMS','SWAY']},
+    {key:'governance',label:'\u{1F4CB} Gobernanza',svcs:['MIP','AppG','Admincenter']}
+  ];
+  const defSubLabels={'MDATP':'Endpoint','MDO':'Office 365','Azure ATP':'Identity','MCAS':'Cloud Apps'};
+  const catLabels={'Apps':'Aplicaciones','Data':'Datos','Device':'Dispositivos','Identity':'Identidad'};
+  function svcsForGroup(gk){const g=svcGroups.find(x=>x.key===gk);return g?g.svcs:[];}
+
+  // Build product group tabs
+  const svcEl=document.getElementById('recSvcTabs');
+  if(svcEl){
+    let t='<button class="tab active" onclick="window._recGrp(\'all\',this)">Todos</button>';
+    svcGroups.forEach(g=>{
+      const cnt=recs.filter(r=>g.svcs.includes(r.Service)).length;
+      t+='<button class="tab" onclick="window._recGrp(\''+g.key+'\',this)">'+g.label+' <span style="font-size:9px;opacity:.6">('+cnt+')</span></button>';
+    });
+    svcEl.innerHTML=t;
+  }
+  // Show/hide defender sub-tabs
+  function showDefSubs(show){
+    const subEl=document.getElementById('recSubTabs');
+    if(!subEl)return;
+    if(!show){subEl.style.display='none';return;}
+    const defSvcs=svcsForGroup('defender').filter(s=>recs.some(r=>r.Service===s));
+    let t='<button class="tab active" onclick="window._recSub(\'all\',this)">Todos</button>';
+    defSvcs.forEach(s=>{
+      const cnt=recs.filter(r=>r.Service===s).length;
+      t+='<button class="tab" onclick="window._recSub(\''+s+'\',this)">'+(defSubLabels[s]||s)+' <span style="font-size:9px;opacity:.6">('+cnt+')</span></button>';
+    });
+    subEl.innerHTML=t;
+    subEl.style.display='';
+  }
+  // Build category tabs (renamed for clarity)
+  const tabEl=document.getElementById('recTabs');
+  if(tabEl){
+    let t='<button class="tab active" onclick="window._recCat(\'all\',this)">Todos</button>';
+    categories.forEach(c=>{t+='<button class="tab" onclick="window._recCat(\''+c+'\',this)">'+(catLabels[c]||esc(c))+'</button>';});
+    tabEl.innerHTML=t;
+  }
+  // Build status tabs
+  const stEl=document.getElementById('recStatusTabs');
+  if(stEl){
+    let t='<button class="tab active" onclick="window._recSt(\'all\',this)">Todos</button>';
+    statuses.forEach(s=>{
+      const label=s==='Implemented'?'Implementado':s==='Partial'?'Parcial':'Pendiente';
+      t+='<button class="tab" onclick="window._recSt(\''+s+'\',this)">'+label+'</button>';
+    });
+    stEl.innerHTML=t;
+  }
+
+  function getRecFiltered(){
+    return recs.filter(r=>{
+      if(rSvc!=='all'){
+        const grp=svcGroups.find(g=>g.key===rSvc);
+        if(grp&&!grp.svcs.includes(r.Service))return false;
+        if(!grp&&r.Service!==rSvc)return false;
+      }
+      if(rSvcSub!=='all'&&r.Service!==rSvcSub)return false;
+      if(rCat!=='all'&&r.Category!==rCat)return false;
+      if(rSt!=='all'&&r.ImplementationStatus!==rSt)return false;
+      if(rQ&&!(r.Title+' '+r.Category+' '+r.Service).toLowerCase().includes(rQ))return false;
+      return true;
+    });
+  }
+
+  const _remUrls={
+    'AAD':'https://entra.microsoft.com',
+    'AzureAD':'https://entra.microsoft.com',
+    'MDATP':'https://security.microsoft.com/securitysettings',
+    'MDO':'https://security.microsoft.com/threatpolicy',
+    'MCAS':'https://security.microsoft.com/cloudapps/settings',
+    'MDA':'https://security.microsoft.com/cloudapps/settings',
+    'Azure ATP':'https://security.microsoft.com/settings/identities',
+    'MDI':'https://security.microsoft.com/settings/identities',
+    'MDE':'https://security.microsoft.com/securitysettings',
+
+    'Intune':'https://intune.microsoft.com',
+    'MIP':'https://compliance.microsoft.com',
+    'AppG':'https://compliance.microsoft.com',
+    'Purview':'https://compliance.microsoft.com',
+    'DLP':'https://compliance.microsoft.com',
+    'EXO':'https://admin.exchange.microsoft.com',
+    'Exchange':'https://admin.exchange.microsoft.com',
+    'SPO':'https://admin.microsoft.com/sharepoint',
+    'Admincenter':'https://admin.microsoft.com',
+  };
+  function renderRecs(){
+    const f=getRecFiltered(),tp=Math.max(1,Math.ceil(f.length/PS));
+    if(rPage>tp)rPage=tp;
+    const s=(rPage-1)*PS,e=Math.min(s+PS,f.length);
+    let h='';
+    for(let i=s;i<e;i++){
+      const r=f[i],imp=r.Improvement;
+      const ic=imp>=5?'var(--red)':imp>=2?'var(--yellow)':'var(--muted)';
+      const sb=r.ImplementationStatus==='Implemented'?badge('OK','green'):r.ImplementationStatus==='Partial'?badge('Parcial','yellow'):badge('Pendiente','red');
+      const rank=recs.indexOf(r)+1;
+      const svcKey=Object.keys(_remUrls).find(k=>r.Service&&r.Service.toLowerCase().includes(k.toLowerCase()));
+      const remLink=svcKey?'<a href="'+_remUrls[svcKey]+'" target="_blank" rel="noopener" title="Ir al portal: '+esc(r.Service)+'" style="color:var(--accent);text-decoration:none;font-size:13px">&#8599;</a>':'';
+      h+='<tr><td class="tc small muted">'+rank+'</td><td class="tc" style="font-weight:700;color:'+ic+'">+'+imp+'</td>';
+      h+='<td>'+esc(r.Title)+'</td><td class="small">'+esc(r.Category)+'</td><td class="small muted">'+esc(r.Service)+'</td>';
+      h+='<td class="tc">'+sb+'</td><td class="tc no-print" style="width:28px">'+remLink+'</td></tr>';
+    }
+    document.getElementById('recTbody').innerHTML=h;
+    const txt='Mostrando '+(e-s)+' de '+f.length+' recomendaciones ('+recs.length+' total)';
+    ['recCount','recCountBot'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=txt;});
+    ['recPgTop','recPgBot'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=pgHtml(rPage,tp,'r');});
+  }
+
+  window._pg.r=p=>{rPage=p;renderRecs();};
+  window._recFilter=()=>{rQ=document.getElementById('recSearch').value.toLowerCase();rPage=1;if(!rQ)resetDots();renderRecs();};
+  window._recCat=(c,btn)=>{rCat=c;rPage=1;document.querySelectorAll('#recTabs .tab').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active');renderRecs();};
+  window._recSt=(s,btn)=>{rSt=s;rPage=1;document.querySelectorAll('#recStatusTabs .tab').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active');renderRecs();};
+  // Product group click
+  window._recGrp=(g,btn)=>{
+    rSvc=g;rSvcSub='all';rPage=1;
+    document.querySelectorAll('#recSvcTabs .tab').forEach(t=>t.classList.remove('active'));
+    if(btn)btn.classList.add('active');
+    showDefSubs(g==='defender');
+    renderRecs();
+  };
+  // Defender sub-product click
+  window._recSub=(s,btn)=>{
+    rSvcSub=s;rPage=1;
+    document.querySelectorAll('#recSubTabs .tab').forEach(t=>t.classList.remove('active'));
+    if(btn)btn.classList.add('active');
+    renderRecs();
+  };
+  // Called from Postura cards — auto-navigate to recomendaciones + select correct group & sub
+  window._recSvc=(rawSvc,btn)=>{
+    // Find which group this service belongs to
+    const grp=svcGroups.find(g=>g.svcs.includes(rawSvc));
+    rSvc=grp?grp.key:'all';
+    rSvcSub=rawSvc;
+    rPage=1;
+    // Highlight group tab
+    document.querySelectorAll('#recSvcTabs .tab').forEach(t=>t.classList.remove('active'));
+    if(grp){document.querySelectorAll('#recSvcTabs .tab').forEach(t=>{if(t.textContent.includes(grp.label.slice(2)))t.classList.add('active');});}
+    // Show defender sub-tabs and select the right one
+    if(grp&&grp.key==='defender'){
+      showDefSubs(true);
+      document.querySelectorAll('#recSubTabs .tab').forEach(t=>{t.classList.remove('active');if(t.textContent.includes(defSubLabels[rawSvc]||rawSvc))t.classList.add('active');});
+    } else { showDefSubs(false); }
+    // Switch to recomendaciones tab
+    document.querySelectorAll('.main-tab').forEach(t=>{t.classList.remove('active');if(t.dataset.tab==='recomendaciones')t.classList.add('active');});
+    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display='none');
+    const rp=document.getElementById('tab-recomendaciones');if(rp)rp.style.display='block';
+    renderRecs();
+  };
+
+  // ── PRIORITY MAP ──────────────────────────────────────────────────────────
+  function buildPrioMap(){
+    const wrap=document.getElementById('prioMap');
+    if(!wrap)return;
+    const pending=recs.filter(r=>r.ImplementationStatus!=='Implemented');
+    const costX={Low:22,Medium:50,High:78};
+    const maxImp=Math.max(...pending.map(r=>+(r.Improvement)||0),1);
+    const catCol={Identity:'#5b9bf5',Device:'#34d399',Apps:'#fb923c',Data:'#a78bfa'};
+    let h='';
+    // Quadrant backgrounds
+    h+='<div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">';
+    h+='<div style="background:rgba(52,211,153,0.07);border-right:1px dashed rgba(255,255,255,0.08);border-bottom:1px dashed rgba(255,255,255,0.08)"></div>';
+    h+='<div style="background:rgba(91,155,245,0.07);border-bottom:1px dashed rgba(255,255,255,0.08)"></div>';
+    h+='<div style="background:rgba(255,255,255,0.01);border-right:1px dashed rgba(255,255,255,0.08)"></div>';
+    h+='<div style="background:rgba(248,113,113,0.05)"></div>';
+    h+='</div>';
+    // Center dividers
+    h+='<div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.07)"></div>';
+    h+='<div style="position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,0.07)"></div>';
+    // Quadrant labels
+    h+='<div style="position:absolute;left:10px;top:8px;font-size:10px;font-weight:700;color:#34d399;letter-spacing:.4px">&#9889; QUICK WINS</div>';
+    h+='<div style="position:absolute;right:10px;top:8px;font-size:10px;font-weight:700;color:#5b9bf5;letter-spacing:.4px">&#127919; ESTRAT\u00C9GICO</div>';
+    h+='<div style="position:absolute;left:10px;bottom:26px;font-size:10px;font-weight:600;color:var(--muted)">RELLENO</div>';
+    h+='<div style="position:absolute;right:10px;bottom:26px;font-size:10px;font-weight:600;color:var(--red)">&#9940; BAJO ROI</div>';
+    // Axis labels
+    h+='<div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase">Esfuerzo de implementaci\u00F3n \u2192</div>';
+    h+='<div style="position:absolute;left:6px;top:48%;transform:translateY(-50%) rotate(-90deg);transform-origin:center center;font-size:9px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap">\u2191 Impacto</div>';
+    // Axis tick labels
+    h+='<div style="position:absolute;left:22%;bottom:16px;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,0.28)">Bajo</div>';
+    h+='<div style="position:absolute;left:50%;bottom:16px;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,0.28)">Medio</div>';
+    h+='<div style="position:absolute;left:78%;bottom:16px;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,0.28)">Alto</div>';
+    // Dots
+    pending.forEach((r,idx)=>{
+      const xBase=costX[r.ImplementationCost]||50;
+      const imp=+(r.Improvement)||0;
+      const yPct=82-(imp/maxImp*68);
+      // Jitter: spread overlapping dots using title char codes
+      const jx=((r.Title.charCodeAt(0)+(r.Title.charCodeAt(3)||7)*13)%16)-8;
+      const jy=((r.Title.charCodeAt(1)||5)*11%12)-6;
+      const x=Math.min(Math.max(xBase+jx,4),96);
+      const y=Math.min(Math.max(yPct+jy,5),88);
+      const col=catCol[r.Category]||'#888';
+      const isPartial=r.ImplementationStatus==='Partial';
+      const ds=isPartial
+        ?'width:13px;height:13px;border:2px solid '+col+';background:'+col.replace('#','#')+'33'
+        :'width:13px;height:13px;background:'+col+';box-shadow:0 0 6px '+col+'66';
+      const tt=r.Title.replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+      h+='<div class="prio-dot" style="position:absolute;left:'+x+'%;top:'+y+'%;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;transition:transform .12s,filter .12s;'+ds+'"'
+        +' onmouseenter="window._showPT(event,this)" onmouseleave="window._hidePT()"'
+        +' onclick="window._prioClick(this.dataset.t)"'
+        +' data-t="'+tt+'" data-i="'+imp+'" data-c="'+(r.ImplementationCost||'')+'" data-s="'+r.ImplementationStatus+'" data-cat="'+(r.Category||'')+'"'
+        +' onmouseenter="this.style.transform=\'translate(-50%,-50%) scale(1.6)\';window._showPT(event,this)" onmouseleave="this.style.transform=\'translate(-50%,-50%)\';window._hidePT()"></div>';
+    });
+    // Floating tooltip container (fixed-positioned, outside flow)
+    if(!document.getElementById('prioTip')){
+      const tp=document.createElement('div');
+      tp.id='prioTip';
+      tp.style.cssText='display:none;position:fixed;background:#13152a;border:1px solid rgba(255,255,255,0.18);border-radius:8px;padding:10px 13px;font-size:11px;z-index:9999;max-width:300px;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.6)';
+      document.body.appendChild(tp);
+    }
+    wrap.innerHTML=h;
+    // Build legend
+    const leg=document.getElementById('prioMapLegend');
+    if(leg){
+      let lg=Object.entries(catCol).map(([cat,col])=>'<span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--fg)"><span style="width:9px;height:9px;border-radius:50%;background:'+col+'"></span>'+(catLabels[cat]||cat)+'</span>').join('');
+      lg+='<span style="font-size:10px;color:var(--muted);padding-left:10px;border-left:1px solid var(--border)">&#9679; Pendiente&ensp;&#9711; Parcial</span>';
+      leg.innerHTML=lg;
+    }
+  }
+  window._showPT=function(e,el){
+    const t=document.getElementById('prioTip');if(!t)return;
+    const statusLabel={'Partial':'Parcial','NotImplemented':'Pendiente'}[el.dataset.s]||el.dataset.s;
+    t.innerHTML='<div style="font-weight:700;color:#fff;margin-bottom:5px;line-height:1.35">'+esc(el.dataset.t)+'</div>'
+      +'<div style="color:#aaa">Impacto: <b style="color:#fff">+'+el.dataset.i+' pts</b>&ensp;Esfuerzo: <b style="color:#fff">'+el.dataset.c+'</b></div>'
+      +'<div style="color:#aaa;margin-top:3px">'+(catLabels[el.dataset.cat]||el.dataset.cat)+'&nbsp;&middot;&nbsp;'+statusLabel+'</div>'
+      +'<div style="color:var(--accent);font-size:10px;margin-top:5px">&#x1F4CC; Clic para filtrar tabla &#x2193;</div>';
+    t.style.display='block';t.style.left=(e.clientX+16)+'px';t.style.top=(e.clientY-14)+'px';
+  };
+  window._hidePT=function(){const t=document.getElementById('prioTip');if(t)t.style.display='none';};
+  function resetDots(){document.querySelectorAll('.prio-dot').forEach(d=>{d.style.opacity='1';d.style.outline='none';});}
+  window._prioClick=function(title){
+    const el=document.getElementById('recSearch');if(!el)return;
+    // Toggle: si ya está filtrado por este mismo, limpiar
+    if(el.value===title){el.value='';window._recFilter();resetDots();return;}
+    el.value=title;window._recFilter();
+    // Resaltar punto activo, atenuar el resto
+    document.querySelectorAll('.prio-dot').forEach(d=>{
+      d.style.opacity=d.dataset.t===title?'1':'0.3';
+      d.style.outline=d.dataset.t===title?'2px solid rgba(255,255,255,0.7)':'none';
+    });
+    el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  buildPrioMap();
+  renderRecs();
+}
+
+// ============================================================================
+// WASTE TABLE (paginated)
+// ============================================================================
+(function(){
+  if(!_WD||!_WD.length)return;
+  const PS=10;
+  let page=1,q='';
+  const idx=_WD.map(w=>(w[0]+' '+w[1]+' '+w[4]+' '+w[5]).toLowerCase());
+
+  function getF(){return _WD.filter((_,i)=>!q||idx[i].includes(q));}
+
+  function renderW(){
+    const f=getF(),tp=Math.max(1,Math.ceil(f.length/PS));
+    if(page>tp)page=tp;
+    const s=(page-1)*PS,e=Math.min(s+PS,f.length);
+    let h='';
+    for(let i=s;i<e;i++){
+      const w=f[i];
+      const dot=w[2]?'<span class="dot dot-on"></span>':'<span class="dot dot-off"></span>';
+      const reasons=w[5].split('|').map(r=>{
+        r=r.trim();
+        if(r.includes('DisabledPlans'))return badge(r,'yellow');  // planes config warning
+        if(r.includes('Disabled'))return badge(r,'red');            // account disabled
+        if(r.includes('Inactive'))return badge(r,'yellow');
+        if(r.includes('Overlap'))return badge(r,'blue');
+        return badge(r,'default');
+      }).join(' ');
+      h+='<tr><td>'+esc(w[0])+'</td><td class="small muted">'+esc(w[1])+'</td>';
+      h+='<td class="tc">'+dot+'</td><td class="tc small">'+esc(w[3])+'</td>';
+      h+='<td class="small sku-cell" title="'+esc(w[4]).replace(/\s*\|\s*/g,'\\n')+'">'+esc(w[4])+'</td>';
+      h+='<td class="small">'+reasons+'</td></tr>';
+    }
+    document.getElementById('wasteTbody').innerHTML=h;
+    const txt='Mostrando '+(e-s)+' de '+f.length;
+    const el=document.getElementById('wasteCount');if(el)el.textContent=txt;
+    ['wastePgTop','wastePgBot'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=pgHtml(page,tp,'w');});
+  }
+
+  window._pg.w=p=>{page=p;renderW();};
+  window._wasteFilter=()=>{q=document.getElementById('wasteSearch').value.toLowerCase();page=1;renderW();};
+  renderW();
+})();
+
+// ============================================================================
+// DUPLICATES TABLE (paginated)
+// ============================================================================
+(function(){
+  if(!_DD||!_DD.length)return;
+  const PS=10;
+  let page=1,q='';
+  const idx=_DD.map(d=>(d[0]+' '+d[1]+' '+d[2]+' '+d[3]).toLowerCase());
+
+  function getF(){return _DD.filter((_,i)=>!q||idx[i].includes(q));}
+
+  function renderD(){
+    const f=getF(),tp=Math.max(1,Math.ceil(f.length/PS));
+    if(page>tp)page=tp;
+    const s=(page-1)*PS,e=Math.min(s+PS,f.length);
+    let h='';
+    for(let i=s;i<e;i++){
+      const d=f[i];
+      const skus=d[3].split('|').map(s=>badge(s.trim(),'blue')).join(' ');
+      h+='<tr><td>'+esc(d[0])+'</td><td class="small muted">'+esc(d[1])+'</td>';
+      h+='<td>'+badge(d[2],'yellow')+'</td>';
+      h+='<td class="small">'+skus+'</td></tr>';
+    }
+    const tbody=document.getElementById('dupTbody');if(tbody)tbody.innerHTML=h;
+    const txt='Mostrando '+(e-s)+' de '+f.length;
+    const el=document.getElementById('dupCount');if(el)el.textContent=txt;
+    ['dupPgTop','dupPgBot'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=pgHtml(page,tp,'d');});
+  }
+
+  window._pg.d=p=>{page=p;renderD();};
+  window._dupFilter=()=>{q=document.getElementById('dupSearch').value.toLowerCase();page=1;renderD();};
+  renderD();
+})();
+
+// ============================================================================
+// USERS TABLE (paginated, filterable)
+// ============================================================================
+(function(){
+  if(!_UD||!_UD.length)return;
+  const PS=_UD.length>5000?25:10,tbody=document.getElementById('userTbody');
+  let page=1,statusF='all',deptF='all',searchQ='',skuFilterVals=[],skuMatchAll=false,andFilters=new Set(),initialized=false;
+  const searchIdx=_UD.map(u=>(u[0]+' '+u[1]+' '+u[2]+' '+u[3]).toLowerCase());
+
+  function getFiltered(){
+    const res=[];
+    for(let i=0;i<_UD.length;i++){
+      const u=_UD[i],st=u[6];
+      if(searchQ&&!searchIdx[i].includes(searchQ))continue;
+      if(statusF==='active'&&(st&3))continue;
+      if(statusF==='disabled'&&!(st&1))continue;
+      if(statusF==='inactive'&&!(st&2))continue;
+      if(statusF==='waste'&&!(st&4))continue;
+      if(andFilters.has('disPlans')&&!(st&16))continue;
+      if(deptF!=='all'&&u[2]!==deptF)continue;
+      if(skuFilterVals.length>0){
+        const us=u[3];
+        if(skuMatchAll){if(!skuFilterVals.every(s=>us.indexOf(s)!==-1))continue;}
+        else{if(!skuFilterVals.some(s=>us.indexOf(s)!==-1))continue;}
+      }
+      res.push(u);
+    }
+    return res;
+  }
+
+  function renderRow(u){
+    const st=u[6],mt=u[7],ca=u[8],cats=u[9],wf=u[10],dp=u[11];
+    let cls=(st&1)?'row-disabled':((st&2)?'row-inactive':'');
+    let badges=ca?'<span class="badge b-green" style="font-size:9px">CA</span> ':'';
+    badges+=mt===1?'<span class="badge b-blue" style="font-size:9px">G</span>':mt===2?'<span class="badge b-yellow" style="font-size:9px">G+D</span>':'<span class="badge b-default" style="font-size:9px">D</span>';
+    if(st&8)badges+=' <span class="badge b-yellow" style="font-size:9px" title="Planes deshab.: '+esc(dp)+'">&#9888;</span>';
+    if(st&4)badges+=' <span class="dot dot-off" title="'+esc(wf)+'"></span>';
+    let c='<td class="sticky-name">'+esc(u[0])+' '+badges+'</td>';
+    c+='<td class="small muted">'+esc(u[1])+'</td>';
+    c+='<td class="small">'+esc(u[2])+'</td>';
+    c+='<td class="small sku-cell" title="'+esc(u[3]).replace(/\s*\|\s*/g,'\\n')+'">'+esc(u[3])+'</td>';
+    c+='<td class="tc small">'+esc(u[4])+'</td>';
+    const days=u[5];
+    c+='<td class="tc small">'+(days<0?'<span class="muted">N/A</span>':days)+'</td>';
+    for(let i=0;i<cats.length;i++){
+      const v=cats[i],fn=_CM[i]||'';
+      const sep=_CS.includes(i)?' td-sep':'';
+      const title=v===1?fn+' - Activo':v===-1?fn+' - Deshabilitado':fn+' - No disponible';
+      const dot=v===1?'dot-on':v===-1?'dot-off':'dot-na';
+      c+='<td class="tc'+sep+'"><span class="dot '+dot+'" title="'+esc(title)+'"></span></td>';
+    }
+    return'<tr class="'+cls+'">'+c+'</tr>';
+  }
+
+  function render(){
+    const f=getFiltered(),tp=Math.max(1,Math.ceil(f.length/PS));
+    if(page>tp)page=tp;
+    const s=(page-1)*PS,e=Math.min(s+PS,f.length);
+    let h='';for(let i=s;i<e;i++)h+=renderRow(f[i]);
+    tbody.innerHTML=h;
+    const shown=e-s,total=_UD.length,ft=f.length;
+    const txt=ft===total?'Mostrando '+shown+' de '+total+' usuarios':'Mostrando '+shown+' de '+ft+' filtrados ('+total+' total)';
+    ['userCount','userCountBottom'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=txt;});
+    ['pgTop','pgBottom'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=pgHtml(page,tp,'u');});
+  }
+
+  window._pg.u=p=>{page=p;render();};
+  window.applyFilters=()=>{searchQ=document.getElementById('userSearch').value.toLowerCase();page=1;render();};
+  window.applySkuFilter=()=>{skuMatchAll=document.getElementById('skuMatchAll').checked;page=1;render();};
+  window.toggleAndFilter=(f,btn)=>{
+    if(andFilters.has(f)){andFilters.delete(f);btn.classList.remove('active');}else{andFilters.add(f);btn.classList.add('active');}
+    page=1;render();
+  };
+  window.setStatusFilter=(f,btn)=>{statusF=f;page=1;document.querySelectorAll('#statusFilters .tab').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active');render();};
+  window.filterByDept=d=>{deptF=d;page=1;const sel=document.getElementById('deptSelect');if(sel)sel.value=d;render();};
+  window.toggleSkuFilter=(btn,sku)=>{
+    const idx=skuFilterVals.indexOf(sku);
+    if(idx===-1){skuFilterVals.push(sku);btn.classList.add('active');}else{skuFilterVals.splice(idx,1);btn.classList.remove('active');}
+    document.querySelector('#skuChips .tab:first-child').classList.toggle('active',skuFilterVals.length===0);
+    skuMatchAll=document.getElementById('skuMatchAll').checked;page=1;render();
+  };
+  window.clearSkuFilter=()=>{skuFilterVals=[];document.querySelectorAll('#skuChips .tab').forEach((t,i)=>{t.classList.toggle('active',i===0);});page=1;render();};
+  // Deferred init: render users table only when Usuarios tab is first opened
+  window._initUsersTab=()=>{if(!initialized){initialized=true;render();}};
+  // If usuarios tab is the default, render immediately
+  if(document.getElementById('tab-usuarios')&&document.getElementById('tab-usuarios').classList.contains('active')){render();initialized=true;}
+})();
+
+// ============================================================================
+// TAB NAVIGATION SYSTEM
+// ============================================================================
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('tab-' + tabId);
+  if (panel) { panel.classList.add('active'); panel.scrollIntoView({behavior:'smooth',block:'start'}); }
+  if (btn) btn.classList.add('active');
+  history.replaceState(null, '', '#' + tabId);
+  // Lazy init: render users table on first visit
+  if (tabId === 'usuarios' && window._initUsersTab) window._initUsersTab();
+}
+
+// Bind tab click handlers
+document.querySelectorAll('.main-tab').forEach(btn => {
+  btn.addEventListener('click', function() { switchTab(this.dataset.tab, this); });
+});
+
+// Handle URL hash on load
+(function() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const btn = document.querySelector('.main-tab[data-tab="' + hash + '"]');
+    if (btn) { setTimeout(() => switchTab(hash, btn), 100); }
+  }
+})();
+
+// ============================================================================
+// CSV EXPORT FUNCTIONS
+// ============================================================================
+function downloadCSV(csv, filename) {
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function exportTableToCSV(tableId, filename) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  let csv = '\ufeff';
+  table.querySelectorAll('tr').forEach(row => {
+    const cols = row.querySelectorAll('th, td');
+    const rowData = Array.from(cols).map(col => {
+      let text = col.innerText.replace(/"/g, '""').replace(/[\r\n]+/g, ' ').trim();
+      return '"' + text + '"';
+    });
+    csv += rowData.join(',') + '\r\n';
+  });
+  downloadCSV(csv, filename);
+}
+
+function exportWasteCSV() {
+  let csv = '\ufeff"Nombre","UPN","Activa","Ultimo Sign-In","SKUs","Motivo"\r\n';
+  _WD.forEach(w => {
+    csv += '"' + [w[0],w[1],w[2]?'Si':'No',w[3],w[4],w[5]].map(v => String(v||'').replace(/"/g,'""')).join('","') + '"\r\n';
+  });
+  downloadCSV(csv, 'Licencias_Revisar.csv');
+}
+
+function exportRecsCSV() {
+  if (!S || !S.AllRecommendations) return;
+  let csv = '\ufeff"Impacto","Recomendacion","Categoria","Servicio","Estado"\r\n';
+  S.AllRecommendations.forEach(r => {
+    csv += '"' + ['+'+r.Improvement,r.Title,r.Category,r.Service,r.ImplementationStatus].map(v => String(v||'').replace(/"/g,'""')).join('","') + '"\r\n';
+  });
+  downloadCSV(csv, 'Recomendaciones.csv');
+}
+
+function exportDupsCSV() {
+  let csv = '\ufeff"Nombre","UPN","Producto Duplicado","Provisto por SKUs"\r\n';
+  _DD.forEach(d => {
+    csv += '"' + [d[0],d[1],d[2],d[3]].map(v => String(v||'').replace(/"/g,'""')).join('","') + '"\r\n';
+  });
+  downloadCSV(csv, 'Duplicados.csv');
+}
+
+function exportUsersCSV() {
+  const h = ['Nombre','UPN','Departamento','SKUs','Ultimo Sign-In','Dias','Estado','Metodo','CA'];
+  _CM.forEach(c => h.push(c));
+  let csv = '\ufeff' + h.map(x => '"'+x+'"').join(',') + '\r\n';
+  _UD.forEach(u => {
+    const st=u[6],mt=u[7],ca=u[8],cats=u[9];
+    const estado=(st&1)?'Deshabilitado':(st&2)?'Inactivo':'Activo';
+    const metodo=mt===1?'Grupo':mt===2?'Mixto':'Directa';
+    const row=[u[0],u[1],u[2],u[3],u[4],u[5]<0?'N/A':u[5],estado,metodo,ca?'Si':'No'];
+    cats.forEach(v => row.push(v===1?'Activo':v===-1?'Deshabilitado':'N/A'));
+    csv += row.map(v => '"'+String(v||'').replace(/"/g,'""')+'"').join(',') + '\r\n';
+  });
+  downloadCSV(csv, 'Usuarios_Detalle.csv');
+}
+
+// ============================================================================
+// BOOTSTRAP — mejoras progresivas (renderAll ya fue llamado arriba)
+// ============================================================================
+} catch(e){ console.warn('[M365] Init error (non-fatal):', e); }
+
+</script>
+</body>
+</html>
