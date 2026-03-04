@@ -2,7 +2,7 @@
 
 Reporte HTML interactivo de seguridad y licenciamiento de Microsoft 365: licencias, adopción, Secure Score y recomendaciones.
 
-![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue)
+![PowerShell](https://img.shields.io/badge/PowerShell-7+%2B-blue)
 ![Graph API](https://img.shields.io/badge/Microsoft%20Graph-SDK-0078D4)
 ![Read Only](https://img.shields.io/badge/Tenant%20Impact-READ%20ONLY-green)
 ![Community](https://img.shields.io/badge/Project-Community-orange)
@@ -185,3 +185,4 @@ Disconnect-MgGraph
 ---
 
 > **Disclaimer:** Proyecto comunitario proporcionado "tal cual", sin garantías de ningún tipo. No es un producto oficial de Microsoft ni está respaldado por Microsoft. Los scripts son de solo lectura y no modifican la configuración del tenant. Siempre valida los resultados con la documentación oficial de Microsoft.
+
