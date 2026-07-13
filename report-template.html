@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es" data-report-version="4.2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>M365 Security Assessment</title>
+<style>
+:root{--ink:#17202a;--muted:#667383;--paper:#f4f1ea;--card:#fff;--line:#d9d5cc;--navy:#12304a;--blue:#176b87;--cyan:#39a9ad;--green:#16835d;--amber:#b36b00;--red:#bd2d35;--soft:#e9eef0;--shadow:0 12px 30px rgba(18,48,74,.08)}
+[data-theme=dark]{--ink:#ecf2f4;--muted:#a8b5bd;--paper:#10181e;--card:#18242c;--line:#30414b;--navy:#dcecf2;--blue:#5bb9d5;--cyan:#62d1cd;--green:#57c99a;--amber:#f1b75b;--red:#ff7f86;--soft:#22323b;--shadow:0 14px 34px rgba(0,0,0,.25)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 92% 3%,rgba(57,169,173,.13),transparent 28%),linear-gradient(135deg,var(--paper),color-mix(in srgb,var(--paper) 88%,var(--blue)));color:var(--ink);font-family:"Aptos","Segoe UI",sans-serif;min-height:100vh}button,input,select{font:inherit}.shell{max-width:1320px;margin:auto;padding:26px}.header{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;padding:26px 30px;background:linear-gradient(135deg,#102d44,#176b87 65%,#299699);color:#fff;border-radius:18px 18px 6px 6px;box-shadow:var(--shadow)}.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.78}.header h1{margin:5px 0 4px;font-family:"Aptos Display","Segoe UI",sans-serif;font-size:34px;line-height:1.05}.meta{font-size:12px;opacity:.78}.header-actions{display:flex;gap:8px}.btn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:inherit;border-radius:8px;padding:8px 12px;cursor:pointer}.btn:hover{background:rgba(255,255,255,.2)}.nav{position:sticky;top:0;z-index:5;display:flex;gap:2px;overflow:auto;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);border:1px solid var(--line);border-top:0;padding:7px;border-radius:0 0 12px 12px}.nav button{border:0;background:transparent;color:var(--muted);padding:9px 13px;border-radius:7px;white-space:nowrap;cursor:pointer;font-size:12px;font-weight:650}.nav button.active{background:var(--navy);color:var(--card)}.panel{display:none;padding:24px 0}.panel.active{display:block;animation:rise .24s ease-out}@keyframes rise{from{opacity:.25;transform:translateY(5px)}}.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:8px 0 14px}.section-head h2{margin:0;font-size:21px;font-family:"Aptos Display","Segoe UI",sans-serif;color:var(--navy)}.section-head p{margin:4px 0 0;color:var(--muted);font-size:12px;max-width:900px}.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:var(--shadow);min-width:0}.card h3{margin:0 0 12px;color:var(--navy);font-size:14px}.kpi{font-size:30px;font-weight:750;line-height:1;color:var(--navy)}.label{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.45}.rows{display:grid;gap:0}.row{display:flex;justify-content:space-between;gap:18px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}.row:last-child{border:0}.row span:first-child{color:var(--muted)}.row strong{text-align:right;overflow-wrap:anywhere}.product-list{display:grid;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}.product-item{font-size:10px;line-height:1.35;color:var(--ink);overflow-wrap:anywhere}.product-item span{color:var(--muted)}.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 8px;font-size:10px;font-weight:750;border:1px solid currentColor;white-space:nowrap}.success,.pass,.priority-low{color:var(--green);background:color-mix(in srgb,var(--green) 10%,transparent)}.warning,.partial,.priority-medium{color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent)}.error,.fail,.priority-high{color:var(--red);background:color-mix(in srgb,var(--red) 10%,transparent)}.unknown,.skipped,.notApplicable,.priority-complete,.priority-none{color:var(--muted);background:var(--soft)}.notice{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;padding:13px 15px;border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:9px;background:var(--card);font-size:12px;line-height:1.55}.notice strong{color:var(--navy);white-space:nowrap}.meter{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:8px}.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:inherit}.table-wrap{overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}table{border-collapse:collapse;width:100%;font-size:11px}th{position:sticky;top:0;background:var(--soft);color:var(--muted);text-align:left;text-transform:uppercase;letter-spacing:.06em;font-size:9px}th,td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}tbody tr:last-child td{border:0}.num{text-align:right;font-variant-numeric:tabular-nums}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.field{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px}.plan-col{border-top:4px solid var(--blue)}.plan-item{padding:11px 0;border-bottom:1px solid var(--line)}.plan-item:last-child{border:0}.plan-title{font-size:12px;font-weight:750;line-height:1.35}.plan-copy{font-size:10px;color:var(--muted);margin:4px 0;line-height:1.5}.owner{font-size:9px;color:var(--blue);font-weight:750;text-transform:uppercase;letter-spacing:.06em}.links{display:flex;flex-wrap:wrap;gap:8px}.link{display:inline-block;color:var(--blue);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--card);font-size:11px}.link:hover{border-color:var(--blue)}.check-list{margin:9px 0 0;padding-left:18px;color:var(--muted);font-size:11px;line-height:1.65}.check-list li::marker{color:var(--cyan)}.guide-card{border-top:4px solid var(--blue)}.guide-card .owner{margin-bottom:7px}.flow{display:flex;align-items:stretch;gap:8px;overflow:auto}.flow .card{min-width:230px;flex:1}.flow-arrow{align-self:center;color:var(--blue);font-size:20px;font-weight:750}.score-domain{border-top:4px solid var(--cyan)}.score-domain .kpi{font-size:25px}pre{margin:8px 0 0;padding:12px;white-space:pre-wrap;overflow:auto;background:#0c1921;color:#d9f0ef;border-radius:8px;font:10px/1.5 "SFMono-Regular",Consolas,monospace}.footer{padding:18px 0 28px;color:var(--muted);font-size:10px;text-align:center}.muted{color:var(--muted)}.risk-high{border-left:4px solid var(--red)}.risk-medium{border-left:4px solid var(--amber)}
+.priority-critical{color:var(--red);background:color-mix(in srgb,var(--red) 18%,transparent);font-weight:850}.trend-positive{color:var(--green)}.trend-negative{color:var(--red)}.trend-neutral{color:var(--muted)}.control-id{font:9px/1.4 "SFMono-Regular",Consolas,monospace;color:var(--blue);overflow-wrap:anywhere}.confidence{font-size:9px;color:var(--muted);white-space:nowrap}
+@media(max-width:900px){.g4,.g3,.g2{grid-template-columns:1fr}.header{grid-template-columns:1fr}.header-actions{justify-self:start}.shell{padding:12px}.header{padding:22px}.header h1{font-size:27px}.nav{top:0}}
+@media print{body{background:#fff}.shell{max-width:none;padding:0}.header{box-shadow:none;border-radius:0}.nav,.header-actions,.toolbar,.no-print{display:none!important}.panel{display:block!important;break-before:page}.panel:first-of-type{break-before:auto}.card,.table-wrap{box-shadow:none;break-inside:avoid}.link{color:#000}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <div><div class="eyebrow">Security posture · licensing · operations</div><h1>Microsoft 365 Security Assessment</h1><div class="meta" id="headerMeta"></div></div>
+    <div class="header-actions no-print"><button class="btn" id="themeBtn">Tema</button><button class="btn" id="printBtn">Exportar PDF</button></div>
+  </header>
+  <nav class="nav no-print" id="nav">
+    <button data-tab="summary" class="active">Resumen</button><button data-tab="posture">Postura</button><button data-tab="licensing">Licenciamiento</button><button data-tab="recommendations">Recomendaciones</button><button data-tab="plan">Plan 30/60/90</button><button data-tab="operations">Guía operacional</button>
+  </nav>
+
+  <main>
+    <section class="panel active" id="summary"><div id="summaryBody"></div></section>
+    <section class="panel" id="posture"><div id="postureBody"></div></section>
+    <section class="panel" id="licensing"><div id="licensingBody"></div></section>
+    <section class="panel" id="recommendations">
+      <div class="section-head"><div><h2>Recomendaciones</h2><p>Controles de Microsoft Secure Score. La priorización es orientativa y debe validarse contra riesgo, impacto y dependencias.</p></div></div>
+      <div class="toolbar no-print"><input class="field" id="recSearch" placeholder="Buscar control"><select class="field" id="recStatus"><option value="">Todos los estados</option><option>NotImplemented</option><option>Partial</option><option>Implemented</option><option>Unknown</option></select><select class="field" id="recPriority"><option value="">Todas las prioridades</option><option value="Critical">Crítica</option><option value="High">Alta</option><option value="Medium">Media</option><option value="Low">Baja</option><option value="Complete">Completada</option></select><select class="field" id="recSort"><option value="priority">Prioridad del assessment</option><option value="gain">Mayor ganancia primero</option><option value="title">Nombre del control</option></select><button class="field" id="recCsv">Exportar CSV</button></div>
+      <div id="recommendationsBody"></div>
+    </section>
+    <section class="panel" id="plan"><div id="planBody"></div></section>
+    <section class="panel" id="operations"><div id="operationsBody"></div></section>
+  </main>
+  <footer class="footer">M365 Security Assessment v4.2 · Read-only · Artefacto confidencial · Proyecto comunitario no oficial de Microsoft</footer>
+</div>
+
+<script>const D=__REPORT_DATA__;</script>
+<script>
+(() => {
+'use strict';
+const L=D.lic||{}, A=D.adopt||{}, S=D.score||{}, META=D.meta||{}, FINDINGS=D.findings||[], PROFILE=D.profile||{}, TREND=D.trend||[];
+const $=id=>document.getElementById(id);
+const n=(tag,cls,text)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=String(text);return x};
+const add=(p,...xs)=>{xs.flat().filter(Boolean).forEach(x=>p.appendChild(x));return p};
+const fmt=v=>v===null||v===undefined?'N/D':Number.isFinite(Number(v))?Number(v).toLocaleString('es-CL'):String(v);
+const pct=v=>{const x=Number(v);return v===null||v===undefined||!Number.isFinite(x)?'N/D':`${x.toFixed(x%1?1:0)}%`};
+const statusLabel=s=>({success:'Disponible',warning:'Parcial',error:'Error',unknown:'Sin datos',skipped:'Omitido',notApplicable:'No aplica'}[s]||'Sin datos');
+const badge=s=>n('span',`badge ${s||'unknown'}`,statusLabel(s));
+const moduleStatus=name=>A.ModuleStatus&&A.ModuleStatus[name]?A.ModuleStatus[name]:{status:'unknown',message:'Sin evidencia de recolección.'};
+const moduleLabel=name=>({GraphConnection:'Conexión Microsoft Graph',ConditionalAccess:'Conditional Access',SecurityDefaults:'Security Defaults',GlobalAdmins:'Global Administrators',MFA_SSPR:'MFA y SSPR',RiskyUsers:'Identidades de riesgo',PIM:'Privileged Identity Management',AccessReviews:'Access Reviews',MDE:'Defender for Endpoint',MDO:'Defender for Office 365',MDA:'Defender for Cloud Apps',MDI:'Defender for Identity',Purview:'Microsoft Purview',Intune:'Microsoft Intune',Copilot:'Microsoft 365 Copilot'}[name]||name);
+const categoryLabel=value=>({Identity:'Identidad',Device:'Dispositivos',Apps:'Aplicaciones',Data:'Datos',Infrastructure:'Infraestructura'}[value]||value||'Sin categoría');
+const capLabel=value=>({Entra_ID_P1:'Entra ID P1',Entra_ID_P2:'Entra ID P2',Entra_ID_Governance:'Entra ID Governance',MDE_P1:'Defender for Endpoint P1',MDE_P2:'Defender for Endpoint P2',MDO_P1:'Defender for Office 365 P1',MDO_P2:'Defender for Office 365 P2',MDA:'Defender for Cloud Apps',MDI:'Defender for Identity',Intune_P1:'Intune P1',Intune_P2:'Intune P2',Purview_AIP_P1:'AIP P1',Purview_AIP_P2:'AIP P2',Purview_RMS_Basic:'Rights Management básico',Copilot_M365:'Microsoft 365 Copilot'}[value]||String(value||'').replaceAll('_',' '));
+const priorityBand=r=>r.AssessmentPriorityBand||r.PriorityBand||((r.DataQuality==='invalid'||r.Improvement==null)?'NotPrioritized':r.ImplementationStatus==='Implemented'?'Complete':Number(r.Improvement)>=5?'High':Number(r.Improvement)>=2?'Medium':Number(r.Improvement)>0?'Low':'NotPrioritized');
+const priorityLabel=p=>({Critical:'Crítica',High:'Alta',Medium:'Media',Low:'Baja',Complete:'Completada',NotPrioritized:'Sin priorizar'}[p]||'Sin priorizar');
+const priorityBadge=r=>{const p=priorityBand(r);return n('span',`badge priority-${({Critical:'critical',High:'high',Medium:'medium',Low:'low',Complete:'complete'}[p]||'none')}`,priorityLabel(p))};
+const microsoftLevel=value=>{const key=String(value??'').trim().toLowerCase();return({low:'Bajo',moderate:'Medio',medium:'Medio',high:'Alto'}[key]||null)};
+const effortImpact=r=>{const effort=microsoftLevel(r.ImplementationCost),impact=microsoftLevel(r.UserImpact),parts=[];if(effort)parts.push(`Esfuerzo: ${effort}`);if(impact)parts.push(`Impacto: ${impact}`);return parts.length?parts.join(' · '):'N/D'};
+const heading=(title,copy)=>{const h=n('div','section-head'),box=n('div');add(box,n('h2','',title),n('p','',copy));add(h,box);return h};
+const card=(title)=>{const c=n('article','card');add(c,n('h3','',title));return c};
+const row=(label,value)=>{const r=n('div','row');add(r,n('span','',label),n('strong','',value));return r};
+const meter=(value)=>{const m=n('div','meter'),i=n('i');i.style.width=`${Math.max(0,Math.min(100,Number(value)||0))}%`;add(m,i);return m};
+const notice=(title,copy)=>{const x=n('div','notice');add(x,n('strong','',title),n('span','',copy));return x};
+const link=(label,url)=>{const a=n('a','link',label);a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.referrerPolicy='no-referrer';return a};
+const list=items=>{const ul=n('ul','check-list');(items||[]).forEach(item=>add(ul,n('li','',item)));return ul};
+
+function setup(){
+  const date=L.GeneratedAt||A.GeneratedAt||S.GeneratedAt||'';
+  $('headerMeta').textContent=`Run ${META.RunId||'N/D'} · ${date} · Perfil ${PROFILE.Name||'N/D'} ${PROFILE.Version||''} · ${META.PrivacyProfile==='Shareable'?'Reporte anonimizado':'Uso interno'} · Integridad ${META.IntegrityStatus||'N/D'}`;
+  document.querySelectorAll('#nav button').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+  $('printBtn').addEventListener('click',()=>window.print());
+  $('themeBtn').addEventListener('click',toggleTheme);
+  try{if(localStorage.getItem('m365_theme_v4')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}
+  $('recSearch').addEventListener('input',renderRecommendations);
+  $('recStatus').addEventListener('change',renderRecommendations);
+  $('recPriority').addEventListener('change',renderRecommendations);
+  $('recSort').addEventListener('change',renderRecommendations);
+  $('recCsv').addEventListener('click',exportRecommendations);
+  renderSummary();renderPosture();renderLicensing();renderRecommendations();renderPlan();renderOperations();
+  const hash=location.hash.replace('#','');if($(hash)&&$(hash).classList.contains('panel'))switchTab(hash);
+}
+function switchTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));history.replaceState(null,'',`#${id}`)}
+function toggleTheme(){const dark=document.documentElement.dataset.theme==='dark';if(dark)delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme='dark';try{localStorage.setItem('m365_theme_v4',dark?'light':'dark')}catch(e){}}
+
+function renderSecureScoreBreakdown(root){
+  const cats=(S.Categories||[]).filter(x=>x&&x.Category);
+  if(!S.Score&&!cats.length){add(root,notice('Secure Score sin datos','El módulo no produjo una puntuación verificable en esta corrida.'));return}
+  add(root,heading('Secure Score por dominio','Desglose por categoría de control de Microsoft Secure Score. Permite ver dónde existe mayor brecha; no representa cobertura de licencia ni madurez completa del workload.'));
+  const g=n('div','grid g4');
+  cats.slice().sort((a,b)=>(Number(a.PctScore)||0)-(Number(b.PctScore)||0)).forEach(x=>{const c=card(categoryLabel(x.Category));c.classList.add('score-domain');add(c,n('div','kpi',pct(x.PctScore)),n('div','label',`${fmt(x.Score)} de ${fmt(x.MaxScore)} puntos · ${fmt(x.Controls)} controles`),meter(x.PctScore));add(g,c)});
+  add(root,g);
+  const comp=S.Score&&S.Score.Comparative||{},parts=[];
+  if(comp.AllTenants!=null)parts.push(`todos los tenants: ${pct(comp.AllTenants)}`);
+  if(comp.TotalSeats!=null)parts.push(`tenants de tamaño comparable: ${pct(comp.TotalSeats)}`);
+  if(comp.IndustryTypes!=null)parts.push(`industria comparable: ${pct(comp.IndustryTypes)}`);
+  if(parts.length)add(root,notice('Benchmark de Microsoft',`Puntuación del tenant: ${pct(S.Score.Pct)}; ${parts.join('; ')}. La comparación es contexto, no un objetivo de riesgo aceptable.`));
+}
+
+function metricSeries(key){return TREND.slice().sort((a,b)=>String(a.Date).localeCompare(String(b.Date))).filter(x=>x&&x[key]!==null&&x[key]!==undefined)}
+function renderTrends(root){
+  if(!TREND.length)return;
+  add(root,heading('Evolución y regresiones',`Historial agregado de ${TREND.length} corrida(s). Solo se calculan deltas cuando existen al menos dos valores válidos para la misma métrica.`));
+  const metrics=[
+    {key:'ScorePct',label:'Secure Score',format:pct,good:'up'},
+    {key:'MfaCapablePct',label:'MFA capable',format:pct,good:'up'},
+    {key:'RiskyHigh',label:'Riesgo alto',format:fmt,good:'down'},
+    {key:'GlobalAdmins',label:'Global Admins',format:fmt,good:'down'},
+    {key:'CaEnabled',label:'CA habilitadas',format:fmt,good:'context'},
+    {key:'LicensedUsers',label:'Usuarios licenciados',format:fmt,good:'context'}
+  ];
+  const g=n('div','grid g3');
+  metrics.forEach(m=>{const xs=metricSeries(m.key);if(!xs.length)return;const c=card(m.label),latest=xs[xs.length-1],previous=xs.length>1?xs[xs.length-2]:null,delta=previous?Number(latest[m.key])-Number(previous[m.key]):null;add(c,n('div','kpi',m.format(latest[m.key])),n('div','label',`Última evidencia: ${latest.Date||'N/D'}`));if(delta!==null&&Number.isFinite(delta)){const good=m.good==='context'?null:m.good==='up'?delta>=0:delta<=0,cls=delta===0?'trend-neutral':good?'trend-positive':'trend-negative',prefix=delta>0?'+':'';add(c,n('div',`label ${cls}`,`Delta: ${prefix}${delta.toFixed(delta%1?1:0)} desde ${previous.Date}`))}else add(c,n('div','label','Sin baseline comparable.'));add(g,c)});add(root,g);
+  const regressions=[];
+  const compare=(key,test,label)=>{const xs=metricSeries(key);if(xs.length>1){const prev=xs[xs.length-2][key],curr=xs[xs.length-1][key];if(test(Number(prev),Number(curr)))regressions.push(`${label}: ${prev} → ${curr}.`)}};
+  compare('ScorePct',(p,c)=>c<p,'Secure Score disminuyó');
+  compare('MfaCapablePct',(p,c)=>c<p,'MFA capable disminuyó');
+  compare('RiskyHigh',(p,c)=>c>p,'Identidades de riesgo alto aumentaron');
+  compare('GlobalAdmins',(p,c)=>c>p,'Global Administrators aumentaron');
+  const legacy=metricSeries('LegacyAuthBlockPolicyDetected');if(legacy.length>1&&legacy[legacy.length-2].LegacyAuthBlockPolicyDetected===true&&legacy[legacy.length-1].LegacyAuthBlockPolicyDetected===false)regressions.push('Dejó de detectarse la política de bloqueo de autenticación heredada.');
+  const evidence=metricSeries('EvidenceComplete');if(evidence.length>1&&evidence[evidence.length-2].EvidenceComplete===true&&evidence[evidence.length-1].EvidenceComplete===false)regressions.push('La última corrida perdió evidencia completa.');
+  add(root,notice(regressions.length?'Regresiones para revisar':'Sin regresiones automáticas',regressions.length?regressions.join(' '):'No se detectaron deterioros entre los últimos valores comparables. Esto no reemplaza validación de cambios en los portales.'));
+}
+
+function renderSummary(){
+  const root=$('summaryBody');root.replaceChildren();
+  add(root,heading('Resumen ejecutivo','Foto agregada de postura y entitlements. Un estado desconocido nunca se interpreta como cumplimiento.'));
+  const hasStatus=Boolean(A.ModuleStatus),statuses=hasStatus?Object.values(A.ModuleStatus):[];
+  const failed=statuses.filter(x=>['error','unknown'].includes(x.status)).length+(hasStatus?0:1), partial=statuses.filter(x=>x.status==='warning').length;
+  add(root,notice('Alcance y confianza',`${statuses.length} módulos reportaron estado; ${partial} parciales y ${failed} sin evidencia. El reporte no demuestra ausencia de riesgo ni reemplaza validación en los portales.`));
+  const top=n('div','grid g4');
+  const score=card('Secure Score');add(score,n('div','kpi',S.Score?pct(S.Score.Pct):'N/D'),n('div','label',S.Score?`${fmt(S.Score.Current)} de ${fmt(S.Score.Max)} puntos`:'Módulo sin datos'));
+  const users=card('Usuarios licenciados');add(users,n('div','kpi',fmt(L.TotalLicensedUsers)),n('div','label',`de ${fmt(L.TotalTenantUsers)} objetos de usuario`));
+  const skus=card('SKUs activos');add(skus,n('div','kpi',fmt((L.SKUs||[]).filter(x=>Number(x.Total)>0).length)),n('div','label','Entitlements detectados por Graph'));
+  const evidence=card('Calidad de evidencia');add(evidence,n('div','kpi',failed?'Revisar':partial?'Parcial':'OK'),n('div','label',failed?'Hay módulos sin evidencia':partial?'Hay resultados incompletos':'Fuentes disponibles'));
+  add(top,score,users,skus,evidence);add(root,top);
+  const lower=n('div','grid g2');
+  const lic=card('Licenciamiento'),es=L.SecurityEntitlementSummary||{},ents=es.TopSecurityEntitlements||[],activeSkus=(L.SKUs||[]).filter(x=>Number(x.Total)>0),securitySkuCount=Number(es.SecurityRelevantSkus)||0;add(lic,row('SKUs activos',fmt(activeSkus.length)),row('Con capacidades de seguridad',fmt(securitySkuCount)),row('Asignaciones base E5',Number(es.CoreE5Assigned)>0?fmt(es.CoreE5Assigned):'No detectado'),row('Asignaciones base E3',Number(es.CoreE3Assigned)>0?fmt(es.CoreE3Assigned):'No detectado'),row('Seats libres',fmt(activeSkus.reduce((a,x)=>a+Math.max(0,Number(x.Unassigned)||0),0))));const productPreview=n('div','product-list');add(productPreview,n('div','owner','Productos principales'));ents.slice(0,3).forEach(x=>{const item=n('div','product-item');add(item,n('strong','',x.FriendlyName||x.SKU_PartNumber),n('span','',` · ${x.SKU_PartNumber||'N/D'} · ${fmt(x.Assigned)} asignadas`));add(productPreview,item)});const hiddenProducts=Math.max(0,securitySkuCount-Math.min(3,ents.length));if(hiddenProducts>0)add(productPreview,n('div','product-item muted',`+${fmt(hiddenProducts)} producto(s) adicional(es); ver detalle en Licenciamiento.`));else if(!ents.length)add(productPreview,n('div','product-item muted','Sin productos de seguridad clasificados.'));add(lic,productPreview);
+  const id=card('Identidad y acceso'),m=A.Entra&&A.Entra.MFA,ca=A.Entra&&A.Entra.ConditionalAccess,ru=A.Entra&&A.Entra.RiskyUsers;add(id,row('MFA capable',m?pct(m.PctCapable):'N/D'),row('Políticas CA activas',ca?fmt(ca.Enabled):'N/D'),row('Legacy auth: política detectada',ca?(ca.LegacyAuthBlockPolicyDetected?'Sí':'No'):'N/D'),row('Usuarios de riesgo alto',ru?fmt(ru.High):'N/D'));
+  add(lower,lic,id);add(root,lower);renderSecureScoreBreakdown(root);renderTrends(root);
+  const actions=buildPlan().filter(x=>['Crítica','Alta'].includes(x.priority)).slice(0,5);add(root,heading('Decisiones prioritarias','Hallazgos que requieren validación o acción ejecutiva.'));
+  const ag=n('div','grid g2');actions.forEach(x=>{const c=card(x.action);c.classList.add('risk-high');add(c,n('div','control-id',x.id),n('div','owner',`${x.priority} · score ${fmt(x.score)} · ${x.owner}`),n('div','confidence',`Riesgo ${x.risk} · Confianza ${x.confidence}`),n('div','plan-copy',x.evidence),n('div','plan-copy',`Validación: ${x.validation}`));add(ag,c)});if(!actions.length)add(ag,notice('Sin alertas críticas automáticas','No equivale a postura segura. Revise módulos desconocidos y recomendaciones pendientes.'));add(root,ag);
+}
+
+function renderPosture(){
+  const root=$('postureBody');root.replaceChildren();add(root,heading('Postura de seguridad','Primero se declara la calidad de la evidencia y luego se presentan las métricas. Los ceros solo se muestran cuando Graph devolvió datos válidos.'));
+  add(root,notice('Cómo leer la tabla','Módulo indica el área o API revisada. Estado describe si la evidencia pudo recolectarse, no si el control está bien configurado. Mensaje explica qué se leyó o por qué faltan datos. “No aplica” significa que el licenciamiento requerido no fue detectado; “Parcial” exige validación manual.'));
+  const names=['GraphConnection','ConditionalAccess','SecurityDefaults','GlobalAdmins','MFA_SSPR','RiskyUsers','PIM','AccessReviews','MDE','MDO','MDA','MDI','Purview','Intune','Copilot'];
+  add(root,heading('Cobertura de recolección','Inventario de fuentes consultadas y calidad de la evidencia obtenida durante esta corrida.'));
+  const t=n('table'),thead=n('thead'),tr=n('tr');['Área revisada','Calidad de evidencia','Resultado de la lectura'].forEach(x=>add(tr,n('th','',x)));add(thead,tr);const tb=n('tbody');names.forEach(name=>{const s=moduleStatus(name),r=n('tr');add(r,n('td','',moduleLabel(name)),add(n('td'),badge(s.status)),n('td','muted',s.message||''));add(tb,r)});add(t,thead,tb);const wrap=n('div','table-wrap');add(wrap,t);add(root,wrap);
+  renderSecureScoreBreakdown(root);
+  const cards=n('div','grid g3');
+  if(A.Entra){const e=card('Microsoft Entra ID'),m=A.Entra.MFA,ca=A.Entra.ConditionalAccess,pim=A.Entra.PIM,ga=A.Entra.GlobalAdmins;add(e,row('MFA capable',m?pct(m.PctCapable):'N/D'),row('Población MFA',m?(m.Population||'N/D'):'N/D'),row('CA habilitadas',ca?fmt(ca.Enabled):'N/D'),row('CA con exclusiones',ca?fmt(ca.PoliciesWithExclusions):'N/D'),row('Global Admins',ga?fmt(ga.Count):'N/D'),row('Asignaciones PIM permanentes',pim?fmt(pim.PermanentAssignments):'N/D'));if(ca&&ca.AssessmentLimitation)add(e,n('div','label',ca.AssessmentLimitation));if(pim&&pim.AssessmentLimitation)add(e,n('div','label',pim.AssessmentLimitation));add(cards,e)}
+  [['MDE','Defender for Endpoint'],['MDO','Defender for Office 365'],['MDA','Defender for Cloud Apps'],['MDI','Defender for Identity']].forEach(([k,title])=>{const d=A[k];if(!d)return;const c=card(title);add(c,row('Telemetría',d.TelemetryStatus||'N/D'));if(k==='MDE')add(c,row('Dispositivos onboarded',fmt(d.DevicesOnboarded)),row('Usuarios observados',fmt(d.UniqueUsersObserved)),row('Cobertura','No calculada'));if(k==='MDO')add(c,row('Emails en ventana',fmt(d.EmailsProcessedWindow)),row('Phishing detectado',fmt(d.PhishingDetected)));if(k==='MDA')add(c,row('Apps observadas',fmt(d.UniqueApps)),row('Eventos en ventana',fmt(d.EventsWindow)));if(k==='MDI')add(c,row('DCs observados',fmt(d.DCsMonitored)),row('Eventos de logon',fmt(d.LogonEventsWindow)));if(d.Note)add(c,n('div','label',d.Note));add(cards,c)});
+  if(A.Intune){const d=A.Intune,c=card('Microsoft Intune');add(c,row('Dispositivos',fmt(d.DevicesEnrolled)),row('Compliance',pct(d.CompliancePct)),row('No conformes',fmt(d.NonCompliant)),row(`Sin sync ${fmt(d.StaleThresholdDays)}d+`,fmt(d.StaleDevices)));add(cards,c)}
+  if(A.Copilot){const d=A.Copilot,c=card('Microsoft 365 Copilot');add(c,row('Habilitados 30d',fmt(d.EnabledUsers30d)),row('Activos 30d',fmt(d.ActiveUsers30d)),row('Adopción',pct(d.AdoptionPct)),row('API',d.ApiVersion||'N/D'));add(cards,c)}
+  if(A.Purview){const d=A.Purview,s=d.SecureScoreControls||{},c=card('Microsoft Purview');add(c,row('Fuente','Secure Score'),row('Controles evaluados',fmt(s.Total)),row('Implementados',fmt(s.FullyEnabled)),row('Pendientes',fmt(s.NotImplemented)),row('Unknown',fmt(s.Unknown)));if(d.Note)add(c,n('div','label',d.Note));add(cards,c)}
+  add(root,heading('Resultados por workload','Solo se presentan agregados y limitaciones explícitas.'),cards);
+}
+
+function renderLicensing(){
+  const root=$('licensingBody');root.replaceChildren();add(root,heading('Licenciamiento y capacidades','Inventario de SKUs, asignaciones y service plans. No estima precio, ahorro, usuarios únicos por producto ni optimización por persona.'));
+  const skus=L.SKUs||[],skuNames=skus.map(s=>`${s.FriendlyName||s.SKU_PartNumber} (${s.SKU_PartNumber})`);
+  add(root,notice('Fuente canónica',`Microsoft Graph /subscribedSkus devolvió ${skus.length} SKU(s): ${skuNames.join(', ')||'ninguno'}. Solo se reportan productos presentes en esa respuesta para esta corrida.`));
+  add(root,notice('Interpretación correcta','ConsumedUnits son asignaciones por SKU. Sumarlas entre SKUs no produce usuarios únicos y no permite detectar overlap individual. La presencia de una capacidad no demuestra que esté configurada o adoptada.'));
+  add(root,heading('Inventario de suscripciones','Cantidades y utilización de todos los SKUs devueltos por Graph.'));
+  const t=n('table'),head=n('thead'),hr=n('tr');['Producto','Part number','Total','Asignadas','Libres','Uso'].forEach(x=>add(hr,n('th','',x)));add(head,hr);const body=n('tbody');skus.forEach(s=>{const r=n('tr');add(r,n('td','',s.FriendlyName||s.SKU_PartNumber),n('td','muted',s.SKU_PartNumber),n('td','num',fmt(s.Total)),n('td','num',fmt(s.Assigned)),n('td','num',fmt(s.Unassigned)),n('td','num',pct(s.PctUsed)));add(body,r)});add(t,head,body);const w=n('div','table-wrap');add(w,t);add(root,w);
+  if(L.SkuMatrix&&L.SkuMatrix.length){add(root,heading('Matriz de capacidades','Presencia del service plan dentro del SKU; no prueba configuración ni adopción.'));const cats=(L.SecurityCategories||[]).filter(c=>L.SkuMatrix.some(r=>r[c]==='SI'));const mt=n('table'),mh=n('thead'),mhr=n('tr');add(mhr,n('th','','SKU'));cats.forEach(c=>add(mhr,n('th','',capLabel(c))));add(mh,mhr);const mb=n('tbody');L.SkuMatrix.forEach(s=>{const r=n('tr');add(r,n('td','',s.SKU));cats.forEach(c=>add(r,n('td','',s[c]==='SI'?'Sí':'—')));add(mb,r)});add(mt,mh,mb);const mw=n('div','table-wrap');add(mw,mt);add(root,mw)}
+}
+
+const nist={Identity:'PR.AA',Data:'PR.DS',Device:'PR.PS',Apps:'PR.PS',Infrastructure:'PR.IR'};
+function recommendationSet(){let rank=0;return(S.AllRecommendations||[]).slice().sort((a,b)=>(Number(b.AssessmentPriorityScore)||0)-(Number(a.AssessmentPriorityScore)||0)||(Number(b.Improvement)||0)-(Number(a.Improvement)||0)||String(a.Title).localeCompare(String(b.Title))).map(r=>{const actionable=['Critical','High','Medium','Low'].includes(priorityBand(r));if(actionable)rank++;return{...r,_displayRank:actionable?(r.AssessmentPriorityRank||r.PriorityRank||rank):null}})}
+function filteredRecommendations(){const q=$('recSearch').value.trim().toLowerCase(),st=$('recStatus').value,pr=$('recPriority').value,sort=$('recSort').value,recs=recommendationSet().filter(r=>(!st||r.ImplementationStatus===st)&&(!pr||priorityBand(r)===pr)&&(!q||`${r.Title} ${r.Service} ${r.Category} ${r.AssessmentControlId}`.toLowerCase().includes(q)));if(sort==='title')recs.sort((a,b)=>String(a.Title).localeCompare(String(b.Title)));else if(sort==='gain')recs.sort((a,b)=>(Number(b.Improvement)||0)-(Number(a.Improvement)||0)||(a._displayRank??9999)-(b._displayRank??9999));else recs.sort((a,b)=>(Number(b.AssessmentPriorityScore)||0)-(Number(a.AssessmentPriorityScore)||0)||(a._displayRank??9999)-(b._displayRank??9999));return recs}
+function renderRecommendations(){const root=$('recommendationsBody'),weights=PROFILE.RiskModel?.Weights||{};root.replaceChildren();add(root,notice('Criterio de prioridad',`Prioridad del assessment = riesgo ${pct((weights.RiskSeverity||0)*100)}, confianza ${pct((weights.Confidence||0)*100)}, ganancia Secure Score ${pct((weights.SecureScoreGain||0)*100)} y urgencia ${pct((weights.Urgency||0)*100)}. Es un modelo versionado del perfil, no una severidad oficial de Microsoft.`),notice('Esfuerzo e impacto','Estos campos provienen de Microsoft Secure Score. Se normalizan como Bajo, Medio o Alto; N/D significa que Microsoft no informó el dato y el assessment no lo infiere.'));const recs=filteredRecommendations(),t=n('table'),h=n('thead'),hr=n('tr');['Ranking','Control ID','Prioridad','Score','Riesgo / confianza','Ganancia','Control','Dominio / servicio','Estado','Esfuerzo / impacto Microsoft','NIST CSF 2.0','Calidad'].forEach(x=>add(hr,n('th','',x)));add(h,hr);const b=n('tbody');recs.forEach(r=>{const tr=n('tr'),impact=r.Improvement===null||r.Improvement===undefined?'N/D':`+${fmt(r.Improvement)} pts`;add(tr,n('td','num',r._displayRank||'—'),n('td','control-id',r.AssessmentControlId||r.Id||'—'),add(n('td'),priorityBadge(r)),n('td','num',fmt(r.AssessmentPriorityScore)),n('td','',`${r.AssessmentRiskSeverity||'N/D'} / ${r.AssessmentConfidence||'N/D'}`),n('td','num',impact),n('td','',r.Title),n('td','',`${categoryLabel(r.Category)} · ${r.Service||'—'}`),n('td','',r.ImplementationStatus),n('td','',effortImpact(r)),n('td','',nist[r.Category]||'—'),n('td','',r.DataQuality||'unknown'));add(b,tr)});add(t,h,b);const w=n('div','table-wrap');add(w,t);add(root,n('div','label',`${recs.length} controles · orden actual: ${$('recSort').selectedOptions[0].textContent}`),w)}
+function csvCell(v){let s=String(v??'');if(/^[\t\r\n ]*[=+\-@]/.test(s))s=`'${s}`;return`"${s.replaceAll('"','""')}"`}
+function download(text,name){const blob=new Blob([text],{type:'text/csv;charset=utf-8'}),a=n('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+function exportRecommendations(){const rows=[['Ranking','Control ID','Prioridad','Priority Score','Riesgo','Confianza','Ganancia potencial','Control','Dominio','Servicio','Estado','Esfuerzo Microsoft','Impacto de usuario Microsoft','NIST CSF 2.0','Calidad'],...filteredRecommendations().map(r=>[r._displayRank||'',r.AssessmentControlId||r.Id||'',priorityLabel(priorityBand(r)),r.AssessmentPriorityScore,r.AssessmentRiskSeverity,r.AssessmentConfidence,r.Improvement,r.Title,categoryLabel(r.Category),r.Service,r.ImplementationStatus,microsoftLevel(r.ImplementationCost)||'N/D',microsoftLevel(r.UserImpact)||'N/D',nist[r.Category]||'',r.DataQuality||'unknown'])];download('\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n'),'M365_Recomendaciones_Priorizadas.csv')}
+
+function buildPlan(){return FINDINGS.slice().sort((a,b)=>(Number(a.PriorityRank)||9999)-(Number(b.PriorityRank)||9999)).map(f=>({h:Number(f.HorizonDays)||90,priority:priorityLabel(f.PriorityBand),owner:f.Owner,action:f.Title,evidence:f.Evidence,validation:f.ValidationCriterion,id:f.ControlId,risk:f.RiskSeverity,confidence:f.Confidence,score:f.PriorityScore,source:f.Source,nist:f.NistCsf20,zeroTrust:f.ZeroTrustPillar}))}
+function renderPlan(){const root=$('planBody');root.replaceChildren();add(root,heading('Plan de acción 30 / 60 / 90','Backlog normalizado por control ID. El score combina riesgo, confianza, ganancia Secure Score y urgencia según el perfil versionado.'));const all=buildPlan(),g=n('div','grid g3'),meta={30:['30 días','Contención y evidencia'],60:['60 días','Cambios de control'],90:['90 días','Programa y cobertura']};[30,60,90].forEach(h=>{const c=card(`${meta[h][0]} · ${meta[h][1]}`);c.classList.add('plan-col');const matching=all.filter(x=>x.h===h),xs=matching.slice(0,8);if(!xs.length)add(c,n('div','muted','Sin ítems automáticos. Revisar controles Unknown y validaciones manuales.'));xs.forEach(x=>{const i=n('div','plan-item');add(i,n('div','control-id',x.id),n('div','owner',`${x.priority} · score ${fmt(x.score)} · ${x.owner}`),n('div','plan-title',x.action),n('div','confidence',`Riesgo ${x.risk} · Confianza ${x.confidence} · ${x.source}`),n('div','plan-copy',`Evidencia: ${x.evidence}`),n('div','plan-copy',`Cierre: ${x.validation}`));add(c,i)});if(matching.length>xs.length)add(c,n('div','label',`+${matching.length-xs.length} controles adicionales disponibles en el manifest y CSV.`));add(g,c)});add(root,g,notice('Gobernanza del cambio','Aplicar cada remediación mediante ticket, piloto, ventana de cambio, plan de reversa y evidencia posterior. El equipo de cuenta acompaña licenciamiento; el CISO aprueba riesgo e inversión; SecOps/IAM ejecutan.'))}
+
+function renderOperations(){
+  const root=$('operationsBody');root.replaceChildren();
+  add(root,heading('Guía operacional','Modelo práctico para convertir este assessment puntual en un ciclo gobernado de mejora, operación y evidencia. No presupone herramientas ni automatizaciones externas.'));
+  add(root,notice('Principio operativo','El assessment propone prioridades; los portales propietarios confirman la evidencia; el ticket de cambio conserva aprobación, pruebas, reversa y criterio de cierre. Un valor “Disponible” solo confirma recolección, no cumplimiento.'));
+
+  add(root,heading('Ciclo de madurez','Tres fases repetibles con entregables y preguntas de control.'));
+  const phases=[
+    {title:'1. Assessment',owner:'CISO + Arquitectura de seguridad',copy:'Establecer alcance, baseline verificable y brechas de evidencia.',items:['Inventario agregado de licencias y capacidades','Secure Score global y por dominio','Postura por workload con limitaciones','Backlog priorizado y riesgos que requieren decisión']},
+    {title:'2. Postura y protección',owner:'SecOps + IAM + Endpoint + Data',copy:'Cerrar brechas mediante cambios controlados y pruebas de eficacia.',items:['Pilotos y ventanas de cambio','Hardening de identidad y privilegios','Onboarding y salud de sensores','Validación de controles Defender y Purview']},
+    {title:'3. Operación continua',owner:'SecOps + Service Owners',copy:'Mantener monitoreo, respuesta, métricas y revisión de excepciones.',items:['Triage y escalamiento por severidad','Cadencia de revisión por workload','KPIs ejecutivos y tendencias','Mejora de detecciones y aceptación de riesgo']}
+  ];
+  const flow=n('div','flow');phases.forEach((p,i)=>{const c=card(p.title);c.classList.add('guide-card');add(c,n('div','owner',p.owner),n('div','plan-copy',p.copy),list(p.items));add(flow,c);if(i<phases.length-1)add(flow,n('div','flow-arrow','→'))});add(root,flow);
+
+  add(root,heading('Cadencia y evidencia','Frecuencia mínima sugerida; adaptar a criticidad, regulación y modelo operativo.'));
+  const cadence=[
+    ['Diario','SecOps','Incidentes de severidad alta/crítica, risky users, alertas de identidad y cambios privilegiados.','Ticket de triage con severidad, owner, decisión y siguiente acción.','Incidente confirmado, cuenta privilegiada o impacto activo.'],
+    ['Semanal','SecOps + owners de workload','Fallos de CA, exclusiones, salud de sensores, dispositivos stale, campañas de correo y cola de recomendaciones.','Minuta operativa, excepciones vencidas y backlog actualizado.','Métrica degradada dos semanas o control crítico sin owner.'],
+    ['Mensual','CISO + Seguridad + Equipo de cuenta','Secure Score por dominio, avance 30/60/90, evidencia incompleta, consumo de SKU y decisiones de capacidad.','Dashboard ejecutivo, riesgos aceptados y decisiones de inversión.','Brecha material de licencia, exposición o progreso.'],
+    ['Trimestral','Gobierno de seguridad','Access Reviews, PIM, break-glass, baseline CA, retención, permisos del colector y pruebas de respuesta.','Acta de control, evidencias de prueba y plan trimestral aprobado.','Excepción sin expiración, control no probado o riesgo fuera de tolerancia.']
+  ];
+  const cg=n('div','grid g4');cadence.forEach(([freq,owner,review,output,escalate])=>{const c=card(freq);c.classList.add('guide-card');add(c,n('div','owner',owner),n('div','plan-title','Revisar'),n('div','plan-copy',review),n('div','plan-title','Evidencia'),n('div','plan-copy',output),n('div','plan-title','Escalar cuando'),n('div','plan-copy',escalate));add(cg,c)});add(root,cg);
+
+  add(root,heading('Modelo RACI','Responsabilidad sugerida para que los hallazgos no queden sin owner.'));
+  const raci=[['Aceptar riesgo y financiar remediación','CISO','Risk owner','Legal/Compliance, Finanzas','Decisión y expiración'],['Identidad, CA, MFA y PIM','Head of Security','IAM + SecOps','Service Desk, Arquitectura','Ticket, piloto y evidencia portal'],['Endpoint y sensores Defender','Head of Security','Endpoint + SecOps','Infraestructura, Equipo de cuenta','Cobertura y salud agregadas'],['Datos y cumplimiento','Data Protection Officer','Data Security + Compliance','Legal, Negocio','Política, prueba y excepción'],['Adecuación de licencias','Sponsor ejecutivo','Service owner + Equipo de cuenta','Finanzas, Seguridad','SKU, capacidad requerida y decisión'],['Respuesta a incidentes','Incident Commander','SecOps','IAM, Endpoint, Legal, Comunicaciones','Timeline, contención y lecciones aprendidas']];
+  const rt=n('table'),rh=n('thead'),rhr=n('tr');['Actividad','Accountable','Responsible','Consulted','Evidencia mínima'].forEach(x=>add(rhr,n('th','',x)));add(rh,rhr);const rb=n('tbody');raci.forEach(values=>{const tr=n('tr');values.forEach(v=>add(tr,n('td','',v)));add(rb,tr)});add(rt,rh,rb);const rw=n('div','table-wrap');add(rw,rt);add(root,rw);
+
+  add(root,heading('Playbooks mínimos','Secuencias de trabajo para incidentes frecuentes. No registrar secretos ni datos personales innecesarios en el ticket.'));
+  const playbooks=[
+    ['Identidad en riesgo','Señal de riesgo alto, credenciales comprometidas o actividad privilegiada anómala.',['Validar severidad y alcance en Entra/Defender','Contener sesiones y credenciales según autoridad aprobada','Revisar métodos MFA, privilegios y persistencia','Recuperar acceso y documentar causa raíz','Cerrar con evidencia agregada y controles preventivos']],
+    ['Campaña de phishing','Incidente correlacionado, volumen anómalo o suplantación confirmada.',['Preservar evidencia del incidente','Identificar campaña desde Explorer sin exportarla al HTML','Contener mensajes, URLs, remitentes y sesiones afectadas','Buscar actividad posterior al clic','Ajustar políticas y probar detección']],
+    ['Endpoint comprometido','Alerta de alta severidad o comportamiento confirmado en dispositivo.',['Validar incidente y criticidad del activo','Aislar mediante procedimiento aprobado','Recolectar investigación en el portal','Erradicar persistencia y vulnerabilidad raíz','Restaurar, monitorear y medir tiempo de respuesta']],
+    ['Cambio privilegiado o CA','Cambio no autorizado, exclusión inesperada o riesgo de lockout.',['Confirmar actor, aprobación y alcance en logs','Proteger cuentas de emergencia','Revertir solo mediante cambio controlado','Validar acceso de usuarios y cargas críticas','Revisar alertas y endurecer monitoreo']]
+  ];
+  const pg=n('div','grid g2');playbooks.forEach(([title,trigger,steps])=>{const c=card(title);c.classList.add('guide-card');add(c,n('div','owner','Trigger'),n('div','plan-copy',trigger),n('div','owner','Secuencia'),list(steps));add(pg,c)});add(root,pg);
+
+  add(root,heading('Consolas de validación','Abrir el portal propietario y conservar solo la evidencia mínima necesaria para cerrar el control.'));
+  const portals=[['Microsoft Entra','Identidades de riesgo, sign-ins, Conditional Access, PIM y Access Reviews','https://entra.microsoft.com'],['Microsoft Defender XDR','Incidentes, alertas, Advanced Hunting y Secure Score','https://security.microsoft.com'],['Microsoft Intune','Inventario, compliance, configuración y salud de dispositivos','https://intune.microsoft.com'],['Microsoft Purview','DLP, etiquetas, auditoría, eDiscovery y riesgos de datos','https://purview.microsoft.com'],['Microsoft 365 Admin','Productos, facturación, service health y configuración general','https://admin.microsoft.com']];
+  const pt=n('table'),ph=n('thead'),phr=n('tr');['Portal','Uso operacional','Acceso'].forEach(x=>add(phr,n('th','',x)));add(ph,phr);const pb=n('tbody');portals.forEach(([name,use,url])=>{const tr=n('tr');add(tr,n('td','',name),n('td','',use),add(n('td'),link('Abrir portal',url)));add(pb,tr)});add(pt,ph,pb);const pw=n('div','table-wrap');add(pw,pt);add(root,pw);
+
+  add(root,heading('Consultas agregadas de verificación','Ejecutar solo donde la tabla esté licenciada y disponible. Estas consultas resumen conteos y no proyectan UPN, nombres de dispositivos ni asuntos de correo.'));
+  const qs=[['Alertas XDR 7d','AlertInfo\n| where Timestamp > ago(7d)\n| summarize Alerts=count() by ServiceSource, Severity\n| order by Alerts desc'],['Salud MDE 7d','DeviceInfo\n| where Timestamp > ago(7d)\n| summarize Devices=dcount(DeviceId), LastSeen=max(Timestamp) by OnboardingStatus, SensorHealthState'],['Amenazas de correo 7d','EmailEvents\n| where Timestamp > ago(7d)\n| summarize Messages=count() by ThreatTypes, DeliveryAction'],['Identidad 7d','IdentityLogonEvents\n| where Timestamp > ago(7d)\n| summarize Events=count(), Accounts=dcount(AccountObjectId) by ActionType']];
+  const qg=n('div','grid g2');qs.forEach(([title,query])=>{const c=card(title),pre=n('pre','',query);add(c,pre);add(qg,c)});add(root,qg);
+
+  add(root,notice('Paquete de cierre',`Entregar reporte, ${META.AuditManifest||'manifest de auditoría'}, CSV priorizado, tickets de acción, evidencias de portal, decisiones de riesgo/licencia y fecha de próxima medición. Mantener los artefactos cifrados, limitar acceso por necesidad y eliminarlos según retención.`));
+}
+
+setup();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+output/
+*.log
+# Reportes generados (pueden contener datos del tenant)
+*_M365_Security_Report.html
+# Artefactos de firma/hash (se generan por release con Sign-Scripts.ps1 y se publican en el Release)
+SHA256SUMS.txt
+*.cer
+# Scratch de pruebas
+demo/
+demosimple/
+testout*/
+.DS_Store
+*.pre-codex-*.html
+*.bak

@@ -1,0 +1,200 @@
+{
+  "SchemaVersion": "1.0",
+  "ProfileVersion": "2026.07",
+  "ProfileName": "Enterprise Default",
+  "Description": "Perfil conservador para assessments agregados de postura y licenciamiento Microsoft 365.",
+  "Thresholds": {
+    "MfaCapableTargetPct": 100,
+    "GlobalAdminsReviewAt": 5,
+    "PimPermanentReviewAt": 3,
+    "RiskyHighReviewAt": 1
+  },
+  "RiskModel": {
+    "Weights": {
+      "RiskSeverity": 0.5,
+      "Confidence": 0.2,
+      "SecureScoreGain": 0.2,
+      "Urgency": 0.1
+    },
+    "SeverityScores": {
+      "Critical": 100,
+      "High": 75,
+      "Medium": 50,
+      "Low": 25
+    },
+    "ConfidenceScores": {
+      "High": 100,
+      "Medium": 70,
+      "Low": 40
+    },
+    "UrgencyScores": {
+      "30": 100,
+      "60": 60,
+      "90": 30
+    },
+    "Bands": {
+      "Critical": 70,
+      "High": 75,
+      "HighRiskFloor": 60,
+      "Medium": 40
+    }
+  },
+  "ControlCatalog": [
+    {
+      "Id": "EVID-MFA",
+      "Title": "Restablecer evidencia agregada de MFA y SSPR",
+      "RiskSeverity": "High",
+      "Confidence": "High",
+      "HorizonDays": 30,
+      "Owner": "SecOps + Identidad",
+      "EvidenceSource": "Microsoft Graph reports",
+      "ValidationCriterion": "El endpoint agregado devuelve población, numerador y porcentaje con estado success.",
+      "NistCsf20": "ID.AM / PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-CA-LEGACY",
+      "Title": "Validar y bloquear autenticación heredada",
+      "RiskSeverity": "Critical",
+      "Confidence": "Medium",
+      "HorizonDays": 30,
+      "Owner": "SecOps + Identidad",
+      "EvidenceSource": "Conditional Access policies",
+      "ValidationCriterion": "Pruebas controladas confirman bloqueo; cuentas técnicas migradas y excepciones documentadas.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-MFA-CAPABLE",
+      "Title": "Cerrar brecha de preparación MFA",
+      "RiskSeverity": "High",
+      "Confidence": "High",
+      "HorizonDays": 60,
+      "Owner": "SecOps + Identidad",
+      "EvidenceSource": "Microsoft Graph reports",
+      "ValidationCriterion": "La población in-scope alcanza el objetivo aprobado y Conditional Access exige autenticación fuerte.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-CA-PRIV-MFA",
+      "Title": "Validar autenticación fuerte para roles privilegiados",
+      "RiskSeverity": "Critical",
+      "Confidence": "Medium",
+      "HorizonDays": 30,
+      "Owner": "CISO + SecOps",
+      "EvidenceSource": "Conditional Access policy signals",
+      "ValidationCriterion": "Roles privilegiados in-scope cubiertos, cuentas break-glass probadas y monitoreadas.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-CA-EXCLUSIONS",
+      "Title": "Revisar exclusiones de Conditional Access",
+      "RiskSeverity": "High",
+      "Confidence": "High",
+      "HorizonDays": 60,
+      "Owner": "IAM + SecOps",
+      "EvidenceSource": "Conditional Access policies",
+      "ValidationCriterion": "Cada exclusión tiene owner, justificación, expiración y monitoreo; break-glass fue probado.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-BASELINE",
+      "Title": "Restablecer un baseline de identidad",
+      "RiskSeverity": "Critical",
+      "Confidence": "High",
+      "HorizonDays": 30,
+      "Owner": "CISO + Identidad",
+      "EvidenceSource": "Conditional Access and Security Defaults",
+      "ValidationCriterion": "Existe un baseline aprobado, probado y monitoreado sin bloquear cuentas de emergencia.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-RISK-HIGH",
+      "Title": "Investigar identidades de riesgo alto",
+      "RiskSeverity": "Critical",
+      "Confidence": "High",
+      "HorizonDays": 30,
+      "Owner": "SecOps",
+      "EvidenceSource": "Microsoft Graph identityProtection",
+      "ValidationCriterion": "Riesgos investigados o remediados y sesiones revocadas según playbook.",
+      "NistCsf20": "DE.CM / RS.MA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-GA-COUNT",
+      "Title": "Reducir y justificar Global Administrators",
+      "RiskSeverity": "High",
+      "Confidence": "High",
+      "HorizonDays": 60,
+      "Owner": "CISO + IAM",
+      "EvidenceSource": "Microsoft Graph roleManagement",
+      "ValidationCriterion": "Asignaciones personales minimizadas y cuentas de emergencia verificadas.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "ENTRA-PIM-PERM",
+      "Title": "Revisar asignaciones privilegiadas permanentes",
+      "RiskSeverity": "High",
+      "Confidence": "High",
+      "HorizonDays": 60,
+      "Owner": "IAM",
+      "EvidenceSource": "Microsoft Graph role assignment schedules",
+      "ValidationCriterion": "Solo excepciones justificadas quedan permanentes; el resto usa elegibilidad JIT.",
+      "NistCsf20": "PR.AA",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "MDI-SENSORS",
+      "Title": "Validar despliegue de Defender for Identity",
+      "RiskSeverity": "High",
+      "Confidence": "Medium",
+      "HorizonDays": 30,
+      "Owner": "SecOps + Infraestructura",
+      "EvidenceSource": "Defender XDR Advanced Hunting",
+      "ValidationCriterion": "Sensores saludables reportan los controladores in-scope o la no aplicación queda documentada.",
+      "NistCsf20": "DE.CM",
+      "ZeroTrustPillar": "Identities"
+    },
+    {
+      "Id": "INTUNE-ENROLLMENT",
+      "Title": "Confirmar estrategia de administración de dispositivos",
+      "RiskSeverity": "Medium",
+      "Confidence": "High",
+      "HorizonDays": 60,
+      "Owner": "Endpoint + Equipo de cuenta",
+      "EvidenceSource": "Microsoft Graph managedDevices",
+      "ValidationCriterion": "El cliente documenta no uso, inicia onboarding o ajusta licenciamiento según decisión aprobada.",
+      "NistCsf20": "ID.AM / PR.PS",
+      "ZeroTrustPillar": "Devices"
+    },
+    {
+      "Id": "EVID-MODULE",
+      "Title": "Recuperar evidencia de módulo",
+      "RiskSeverity": "Medium",
+      "Confidence": "Low",
+      "HorizonDays": 30,
+      "Owner": "Owner del workload",
+      "EvidenceSource": "ModuleStatus",
+      "ValidationCriterion": "Una nueva corrida devuelve estado success y métricas coherentes con el portal.",
+      "NistCsf20": "ID.AM",
+      "ZeroTrustPillar": "Visibility"
+    },
+    {
+      "Id": "MS-SECURESCORE",
+      "Title": "Remediar control Microsoft Secure Score",
+      "RiskSeverity": "Medium",
+      "Confidence": "High",
+      "HorizonDays": 60,
+      "Owner": "SecOps",
+      "EvidenceSource": "Microsoft Graph Secure Score",
+      "ValidationCriterion": "Control validado en el portal, evidencia adjunta y riesgo residual aceptado.",
+      "NistCsf20": "PR",
+      "ZeroTrustPillar": "Cross-pillar"
+    }
+  ]
+}
