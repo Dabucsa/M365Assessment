@@ -1,6 +1,6 @@
 # M365 Security Assessment v4.2
 
-Assessment read-only de postura de seguridad y licenciamiento de Microsoft 365. Recolecta evidencia agregada con Microsoft Graph, genera un HTML autocontenido y entrega recomendaciones, plan 30/60/90 y guía operacional para CISO, SecOps, IAM y equipos de cuenta.
+Assessment read-only de postura de seguridad y licenciamiento de Microsoft 365. Recolecta evidencia agregada con Microsoft Graph, genera un HTML autocontenido y entrega recomendaciones, plan 30/60/90 y guía operacional para CISO, SecOps, IAM.
 
 ## Qué resuelve
 
@@ -49,7 +49,7 @@ El HTML sigue siendo confidencial porque revela postura, gaps y capacidades. Deb
 
 ## Requisitos
 
-- PowerShell 7 recomendado; PowerShell 5.1 soportado en Windows.
+- PowerShell 7 recomendado;
 - Microsoft.Graph.Authentication.
 - Microsoft.Graph.Identity.DirectoryManagement.
 - Cuenta work/school del tenant.
