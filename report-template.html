@@ -170,6 +170,51 @@ function renderLicensing(){
   add(root,heading('Inventario de suscripciones','Cantidades y utilización de todos los SKUs devueltos por Graph.'));
   const t=n('table'),head=n('thead'),hr=n('tr');['Producto','Part number','Total','Asignadas','Libres','Uso'].forEach(x=>add(hr,n('th','',x)));add(head,hr);const body=n('tbody');skus.forEach(s=>{const r=n('tr');add(r,n('td','',s.FriendlyName||s.SKU_PartNumber),n('td','muted',s.SKU_PartNumber),n('td','num',fmt(s.Total)),n('td','num',fmt(s.Assigned)),n('td','num',fmt(s.Unassigned)),n('td','num',pct(s.PctUsed)));add(body,r)});add(t,head,body);const w=n('div','table-wrap');add(w,t);add(root,w);
   if(L.SkuMatrix&&L.SkuMatrix.length){add(root,heading('Matriz de capacidades','Presencia del service plan dentro del SKU; no prueba configuración ni adopción.'));const cats=(L.SecurityCategories||[]).filter(c=>L.SkuMatrix.some(r=>r[c]==='SI'));const mt=n('table'),mh=n('thead'),mhr=n('tr');add(mhr,n('th','','SKU'));cats.forEach(c=>add(mhr,n('th','',capLabel(c))));add(mh,mhr);const mb=n('tbody');L.SkuMatrix.forEach(s=>{const r=n('tr');add(r,n('td','',s.SKU));cats.forEach(c=>add(r,n('td','',s[c]==='SI'?'Sí':'—')));add(mb,r)});add(mt,mh,mb);const mw=n('div','table-wrap');add(mw,mt);add(root,mw)}
+  renderCapabilityAdoption(root);
+}
+
+function capabilityAdoptionMap(){
+  const E=A.Entra||{},CA=E.ConditionalAccess,MFA=E.MFA,SSPR=E.SSPR,PIM=E.PIM,ssc=d=>Number(d?.SecureScoreControls?.FullyEnabled)||0;
+  return {
+    Entra_ID_P1:{module:'ConditionalAccess',signals:()=>{const xs=[];if(Number(CA?.Enabled)>0)xs.push(`${fmt(CA.Enabled)} políticas CA activas`);if(Number(MFA?.PctCapable)>0)xs.push(`MFA capable ${pct(MFA.PctCapable)}`);if(Number(SSPR?.PctRegistered)>0)xs.push(`SSPR ${pct(SSPR.PctRegistered)}`);return xs}},
+    Entra_ID_P2:{module:'PIM',signals:()=>{const xs=[],asg=(Number(PIM?.ActiveAssignments)||0)+(Number(PIM?.EligibleAssignments)||0);if(asg>0)xs.push(`PIM: ${fmt(asg)} asignaciones de rol`);if(moduleStatus('RiskyUsers').status==='success')xs.push('Identity Protection leyendo señales de riesgo');return xs}},
+    Entra_ID_Governance:{module:'AccessReviews',signals:()=>{const d=A.AccessReviews,xs=[];if(Number(d?.Definitions)>0)xs.push(`${fmt(d.Definitions)} access reviews definidas`);return xs}},
+    MDE_P1:{module:'MDE',signals:()=>{const d=A.MDE,xs=[];if(Number(d?.DevicesOnboarded)>0)xs.push(`${fmt(d.DevicesOnboarded)} dispositivos onboarded`);return xs}},
+    MDE_P2:{module:'MDE',signals:()=>{const d=A.MDE,xs=[];if(Number(d?.DevicesOnboarded)>0)xs.push(`${fmt(d.DevicesOnboarded)} dispositivos onboarded`);if(ssc(d)>0)xs.push(`${fmt(ssc(d))} controles Secure Score implementados`);return xs}},
+    MDO_P1:{module:'MDO',signals:()=>{const d=A.MDO,xs=[];if(Number(d?.EmailsProcessedWindow)>0)xs.push(`${fmt(d.EmailsProcessedWindow)} correos procesados en ventana`);if(ssc(d)>0)xs.push(`${fmt(ssc(d))} controles Secure Score implementados`);return xs}},
+    MDO_P2:{module:'MDO',signals:()=>{const d=A.MDO,xs=[];if(Number(d?.EmailsProcessedWindow)>0)xs.push(`${fmt(d.EmailsProcessedWindow)} correos procesados en ventana`);if(ssc(d)>0)xs.push(`${fmt(ssc(d))} controles Secure Score implementados`);return xs}},
+    MDA:{module:'MDA',signals:()=>{const d=A.MDA,xs=[];if(Number(d?.EventsWindow)>0)xs.push(`${fmt(d.EventsWindow)} eventos en ${fmt(d.TelemetryWindowDays)} días`);if(Number(d?.UniqueApps)>0)xs.push(`${fmt(d.UniqueApps)} app${Number(d.UniqueApps)===1?'':'s'} observada${Number(d.UniqueApps)===1?'':'s'}`);return xs}},
+    MDI:{module:'MDI',signals:()=>{const d=A.MDI,xs=[];if(Number(d?.DCsMonitored)>0)xs.push(`${fmt(d.DCsMonitored)} DCs monitoreados`);if(Number(d?.LogonEventsWindow)>0)xs.push(`${fmt(d.LogonEventsWindow)} eventos de logon en ventana`);return xs}},
+    Intune_P1:{module:'Intune',signals:()=>{const d=A.Intune,xs=[];if(Number(d?.DevicesEnrolled)>0)xs.push(`${fmt(d.DevicesEnrolled)} dispositivos enrolados`);return xs}},
+    Intune_P2:{module:'Intune',signals:()=>{const d=A.Intune,xs=[];if(Number(d?.DevicesEnrolled)>0)xs.push(`${fmt(d.DevicesEnrolled)} dispositivos enrolados`);return xs}},
+    Purview_AIP_P1:{module:'Purview',signals:()=>{const d=A.Purview,xs=[];if(ssc(d)>0)xs.push(`${fmt(ssc(d))} controles Secure Score implementados`);return xs}},
+    Purview_AIP_P2:{module:'Purview',signals:()=>{const d=A.Purview,xs=[];if(ssc(d)>0)xs.push(`${fmt(ssc(d))} controles Secure Score implementados`);return xs}},
+    Purview_RMS_Basic:{module:'Purview',signals:()=>{const d=A.Purview,xs=[];if(ssc(d)>0)xs.push(`${fmt(ssc(d))} controles Secure Score implementados`);return xs}},
+    Copilot_M365:{module:'Copilot',signals:()=>{const d=A.Copilot,xs=[];if(Number(d?.ActiveUsers30d)>0)xs.push(`${fmt(d.ActiveUsers30d)} usuarios activos D30`);return xs}}
+  };
+}
+
+function renderCapabilityAdoption(root){
+  if(!A.ModuleStatus||!L.SkuMatrix||!L.SkuMatrix.length)return;
+  const map=capabilityAdoptionMap(),cats=(L.SecurityCategories||[]).filter(c=>map[c]&&L.SkuMatrix.some(r=>r[c]==='SI'));
+  if(!cats.length)return;
+  add(root,heading('Adopción de capacidades licenciadas','Cruce entre las capacidades incluidas en los SKUs y la evidencia agregada recolectada por el módulo de postura. Prueba configuración o telemetría a nivel tenant; no mide cobertura por usuario.'));
+  add(root,notice('Cómo leer','“En uso” = hay evidencia agregada de configuración o telemetría. “Sin evidencia de uso” = la fuente respondió pero no se observaron señales en la ventana: posible capacidad pagada sin activar (validar antes de concluir). “Sin datos” = no se pudo leer la fuente; no se infiere nada.'));
+  const t=n('table'),h=n('thead'),hr=n('tr');['Capacidad licenciada','Estado','Evidencia observada','Fuente'].forEach(x=>add(hr,n('th','',x)));add(h,hr);
+  const b=n('tbody');
+  cats.forEach(c=>{
+    const m=map[c],ms=moduleStatus(m.module),tr=n('tr');
+    let cls,label,detail;
+    if(ms.status==='success'||ms.status==='warning'){
+      const xs=m.signals();
+      if(xs.length){cls='success';label='En uso';detail=xs.join(' · ')}
+      else{cls='warning';label='Sin evidencia de uso';detail='Fuente leída correctamente; sin señales de uso en la ventana observada.'}
+      if(ms.status==='warning')detail+=` Lectura parcial: ${ms.message||''}`;
+    }else{cls='unknown';label='Sin datos';detail=ms.message||'Sin evidencia de recolección.'}
+    add(tr,n('td','',capLabel(c)),add(n('td'),n('span',`badge ${cls}`,label)),n('td','muted',detail),n('td','muted',moduleLabel(m.module)));
+    add(b,tr);
+  });
+  add(t,h,b);const w=n('div','table-wrap');add(w,t);add(root,w);
 }
 
 const nist={Identity:'PR.AA',Data:'PR.DS',Device:'PR.PS',Apps:'PR.PS',Infrastructure:'PR.IR'};
